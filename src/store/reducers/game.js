@@ -36,7 +36,6 @@ if (persistedState) {
     const sessionsCount = divideTimeDiffBySessions({timeDiff, sessionTime})
     let materilas = getInintialMaterialsCount(persistedState)
     const sessionIncome = calcSessionIncome({state: persistedState, sessionTime})
-    const JBC = S.judgesByCourts({game: persistedState});
     const courts = S.courts({game: persistedState});
     const materialsBySession = sessionsCount > 0 ? materilas / sessionsCount : 0
 
@@ -45,22 +44,22 @@ if (persistedState) {
     let sessionBalanceIncome = 0;
     let sessionJailedIncome = 0;
 
-    for (const courtIndex in JBC) {
-        const currentCourt = courts[courtIndex];
-        const courtTimeIndex = sessionTime / (currentCourt.time * C.SECOND);
-        if (currentCourt.cost < restMaterials) {
-            for (const judge in JBC[courtIndex]) {
-                if (currentCourt.cost < restMaterials) {
-                    restMaterials -= currentCourt.cost * courtTimeIndex
-                    sessionOutcome += currentCourt.cost * courtTimeIndex
-                    sessionBalanceIncome += currentCourt.balance * courtTimeIndex
-                    sessionJailedIncome += currentCourt.result * courtTimeIndex
-                }
-            }
-        }
+    // for (const courtIndex in JBC) {
+    //     const currentCourt = courts[courtIndex];
+    //     const courtTimeIndex = sessionTime / (currentCourt.time * C.SECOND);
+    //     if (currentCourt.cost < restMaterials) {
+    //         for (const judge in JBC[courtIndex]) {
+    //             if (currentCourt.cost < restMaterials) {
+    //                 restMaterials -= currentCourt.cost * courtTimeIndex
+    //                 sessionOutcome += currentCourt.cost * courtTimeIndex
+    //                 sessionBalanceIncome += currentCourt.balance * courtTimeIndex
+    //                 sessionJailedIncome += currentCourt.result * courtTimeIndex
+    //             }
+    //         }
+    //     }
         
-        console.log(sessionOutcome, sessionBalanceIncome, sessionJailedIncome);
-    }
+    //     console.log(sessionOutcome, sessionBalanceIncome, sessionJailedIncome);
+    // }
 
     const overallIncome = (sessionIncome - sessionOutcome) * sessionsCount;
     const overallBalanceIncome = sessionBalanceIncome * sessionsCount;
@@ -157,13 +156,13 @@ export default (state = persistedState || initialState, action) => {
             //     console.timeEnd('secretaries');
             // }
 
-            const isJudgesQueueNotUpdated = R.equals(updatedQueue, state.queue);
+            const isQueueUpdated = R.equals(updatedQueue, state.queue);
 
             return {
                 ...state,
                 materials: incrementedMaterialsCount,
                 materialsQueue: incrementedMaterialsCount !==0 ? state.materialsQueue.filter(U.notExpired(actualTimestamp)) : state.materialsQueue,
-                judgesQueue: isJudgesQueueNotUpdated ? state.queue : updatedQueue,
+                queue: isQueueUpdated ? state.queue : updatedQueue,
                 jailed: state.jailed + jailedIncome,
                 balance: state.balance + balanceIncome,
                 lastUpdate: actualTimestamp
@@ -184,25 +183,10 @@ export default (state = persistedState || initialState, action) => {
         case C.SET_MATERIAL_TO_COURT: 
             return {
                 ...state,
-                courtQueue: [...state.courtQueue, {
+                queue: [...state.courtQueue, {
                     timestamp: action.timestamp,
                     index: action.index
                 }]
-            }
-        case C.SET_MATERIAL_TO_JUDGE: 
-            return {
-                ...state,
-                judgesQueue: [...state.judgesQueue, {
-                    timestamp: action.timestamp,
-                    judge: action.index
-                }]
-            }
-        case C.ADD_JUDGE:
-            if (action.cost > state.balance) return state
-            return {
-                ...state,
-                judges: [...state.judges, {court: +action.courtIndex}],
-                balance: state.balance - action.cost
             }
         case C.ADD_COURT:
             if (action.cost > state.balance) return state
@@ -223,12 +207,12 @@ export default (state = persistedState || initialState, action) => {
             }
         case C.ADD_INFORMATOR:
             if (action.cost > state.balance) return state
-            const _arr = state.informersMultiplies.slice();
+            const _arr = state.informersOwned.slice();
             const newVal = _arr[action.index] ? _arr[action.index] + 1 : 2;
             _arr[action.index] = newVal
             return {
                 ...state,
-                informersMultiplies: _arr,
+                informersOwned: _arr,
                 balance: state.balance - action.cost
             }
         case C.ADD_SECRETARY:

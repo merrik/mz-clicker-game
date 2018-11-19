@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMaterial, removeMaterials, addCourt, addInformer, addInformator, setMaterialToJudge, addSecretary } from '../store/actions'
+import { addMaterial, removeMaterials, addCourt, addInformer, addInformator } from '../store/actions'
 
 import Row from './Row';
 import Column from './Column';
@@ -11,7 +11,8 @@ import Title from './Header';
 
 import Statistics from './Statistics';
 
-import * as S from '../store/selectors'
+import * as S from '../store/selectors';
+import * as U from '../utils';
 
 const STATUS_FREE = 'STATUS_FREE'
 const STATUS_BUSY = 'STATUS_BUSY'
@@ -20,10 +21,10 @@ const mapStateToProps = (state) => {
   const { game } = state;
   return {
     courts: S.courts(state),
-    courtList: S.judgesByCourts(state),
+    courtList: S.courtList,
     balance: S.balance(state),
     informers: S.informers(state),
-    informersMultiplies: game.informersMultiplies,
+    informersOwned: game.informersOwned,
     queue: game.queue,
     secretaries: game.secretaries
   };
@@ -33,36 +34,32 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addMaterial: () => {
     dispatch(addMaterial(+new Date()))
   },
-  removeMaterials: (qty) => { },
-  sendMaterials: ({ time, idx, qty }) => {
 
+  sendMaterials: ({ time, idx, qty }) => {
     dispatch(removeMaterials({ timestamp: +new Date(), qty }))
-    dispatch(setMaterialToJudge({
-      timestamp: +new Date() + (time * 1000),
-      index: idx
-    }))
+    // dispatch(setMaterialToJudge({
+    //   timestamp: +new Date() + (time * 1000),
+    //   index: idx
+    // }))
   },
+
   addCourt: ({cost}) => {
     dispatch(addCourt(cost))
   },
+
   addInformer: ({cost}) => {
     dispatch(addInformer(cost))
   },
+
   addInformator: ({index, cost}) => {
     dispatch(addInformator({index, cost}))
-  },
-  addJudge: ({index, cost}) => {
-    dispatch(addJudge({index, cost}))
-  },
-  addSecretary: ({index, cost}) => {
-    dispatch(addSecretary({index, cost}))
   }
 })
 
-const courtArray = ({courts, sendMaterials, courtList, balance}) => {
-  console.time('courtArray');
+const courtArray = ({courts, sendMaterials, courtList}) => {
   let _courts = [];
-  for (const courtIndex in courtList) {
+  // console.log(courts)
+  for (const courtIndex in courts) {
     const court = courts[courtIndex]
     _courts.push(
       <Court
@@ -70,34 +67,30 @@ const courtArray = ({courts, sendMaterials, courtList, balance}) => {
         materials={court.materials}
         productionJailed={court.productionJailed}
         productionBalance={court.productionBalance}
-        upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: })}
+        upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: 1})}
         key={courtIndex}
         onClick={true
           ? () => {
             sendMaterials({
-              time: el.time,
-              idx: freeJudges[0].judge,
-              qty: el.cost
+              time: court.time,
+              idx: courtIndex,
+              qty: court.cost
             })
           }
           : null
         }
-        nextJudgeCost = {nextJudgeCost}
-        addJudge={() => addJudge({index: courtIndex, cost: nextJudgeCost})}
       />
     )
   }
-  console.timeEnd('courtArray');
   return _courts
 }
 
-const informersArray = ({ informers, informersMultiplies, addInformator, balance }) => informers.map((el, idx) => {
-  const nextInformatorCost = el.updateCost * el.updateCostMult * (informersMultiplies[idx] ? informersMultiplies[idx] + 1 : 1)
+const informersArray = ({ informers, informersOwned, addInformator, balance }) => informers.map((el, idx) => {
+  const nextInformatorCost = U.nextCost({base: el.cost, rate: el.rate, owned: informersOwned[idx]})
   return <Informer
     income={el.income}
     every={el.every}
     key={idx}
-    multiply={informersMultiplies[idx]}
     updateCost={nextInformatorCost}
     enoughBudget={balance >= nextInformatorCost}
     addInformator={

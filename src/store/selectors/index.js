@@ -14,13 +14,13 @@ export const courtList = [
 ]
 
 export const informerList = [
-    {name:'Доносчик 1', production: 0.33, last: 0, cost: 10, rate: 1.11},
-    {name:'Доносчик 2', production: 0.6, last: 0, cost: 100, rate: 1.11},
-    {name:'Доносчик 3', production: 0.8, last: 0, cost: 500, rate: 1.11},
+    {name:'Доносчик 1', production: 0.33, cost: 10, rate: 1.11},
+    {name:'Доносчик 2', production: 0.6, cost: 100, rate: 1.11},
+    {name:'Доносчик 3', production: 0.8, cost: 500, rate: 1.11},
 ]
 
-export const MAX_COURTS = courtList.length
-export const MAX_INFORMERS = informerList
+export const MAX_COURTS = courtList.length;
+export const MAX_INFORMERS = informerList.length;
 
 export const intBalance = state => Math.floor(state.game.balance)
 export const balance = createSelector(
@@ -34,7 +34,6 @@ export const materials = createSelector(
     (b) => b
 )
 
-// const courtQueueSelector = state => state.game.queue;
 const informersCount = state => state.game.informers;
 const courtCount = state => state.game.courts;
 
