@@ -36,8 +36,8 @@ export const addCourt = (cost) => ({
   cost: cost
 })
 
-export const addJudge = ({index, cost}) => ({
-  type: C.ADD_JUDGE,
+export const updateCourt = ({index, cost}) => ({
+  type: C.UPDATE_COURT,
   courtIndex: index,
   cost: cost
 })

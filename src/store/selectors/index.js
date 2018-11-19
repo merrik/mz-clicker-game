@@ -1,21 +1,22 @@
 import { createSelector } from 'reselect';
 import * as R from 'ramda';
 
+// optimal rate between 1.07 and 1.15
 export const courtList = [
-    {cost: 10, time: 3, result: 10, balance: 100, judgeCost: 100, judgeCostMult: 2, nextCourtCost: 200, secretaryCost: 10},
-    {cost: 20, time: 6, result: 12, balance: 120, judgeCost: 200, judgeCostMult: 2, nextCourtCost: 400, secretaryCost: 100},
-    {cost: 30, time: 12, result: 15, balance: 150, judgeCost: 300, judgeCostMult: 2, nextCourtCost: 800, secretaryCost: 1000},
-    {cost: 40, time: 24, result: 19, balance: 190, judgeCost: 400, judgeCostMult: 2, nextCourtCost: 1600, secretaryCost: 3000},
-    {cost: 50, time: 48, result: 26, balance: 225, judgeCost: 500, judgeCostMult: 2, nextCourtCost: 3200, secretaryCost: 5000},
-    {cost: 60, time: 96, result: 32, balance: 275, judgeCost: 600, judgeCostMult: 2, nextCourtCost: 6400, secretaryCost: 10000},
-    {cost: 70, time: 182, result: 39, balance: 350, judgeCost: 700, judgeCostMult: 2, nextCourtCost: 12800, secretaryCost: 15000},
-    {cost: 80, time: 364, result: 47, balance: 400, judgeCost: 800, judgeCostMult: 2, nextCourtCost: 25600, secretaryCost: 20000}
+    {name:'Суд 1', materials: 10, productionJailed: 3, productionBalance: 30, cost: 200, rate: 1.11},
+    {name:'Суд 2', materials: 20, productionJailed: 4, productionBalance: 50, cost: 400, rate: 1.11},
+    {name:'Суд 3', materials: 30, productionJailed: 6, productionBalance: 75, cost: 1000, rate: 1.11},
+    {name:'Суд 4', materials: 40, productionJailed: 10, productionBalance: 100, cost: 1500, rate: 1.11},
+    {name:'Суд 5', materials: 50, productionJailed: 20, productionBalance: 300, cost: 3000, rate: 1.11},
+    {name:'Суд 6', materials: 60, productionJailed: 40, productionBalance: 800, cost: 10000, rate: 1.11},
+    {name:'Суд 7', materials: 70, productionJailed: 60, productionBalance: 1500, cost: 30000, rate: 1.11},
+    {name:'Суд 8', materials: 80, productionJailed: 100, productionBalance: 3000, cost: 100000, rate: 1.11},
 ]
 
 export const informerList = [
-    {income: 0.000333, last: 0, cost: 10, updateCost: 10, updateCostMult: 1},
-    {income: 0.0006, last: 0, cost: 30, updateCost: 20, updateCostMult: 1},
-    {income: 0.0008, last: 0, cost: 50, updateCost: 30, updateCostMult: 1 }
+    {name:'Доносчик 1', production: 0.33, last: 0, cost: 10, rate: 1.11},
+    {name:'Доносчик 2', production: 0.6, last: 0, cost: 100, rate: 1.11},
+    {name:'Доносчик 3', production: 0.8, last: 0, cost: 500, rate: 1.11},
 ]
 
 export const MAX_COURTS = courtList.length
@@ -33,12 +34,7 @@ export const materials = createSelector(
     (b) => b
 )
 
-
-const STATUS_FREE = 'STATUS_FREE';
-const STATUS_BUSY = 'STATUS_BUSY';
-
-const judgesSelector = state => state.game.judges;
-const courtQueueSelector = state => state.game.judgesQueue;
+// const courtQueueSelector = state => state.game.queue;
 const informersCount = state => state.game.informers;
 const courtCount = state => state.game.courts;
 
@@ -55,17 +51,3 @@ export const informers = createSelector(
 )
 
 export const informer = (_, props) => informerList[props.index]
-
-export const judgesByCourts = createSelector(
-    judgesSelector,
-    courtQueueSelector,
-    (judges, courtQueue) => {
-        const flattenQueue = R.pluck('judge')(courtQueue)
-        const judgesWithStatus = judges.map((el, idx) => {
-            el.status = flattenQueue.indexOf(idx) > -1 ? STATUS_BUSY : STATUS_FREE
-            el.judge = idx
-            return el
-        })
-        return R.groupBy(el => el.court, judgesWithStatus)
-    }
-)

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-const Header = styled.span`
+const Title = styled.span`
 
 `;
 
@@ -25,7 +25,7 @@ const Counter = styled.p`
 
 export default ({header, count}) => (
     <Counter>
-        <Header>{header}</Header>
+        <Title>{header}</Title>
         <br />
         <Count>{count}</Count> 
     </Counter>

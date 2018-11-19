@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMaterial, removeMaterials, addCourt, addInformer, addInformator, addJudge, setMaterialToJudge, addSecretary } from '../store/actions'
+import { addMaterial, removeMaterials, addCourt, addInformer, addInformator, setMaterialToJudge, addSecretary } from '../store/actions'
 
 import Row from './Row';
 import Column from './Column';
@@ -19,14 +19,12 @@ const STATUS_BUSY = 'STATUS_BUSY'
 const mapStateToProps = (state) => {
   const { game } = state;
   return {
-    jailed: game.jailed,
     courts: S.courts(state),
+    courtList: S.judgesByCourts(state),
     balance: S.balance(state),
     informers: S.informers(state),
     informersMultiplies: game.informersMultiplies,
-    courtList: S.judgesByCourts(state),
-    courtQueue: game.courtQueue,
-    judgesQueue: game.judgesQueue,
+    queue: game.queue,
     secretaries: game.secretaries
   };
 }
@@ -61,33 +59,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-const courtArray = ({courts, sendMaterials, courtList, addJudge, balance, addSecretary, secretaries}) => {
+const courtArray = ({courts, sendMaterials, courtList, balance}) => {
   console.time('courtArray');
   let _courts = [];
   for (const courtIndex in courtList) {
-    const el = courts[courtIndex]
-    const judges = courtList[courtIndex]
-    const freeJudges = courtList[courtIndex].filter(el => el.status === STATUS_FREE)
-    // const isActive = el.cost <= materials
-    const nextJudgeCost = el.judgeCost * el.judgeCostMult * judges.length
-    const enoughBudget = +nextJudgeCost <= +balance
-    const enoughToSecretary = +el.secretaryCost <= +balance
+    const court = courts[courtIndex]
     _courts.push(
       <Court
-        cost={el.cost}
-        enoughMaterials = {true}
-        enoughBudget = {enoughBudget}
-        time={el.time}
-        result={el.result}
-        balance={el.balance}
+        name={court.name}
+        materials={court.materials}
+        productionJailed={court.productionJailed}
+        productionBalance={court.productionBalance}
+        upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: })}
         key={courtIndex}
-        active={true}
-        judges={judges.length}
-        freeJudges={freeJudges.length}
-        enoughToSecretary={enoughToSecretary}
-        haveSecretary={secretaries.indexOf(courtIndex) > -1}
-        secretaryCost={el.secretaryCost}
-        addSecretary={() => addSecretary({index: courtIndex, cost: el.secretaryCost})}
         onClick={true
           ? () => {
             sendMaterials({

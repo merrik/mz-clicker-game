@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
     const { game } = state;
     return {
       materials: S.materials(state),
-      jailed: game.jailed,
+      jailed: parseInt(game.jailed),
       balance: S.balance(state)
     };
   }

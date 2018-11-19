@@ -6,10 +6,71 @@ import * as U from '../../utils';
 
 const LOCAL_STORAGE_KEY = 'game-state'
 
-const persistedState = U.loadState(LOCAL_STORAGE_KEY);
+let persistedState = U.loadState(LOCAL_STORAGE_KEY);
 console.log(persistedState);
 
+const calculateIncomeFromInfromers = ({state}) => {
+    const {informersOwned, informers} = state;
+    let income = 0;
+
+    for (let idx = 0; idx < informers; idx++){
+        const informer = S.informer(null, {index: idx})
+        const owned = informersOwned[idx] ? informersOwned[idx] : 1
+        income += U.production({production: informer.income, owned, multipliers: 1})
+    }
+
+    return income
+}
+
+const getInintialMaterialsCount = (state) => state.materials 
+const calcSessionIncome = ({state, sessionTime}) => { return calculateIncomeFromInfromers({state}) }
+// const calcSessionGeneratorsResults = ({state, timeDiff}) => { return {jailed, balance, materials} } 
+const divideTimeDiffBySessions = ({timeDiff, sessionTime}) => Math.ceil(timeDiff / sessionTime)
+
+
 if (persistedState) {
+    const sessionTime = 1 * C.SECOND
+    const actualTimestamp = Date.now()
+    let timeDiff = actualTimestamp - persistedState.lastUpdate
+    if (timeDiff < (10 * C.SECOND)) timeDiff = 0
+    const sessionsCount = divideTimeDiffBySessions({timeDiff, sessionTime})
+    let materilas = getInintialMaterialsCount(persistedState)
+    const sessionIncome = calcSessionIncome({state: persistedState, sessionTime})
+    const JBC = S.judgesByCourts({game: persistedState});
+    const courts = S.courts({game: persistedState});
+    const materialsBySession = sessionsCount > 0 ? materilas / sessionsCount : 0
+
+    let restMaterials = materialsBySession + sessionIncome;
+    let sessionOutcome = 0;
+    let sessionBalanceIncome = 0;
+    let sessionJailedIncome = 0;
+
+    for (const courtIndex in JBC) {
+        const currentCourt = courts[courtIndex];
+        const courtTimeIndex = sessionTime / (currentCourt.time * C.SECOND);
+        if (currentCourt.cost < restMaterials) {
+            for (const judge in JBC[courtIndex]) {
+                if (currentCourt.cost < restMaterials) {
+                    restMaterials -= currentCourt.cost * courtTimeIndex
+                    sessionOutcome += currentCourt.cost * courtTimeIndex
+                    sessionBalanceIncome += currentCourt.balance * courtTimeIndex
+                    sessionJailedIncome += currentCourt.result * courtTimeIndex
+                }
+            }
+        }
+        
+        console.log(sessionOutcome, sessionBalanceIncome, sessionJailedIncome);
+    }
+
+    const overallIncome = (sessionIncome - sessionOutcome) * sessionsCount;
+    const overallBalanceIncome = sessionBalanceIncome * sessionsCount;
+    const overallJailedIncome = sessionJailedIncome * sessionsCount;
+
+    persistedState.materials = materilas + overallIncome;
+    persistedState.materials = persistedState.materials > 0 ? persistedState.materials : 1
+    persistedState.balance += overallBalanceIncome;
+    persistedState.jailed += overallJailedIncome;
+
     persistedState.lastUpdate = Date.now()
 }
 
@@ -22,30 +83,14 @@ const initialState = {
 
     courts: 0,
 
-    judges: [{court: 0}],
-    judgesQueue: [],
+    queue: [],
     secretaries: [],
     secretaryWorkTimestamp: 0,
 
     informers: 0,
-    informersMultiplies: [],
+    informersOwned: [],
 
     lastUpdate: 0
-}
-
-
-
-const calculateIncomeFromInfromers = ({state, timeDiff}) => {
-    const {informersMultiplies, informers} = state;
-    let income = 0;
-
-    for (let idx = 0; idx < informers; idx++){
-        const informer = S.informer(null, {index: idx})
-        const mult = informersMultiplies[idx] ? informersMultiplies[idx] : 1
-        income += timeDiff * informer.income * mult
-    }
-
-    return income
 }
 
 export default (state = persistedState || initialState, action) => {
@@ -58,35 +103,26 @@ export default (state = persistedState || initialState, action) => {
                 .filter(U.expired(actualTimestamp))
                 .reduce(U.reduceQTY, 0)
 
-            const actualCourts = state.judgesQueue
+            const income = calculateIncomeFromInfromers({state})
+            
+            const actualQueue = state.queue
                 .filter(U.expired(actualTimestamp))
                 .map(el => {
-                    const courtIndex = state.judges[el.judge].court
-                    const court = S.court(null, {index: courtIndex})
+                    const court = S.court(null, {index: el.court})
                     return {
                         ...el,
-                        court: courtIndex,
-                        qty: court.result,
-                        balance: court.balance
+                        court: el.court,
+                        jailed: court.productionJailed,
+                        balance: court.productionBalance
                 }})
+
             
-            const jailedIncome = actualCourts.reduce(U.reduceQTY, 0)
-            const balanceIncome = actualCourts.reduce(U.reduceBalance, 0)
-
-            // const UIS = updatedInformerStamps({state, timeDiff})
-            const infromersIncome = calculateIncomeFromInfromers({state, timeDiff})
-
-            let updatedJudgesQueue = state.judgesQueue.filter(U.notExpired(actualTimestamp))
-
-            //Пройтись по всем индексам секретарей
-            //  Пройтись по всем свободным судьям в суде с текущим секретарём
-            //    Если хватает материалов дела, то 
-            //      materialsOutcome++, 
-            //      judgesQueue.push({timestamp, judge})
-            // state.secretaries.map((el, idx) => {
-            //     const judges = state.judges.filter(judge => judge.court === el)
-            //     return el
-            // })
+            const timeIndex = timeDiff / C.SECOND
+            const infromersIncome = calculateIncomeFromInfromers({state}) * timeIndex
+            const jailedIncome = actualQueue.reduce(U.reduceQTY, 0) *  timeIndex
+            const balanceIncome = actualQueue.reduce(U.reduceBalance, 0) * timeIndex
+            
+            let updatedQueue = state.queue.filter(U.notExpired(actualTimestamp))
 
             let incrementedMaterialsCount = state.materials + materialCount + infromersIncome
 
@@ -94,40 +130,40 @@ export default (state = persistedState || initialState, action) => {
                 U.saveState(LOCAL_STORAGE_KEY, state)
             }
             
-            if ((actualTimestamp - state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
-                console.time('secretaries');
-                let newMaterialCount = incrementedMaterialsCount
-                let newJudgesQueue = updatedJudgesQueue.slice()
-                const JBC = S.judgesByCourts({game:state});
-                const JBCC = state.secretaries.map((el, idx) => {
-                    return JBC[el]
-                })
-                const JBCCC = JBCC.map(el => el.filter(e => e.status === C.STATUS_FREE))
-                JBCCC.map(el => el.map(judge => {
-                    const court = S.court(null, {index: judge.court})
-                    if (court.cost <= newMaterialCount) {
-                        newMaterialCount -= court.cost
-                        newJudgesQueue = [...newJudgesQueue,  {
-                            timestamp: actualTimestamp + (court.time * 1000),
-                            judge: judge.judge
-                        }]
-                    }
-                    return judge
-                }))
+            // if ((actualTimestamp - state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
+            //     console.time('secretaries');
+            //     let newMaterialCount = incrementedMaterialsCount
+            //     let newJudgesQueue = updatedJudgesQueue.slice()
+            //     const JBC = S.judgesByCourts({game:state});
+            //     const JBCC = state.secretaries.map((el, idx) => {
+            //         return JBC[el]
+            //     })
+            //     const JBCCC = JBCC.map(el => el.filter(e => e.status === C.STATUS_FREE))
+            //     JBCCC.map(el => el.map(judge => {
+            //         const court = S.court(null, {index: judge.court})
+            //         if (court.cost <= newMaterialCount) {
+            //             newMaterialCount -= court.cost
+            //             newJudgesQueue = [...newJudgesQueue,  {
+            //                 timestamp: actualTimestamp + (court.time * 1000),
+            //                 judge: judge.judge
+            //             }]
+            //         }
+            //         return judge
+            //     }))
                 
-                incrementedMaterialsCount = newMaterialCount;
-                updatedJudgesQueue = newJudgesQueue;
-                state.secretaryWorkTimestamp = actualTimestamp;
-                console.timeEnd('secretaries');
-            }
+            //     incrementedMaterialsCount = newMaterialCount;
+            //     updatedJudgesQueue = newJudgesQueue;
+            //     state.secretaryWorkTimestamp = actualTimestamp;
+            //     console.timeEnd('secretaries');
+            // }
 
-            const isJudgesQueueNotUpdated = R.equals(updatedJudgesQueue, state.judgesQueue);
+            const isJudgesQueueNotUpdated = R.equals(updatedQueue, state.queue);
 
             return {
                 ...state,
                 materials: incrementedMaterialsCount,
                 materialsQueue: incrementedMaterialsCount !==0 ? state.materialsQueue.filter(U.notExpired(actualTimestamp)) : state.materialsQueue,
-                judgesQueue: isJudgesQueueNotUpdated ? state.judgesQueue : updatedJudgesQueue,
+                judgesQueue: isJudgesQueueNotUpdated ? state.queue : updatedQueue,
                 jailed: state.jailed + jailedIncome,
                 balance: state.balance + balanceIncome,
                 lastUpdate: actualTimestamp
