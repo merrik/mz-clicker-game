@@ -183,7 +183,7 @@ export default (state = persistedState || initialState, action) => {
         case C.SET_MATERIAL_TO_COURT: 
             return {
                 ...state,
-                queue: [...state.courtQueue, {
+                queue: [...state.queue, {
                     timestamp: action.timestamp,
                     index: action.index
                 }]
@@ -194,15 +194,17 @@ export default (state = persistedState || initialState, action) => {
             return {
                 ...state,
                 courts: state.courts + 1,
-                judges: [...state.judges, {court: state.courts + 1}],
                 balance: state.balance - action.cost
             }
         case C.ADD_INFORMER:
             if (action.cost > state.balance) return state
             if (state.informers + 1 > S.informerList.length) return state
+            const newInformersOwned = [...state.informersOwned]
+            newInformersOwned[state.informers] = 1
             return {
                 ...state,
                 informers: state.informers + 1,
+                informersOwned: newInformersOwned,
                 balance: state.balance - action.cost
             }
         case C.ADD_INFORMATOR:
@@ -222,6 +224,8 @@ export default (state = persistedState || initialState, action) => {
                 secretaries: [...state.secretaries, action.index],
                 balance: state.balance - action.cost
             }
+        case C.RESET_GAME:
+            return initialState
         default:
             return state
     }

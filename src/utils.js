@@ -4,6 +4,7 @@ export const expired = actualTimestamp => el => el.timestamp <= actualTimestamp
 export const notExpired = actualTimestamp => el => el.timestamp > actualTimestamp
 export const reduceQTY = (x, y) => x + y.qty
 export const reduceBalance = (x, y) => x + y.balance
+export const fixed = x => typeof x === 'number' ? x.toFixed(2) : parseFloat(x).toFixed(2)
 
 export const loadState = (key) => {
     try {

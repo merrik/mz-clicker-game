@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMaterial, removeMaterials, addCourt, addInformer, addInformator } from '../store/actions'
+import { addMaterial, removeMaterials, addCourt, addInformer, addInformator, setMaterialToCourt, resetGame } from '../store/actions'
 
 import Row from './Row';
 import Column from './Column';
@@ -37,10 +37,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
   sendMaterials: ({ time, idx, qty }) => {
     dispatch(removeMaterials({ timestamp: +new Date(), qty }))
-    // dispatch(setMaterialToJudge({
-    //   timestamp: +new Date() + (time * 1000),
-    //   index: idx
-    // }))
+    dispatch(setMaterialToCourt({
+      timestamp: +new Date() + (time * 1000),
+      index: idx
+    }))
   },
 
   addCourt: ({cost}) => {
@@ -53,43 +53,41 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
   addInformator: ({index, cost}) => {
     dispatch(addInformator({index, cost}))
-  }
+  },
+
+  resetGame: () => {
+    dispatch(resetGame())
+  },
 })
 
-const courtArray = ({courts, sendMaterials, courtList}) => {
-  let _courts = [];
-  // console.log(courts)
-  for (const courtIndex in courts) {
-    const court = courts[courtIndex]
-    _courts.push(
-      <Court
-        name={court.name}
-        materials={court.materials}
-        productionJailed={court.productionJailed}
-        productionBalance={court.productionBalance}
-        upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: 1})}
-        key={courtIndex}
-        onClick={true
-          ? () => {
-            sendMaterials({
-              time: court.time,
-              idx: courtIndex,
-              qty: court.cost
-            })
-          }
-          : null
+const courtArray = ({courts, sendMaterials}) => {
+  return courts.map((court, courtIndex) => (
+    <Court
+      name={court.name}
+      materials={court.materials}
+      productionJailed={court.productionJailed}
+      productionBalance={court.productionBalance}
+      upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: 1})}
+      key={courtIndex}
+      onClick={true
+        ? () => {
+          sendMaterials({
+            time: court.time,
+            idx: courtIndex,
+            qty: court.materials
+          })
         }
-      />
-    )
-  }
-  return _courts
-}
+        : null
+      }
+    />
+  ))
+};
 
 const informersArray = ({ informers, informersOwned, addInformator, balance }) => informers.map((el, idx) => {
+  console.log(informersOwned)
   const nextInformatorCost = U.nextCost({base: el.cost, rate: el.rate, owned: informersOwned[idx]})
   return <Informer
-    income={el.income}
-    every={el.every}
+    income={U.production({production: el.production, owned: informersOwned[idx], multipliers: 1})}
     key={idx}
     updateCost={nextInformatorCost}
     enoughBudget={balance >= nextInformatorCost}
@@ -101,7 +99,7 @@ const informersArray = ({ informers, informersOwned, addInformator, balance }) =
 
 class GameField extends Component {
   render() {
-    const nextCourtCost = this.props.courts.length ? this.props.courts[this.props.courts.length - 1].nextCourtCost : 0;
+    const nextCourtCost = this.props.courts.length ? this.props.courts[this.props.courts.length - 1].cost : 0;
     const nextInformerCost = S.informerList[this.props.informers.length] ? S.informerList[this.props.informers.length].cost : 0;
     return (
       <Row>
@@ -113,6 +111,7 @@ class GameField extends Component {
               this.props.addMaterial()
             }} >
             CLICK ME</ClickArea>
+            <button onClick={this.props.resetGame}>Заново</button>
         </Column>
         <Column>
           <Title>Суды</Title>

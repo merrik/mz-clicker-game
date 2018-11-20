@@ -58,3 +58,7 @@ export const addSecretary = ({index, cost}) => ({
   index: index,
   cost: cost
 })
+
+export const resetGame = () => ({
+  type: C.RESET_GAME
+})

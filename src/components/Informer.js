@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import * as U from '../utils';
 
 const Label = styled.p`
     margin: 0;
@@ -16,17 +17,17 @@ const Court = styled.div`
 
 `;
 
-export default ({income, every, multiply, addInformator, updateCost, enoughBudget}) => {
-    const value = (income * 1000 * (multiply ? multiply : 1)).toFixed(2)
+export default ({income, addInformator, updateCost}) => {
+    // const value = (income * 1000 * (multiply ? multiply : 1)).toFixed(2)
 
 return (
     
     <Court>
-        <Label>доносов: {value} в секунду</Label>
+        <Label>доносов: {U.fixed(income)} в секунду</Label>
         <button
             onClick={addInformator}
-            disabled={!enoughBudget}
-        >Улучшить ({updateCost}$)</button>
+            // disabled={}
+        >Улучшить ({U.fixed(updateCost)}$)</button>
     </Court>
 )
 }
