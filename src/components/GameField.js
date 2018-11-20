@@ -14,8 +14,8 @@ import Statistics from './Statistics';
 import * as S from '../store/selectors';
 import * as U from '../utils';
 
-const STATUS_FREE = 'STATUS_FREE'
-const STATUS_BUSY = 'STATUS_BUSY'
+const STATUS_FREE = 'STATUS_FREE';
+const STATUS_BUSY = 'STATUS_BUSY';
 
 const mapStateToProps = (state) => {
   const { game } = state;
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
     queue: game.queue,
     secretaries: game.secretaries
   };
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addMaterial: () => {
@@ -54,13 +54,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addInformator: ({index, cost}) => {
     dispatch(addInformator({index, cost}))
   }
-})
+});
 
 const courtArray = ({courts, sendMaterials, courtList}) => {
   let _courts = [];
   // console.log(courts)
   for (const courtIndex in courts) {
-    const court = courts[courtIndex]
+    const court = courts[courtIndex];
     _courts.push(
       <Court
         name={court.name}
@@ -86,7 +86,7 @@ const courtArray = ({courts, sendMaterials, courtList}) => {
 }
 
 const informersArray = ({ informers, informersOwned, addInformator, balance }) => informers.map((el, idx) => {
-  const nextInformatorCost = U.nextCost({base: el.cost, rate: el.rate, owned: informersOwned[idx]})
+  const nextInformatorCost = U.nextCost({base: el.cost, rate: el.rate, owned: informersOwned[idx]});
   return <Informer
     income={el.income}
     every={el.every}
@@ -97,12 +97,23 @@ const informersArray = ({ informers, informersOwned, addInformator, balance }) =
       () => { addInformator({cost: nextInformatorCost, index: idx}) }
     }
   />
-})
+});
 
 class GameField extends Component {
   render() {
-    const nextCourtCost = this.props.courts.length ? this.props.courts[this.props.courts.length - 1].nextCourtCost : 0;
-    const nextInformerCost = S.informerList[this.props.informers.length] ? S.informerList[this.props.informers.length].cost : 0;
+    let nextCourtCost = 0;
+    let nextInformerCost = 0;
+    const nextCourt = this.props.courts.length ? this.props.courts[this.props.courts.length - 1] : null;
+    const nextInformer = S.informerList[this.props.informers.length] ? S.informerList[this.props.informers.length] : null;
+
+    if(nextCourt) {
+       nextCourtCost = nextCourt.cost;
+    }
+
+    if(nextInformer) {
+      nextInformerCost = nextCourt.cost
+    }
+
     return (
       <Row>
         <Statistics />
@@ -117,12 +128,15 @@ class GameField extends Component {
         <Column>
           <Title>Суды</Title>
           {courtArray(this.props)}
-          <button 
-            onClick={() => this.props.addCourt({cost: nextCourtCost})}
-            disabled={nextCourtCost > this.props.balance}
-          >
-            Добавить cуд ({nextCourtCost}$)
-          </button>
+          {nextCourt ? (
+            <button
+              onClick={() => this.props.addCourt({cost: nextCourtCost})}
+              disabled={nextCourtCost > this.props.balance}
+            >
+              {(`Добавить ${nextCourt.name} ${nextCourtCost}`)}
+            </button>
+            ) : null
+          }
         </Column>
         <Column>
           <Title>Доносчики</Title>

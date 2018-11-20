@@ -14,16 +14,16 @@ const mapStateToProps = (state) => {
       jailed: parseInt(game.jailed),
       balance: S.balance(state)
     };
-  }
+  };
 
 class Statistics extends Component {
     render() {
         return (
           <Column>
             <Title>Статистика</Title>
-            {this.props.materials > 0 && <Counter header='Материалы дела' count={this.props.materials} />}
-            {this.props.jailed > 0 && <Counter header='Посажено' count={this.props.jailed} />}
-            {this.props.balance > 0 && <Counter header='Бюджет' count={this.props.balance} />}
+            {this.props.materials >= 0 && <Counter header='Материалы дела' count={this.props.materials} />}
+            {this.props.jailed >= 0 && <Counter header='Посажено' count={this.props.jailed} />}
+            {this.props.balance >= 0 && <Counter header='Бюджет' count={this.props.balance} />}
           </Column>
         )
     }

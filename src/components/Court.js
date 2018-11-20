@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
-import { addSecretary } from '../store/actions';
+import {  } from '../store/actions';
 
 const Label = styled.p`
     margin: 0;
     margin-bottom: 3px;
     font-size: 12px;
-`
+`;
+
 const AddButton = styled.button`
     /* border: 1px solid blue; */
 `;
@@ -20,7 +21,8 @@ const Court = styled.div`
 const Labels = styled.div`
   background-color: white;
   color: black;
-`
+`;
+
 export default ({
     name,
     materials,
@@ -40,7 +42,7 @@ export default ({
         </Labels>
         <AddButton
             onClick={onClick}>
-            Передать материалы
+            Добавить судью
         </AddButton>
     </Court>
 )

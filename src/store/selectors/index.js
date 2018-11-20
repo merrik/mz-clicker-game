@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import * as R from 'ramda';
 
 // optimal rate between 1.07 and 1.15
 export const courtList = [
@@ -11,13 +10,13 @@ export const courtList = [
     {name:'Суд 6', materials: 60, productionJailed: 40, productionBalance: 800, cost: 10000, rate: 1.11},
     {name:'Суд 7', materials: 70, productionJailed: 60, productionBalance: 1500, cost: 30000, rate: 1.11},
     {name:'Суд 8', materials: 80, productionJailed: 100, productionBalance: 3000, cost: 100000, rate: 1.11},
-]
+];
 
 export const informerList = [
     {name:'Доносчик 1', production: 0.33, cost: 10, rate: 1.11},
     {name:'Доносчик 2', production: 0.6, cost: 100, rate: 1.11},
     {name:'Доносчик 3', production: 0.8, cost: 500, rate: 1.11},
-]
+];
 
 export const MAX_COURTS = courtList.length;
 export const MAX_INFORMERS = informerList.length;
@@ -26,13 +25,13 @@ export const intBalance = state => Math.floor(state.game.balance)
 export const balance = createSelector(
     intBalance,
     (b) => b
-)
+);
 
 export const intMaterials = state => Math.floor(state.game.materials)
 export const materials = createSelector(
     intMaterials,
     (b) => b
-)
+);
 
 const informersCount = state => state.game.informers;
 const courtCount = state => state.game.courts;
@@ -40,13 +39,13 @@ const courtCount = state => state.game.courts;
 export const courts = createSelector(
     courtCount,
     (count) => courtList.slice(0, count + 1)
-)
+);
 
-export const court = (_, props) => courtList[props.index]
+export const court = (_, props) => courtList[props.index];
 
 export const informers = createSelector(
     informersCount,
     (count) => informerList.slice(0, count)
-)
+);
 
 export const informer = (_, props) => informerList[props.index]
