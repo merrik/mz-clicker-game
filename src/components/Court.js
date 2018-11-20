@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import {  } from '../store/actions';
+import { addSecretary } from '../store/actions';
+import * as U from '../utils';
 
 const Label = styled.p`
     margin: 0;
@@ -33,11 +34,11 @@ export default ({
 }) => (
     <Court>
         <Labels>
-            <Label>Имя<strong>{name}</strong></Label>
-            <Label>Стоимость<strong>{materials}</strong></Label>
-            <Label>Скорость посадки<strong>{productionJailed}</strong></Label>
-            <Label>Инкам бюджета<strong>{productionBalance}</strong></Label>
-            <Label>Стоимость апргрейда<strong>{upgradeCost}</strong></Label>
+            <Label>Имя&nbsp;<strong>{name}</strong></Label>
+            <Label>Стоимость&nbsp;<strong>{materials}</strong></Label>
+            <Label>Скорость посадки&nbsp;<strong>{productionJailed}</strong></Label>
+            <Label>Инкам бюджета&nbsp;<strong>{productionBalance}</strong></Label>
+            <Label>Стоимость апргрейда&nbsp;<strong>{U.fixed(upgradeCost)}</strong></Label>
             <Label><strong></strong></Label>
         </Labels>
         <AddButton

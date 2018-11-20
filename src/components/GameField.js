@@ -1,6 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { addMaterial, removeMaterials, addCourt, addInformer, addInformator } from '../store/actions'
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {
+  addMaterial,
+  removeMaterials,
+  addCourt,
+  addInformer,
+  updateInformer,
+  resetGame,
+  updateCourt
+} from '../store/actions'
+import {courtList, informerList} from "../store/selectors";
 
 import Row from './Row';
 import Column from './Column';
@@ -14,11 +23,8 @@ import Statistics from './Statistics';
 import * as S from '../store/selectors';
 import * as U from '../utils';
 
-const STATUS_FREE = 'STATUS_FREE';
-const STATUS_BUSY = 'STATUS_BUSY';
-
 const mapStateToProps = (state) => {
-  const { game } = state;
+  const {game} = state;
   return {
     courts: S.courts(state),
     courtList: S.courtList,
@@ -26,129 +32,127 @@ const mapStateToProps = (state) => {
     informers: S.informers(state),
     informersOwned: game.informersOwned,
     queue: game.queue,
-    secretaries: game.secretaries
+    secretaries: game.secretaries,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addMaterial: () => {
-    dispatch(addMaterial(+new Date()))
-  },
+const mapDispatchToProps = {
+  addMaterial,
+  addCourt,
+  addInformer,
+  updateInformer,
+  resetGame,
+  updateCourt
+};
 
-  sendMaterials: ({ time, idx, qty }) => {
-    dispatch(removeMaterials({ timestamp: +new Date(), qty }))
-    // dispatch(setMaterialToJudge({
-    //   timestamp: +new Date() + (time * 1000),
-    //   index: idx
-    // }))
-  },
+const courtArray = ({courts, sendMaterials, updateCourt}) => {
+  return courts.map((court, index) => {
+    const {
+      name,
+      materials,
+      productionJailed,
+      productionBalance,
+      upgradeCost,
+    } = court;
 
-  addCourt: ({cost}) => {
-    dispatch(addCourt(cost))
-  },
-
-  addInformer: ({cost}) => {
-    dispatch(addInformer(cost))
-  },
-
-  addInformator: ({index, cost}) => {
-    dispatch(addInformator({index, cost}))
-  }
-});
-
-const courtArray = ({courts, sendMaterials, courtList}) => {
-  let _courts = [];
-  // console.log(courts)
-  for (const courtIndex in courts) {
-    const court = courts[courtIndex];
-    _courts.push(
+    return (
       <Court
-        name={court.name}
-        materials={court.materials}
-        productionJailed={court.productionJailed}
-        productionBalance={court.productionBalance}
-        upgradeCost={U.nextCost({base:court.cost, rate:court.rate, owned: 1})}
-        key={courtIndex}
-        onClick={true
-          ? () => {
-            sendMaterials({
-              time: court.time,
-              idx: courtIndex,
-              qty: court.cost
-            })
-          }
-          : null
-        }
+        name={name}
+        materials={materials}
+        productionJailed={productionJailed}
+        productionBalance={productionBalance}
+        upgradeCost={upgradeCost}
+        key={index}
+        onClick={() => updateCourt({cost: upgradeCost, index})}
       />
     )
-  }
-  return _courts
-}
+  })
+};
 
-const informersArray = ({ informers, informersOwned, addInformator, balance }) => informers.map((el, idx) => {
-  const nextInformatorCost = U.nextCost({base: el.cost, rate: el.rate, owned: informersOwned[idx]});
-  return <Informer
-    income={el.income}
-    every={el.every}
-    key={idx}
-    updateCost={nextInformatorCost}
-    enoughBudget={balance >= nextInformatorCost}
-    addInformator={
-      () => { addInformator({cost: nextInformatorCost, index: idx}) }
-    }
-  />
-});
+const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
+  informers.map((informer, index) => {
+    const {
+      name,
+      production,
+      upgradeCost
+    } = informer;
+
+    return (
+      <Informer
+        name={name}
+        income={production}
+        key={index}
+        updateCost={upgradeCost}
+        enoughBudget={balance >= upgradeCost}
+        updateInformer={
+          () => {
+            updateInformer({cost: upgradeCost, index})
+          }
+        }
+      />)
+  });
 
 class GameField extends Component {
   render() {
+    const {
+      addMaterial,
+      addInformer,
+      resetGame,
+      addCourt,
+      balance,
+      courts,
+      informers
+    } = this.props;
+
     let nextCourtCost = 0;
     let nextInformerCost = 0;
-    const nextCourt = this.props.courts.length ? this.props.courts[this.props.courts.length - 1] : null;
-    const nextInformer = S.informerList[this.props.informers.length] ? S.informerList[this.props.informers.length] : null;
+    const nextCourt = courts.length < courtList.length ? courtList[courts.length] : null;
+    const nextInformer = informers.length < informerList.length ? informerList[informers.length] : null;
 
-    if(nextCourt) {
-       nextCourtCost = nextCourt.cost;
+    if (nextCourt) {
+      nextCourtCost = nextCourt.cost;
     }
 
-    if(nextInformer) {
-      nextInformerCost = nextCourt.cost
+    if (nextInformer) {
+      nextInformerCost = nextInformer.cost
     }
 
     return (
       <Row>
-        <Statistics />
+        <Statistics/>
         <Column>
           <Title>Кликни</Title>
           <ClickArea
             onClick={() => {
-              this.props.addMaterial()
-            }} >
+              addMaterial()
+            }}>
             CLICK ME</ClickArea>
+          <button onClick={resetGame}>Заново</button>
         </Column>
         <Column>
           <Title>Суды</Title>
           {courtArray(this.props)}
           {nextCourt ? (
             <button
-              onClick={() => this.props.addCourt({cost: nextCourtCost})}
-              disabled={nextCourtCost > this.props.balance}
+              onClick={() => addCourt({cost: nextCourtCost})}
+              disabled={nextCourtCost > balance}
             >
-              {(`Добавить ${nextCourt.name} ${nextCourtCost}`)}
+              {(`Добавить ${nextCourt.name} ${nextCourtCost}$`)}
             </button>
-            ) : null
+          ) : null
           }
         </Column>
         <Column>
           <Title>Доносчики</Title>
           {informersArray(this.props)}
-          {(this.props.informers.length < S.informerList.length)
-            ? <button 
-            onClick={() => this.props.addInformer({cost: nextInformerCost})}
-            disabled={nextInformerCost > this.props.balance}
-          >
-            Добавить доносчика ({nextInformerCost}$)
-          </button>
-          : <div>Максимум доносчиков</div>
+          {nextInformerCost
+            ? <button
+              onClick={() => addInformer({cost: nextInformerCost})}
+              disabled={nextInformerCost > balance}
+            >
+              Добавить доносчика ({nextInformerCost}$)
+            </button>
+            : <div>Максимум доносчиков</div>
           }
         </Column>
       </Row>

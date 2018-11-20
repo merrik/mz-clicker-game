@@ -16,10 +16,11 @@ export const ADD_COURT = 'ADD_COURT';
 export const ADD_JUDGE = 'ADD_JUDGE';
 
 export const ADD_INFORMER = 'ADD_INFORMER';
-export const ADD_INFORMATOR = 'ADD_INFORMATOR';
+export const UPDATE_INFORMER = 'UPDATE_INFORMER';
 
 export const ADD_SECRETARY = 'ADD_SECRETARY';
 
 export const SET_MATERIAL_TO_JUDGE = 'SET_MATERIAL_TO_JUDGE';
 
 export const UPDATE_COURT = 'UPDATE_COURT';
+export const RESET_GAME = 'RESET_GAME';
