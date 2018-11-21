@@ -9,9 +9,10 @@ import Counter from './Counter';
 
 const mapStateToProps = (state) => {
     const { game } = state;
+    console.log(game.jailed)
     return {
       materials: S.materials(state),
-      jailed: parseInt(game.jailed),
+      jailed: Math.floor(game.jailed),
       balance: S.balance(state)
     };
   };

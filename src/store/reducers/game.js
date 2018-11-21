@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
-import { informerList } from "../selectors";
+import { informerList, courtList, upgradesList } from "../selectors";
 
 const LOCAL_STORAGE_KEY = 'game-state';
 
@@ -14,10 +14,76 @@ const calculateIncomeFromInformers = ({state}) => {
   let income = 0;
 
   for (let i = 0; i < informers.length; i++) {
-    income += U.production({production: informerList[i].production, owned: informers[i], multipliers: 1});
+    let multipliers = state.informerModifier.global;
+    if(state.informerModifier.local[i]) {
+      multipliers += state.informerModifier.local[i];
+    }
+    income += U.production({production: informerList[i].production, owned: informers[i], multipliers});
   }
 
   return income
+};
+
+const calculateIncomeFromCourts = (state, infromersIncome) => {
+  const {courts} = state;
+  const calculate = {
+    incomeBalance: 0,
+    incomeJailed: 0,
+    outcomeMaterials: 0
+  };
+
+  for(let i = 0; i < courts.length; i++) {
+    let multipliersJailed = state.courtModifier.globalJailed;
+    let multipliersBalance = state.courtModifier.globalBalance;
+    let multipliersMaterials = state.courtModifier.globalMaterials;
+
+    const localModifier = state.courtModifier.local[i];
+
+    if(localModifier && localModifier.jailed) {
+      multipliersJailed += localModifier.jailed
+    }
+
+    if(localModifier && localModifier.balance) {
+      multipliersBalance += localModifier.balance
+    }
+
+    if(localModifier && localModifier.materials) {
+      multipliersMaterials += localModifier.materials
+    }
+
+    calculate.incomeBalance += courtList[i].productionBalance * multipliersBalance;
+
+    calculate.incomeJailed += U.production({
+      production: courtList[i].productionJailed,
+      owned: courts[i],
+      multipliers: multipliersJailed
+    });
+
+    calculate.outcomeMaterials += courtList[i].materials * multipliersMaterials;
+  }
+
+  if(calculate.outcomeMaterials > 0) {
+    const allMaterials = state.materials + infromersIncome;
+    const prodactionСoeff = Math.min(allMaterials / calculate.outcomeMaterials, 1);
+
+    calculate.incomeJailed = calculate.incomeJailed * prodactionСoeff;
+    calculate.incomeBalance = calculate.incomeBalance * prodactionСoeff;
+  }
+
+  return calculate;
+};
+
+const calculateIncomeUpgrades = (state) => {
+  let availableUpgrades = [];
+
+  for(let i = 0; i < upgradesList.length; i++) {
+    if(upgradesList[i]) {
+      if(upgradesList[i].point <= state.jailed) {
+        availableUpgrades.push(upgradesList[i].index)
+      }
+    }
+  }
+  return availableUpgrades
 };
 
 const getInintialMaterialsCount = (state) => state.materials;
@@ -56,19 +122,31 @@ if (persistedState) {
 }
 
 const initialState = {
-  materials: 100,
+  materials: 0,
 
   jailed: 0,
-  balance: 2000000,
+  balance: 0,
 
-  courts: [],
+  courts: [8, 1],
+  upgrades: [],
 
   secretaries: [],
   secretaryWorkTimestamp: 0,
 
-  informers: [],
+  informers: [10],
 
-  lastUpdate: 0
+  lastUpdate: 0,
+  clickModifier: 1,
+  courtModifier: {
+    globalBalance: 1,
+    globalJailed: 1,
+    globalMaterials: 1,
+    local: {}
+  },
+  informerModifier: {
+    global: 1,
+    local: []
+  }
 };
 
 export default (state = persistedState || initialState, action) => {
@@ -78,24 +156,37 @@ export default (state = persistedState || initialState, action) => {
       const timeDiff = actualTimestamp - state.lastUpdate;
 
       const timeIndex = timeDiff / C.SECOND;
+
       const infromersIncome = calculateIncomeFromInformers({state}) * timeIndex;
+
+      const nextMaterialsCount = state.materials + infromersIncome;
+      const courtsResult = calculateIncomeFromCourts(state, infromersIncome);
+      let materialsOutcome = nextMaterialsCount - courtsResult.outcomeMaterials * timeIndex;
 
       if ((actualTimestamp - state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
         U.saveState(LOCAL_STORAGE_KEY, state)
       }
 
+      if(materialsOutcome < 0) {
+        materialsOutcome = 0;
+      }
+
+      const incomeUpgrade = calculateIncomeUpgrades(state);
+
       return {
         ...state,
-        materials: state.materials + infromersIncome,
-        lastUpdate: actualTimestamp
+        balance: state.balance + courtsResult.incomeBalance,
+        jailed: state.jailed + courtsResult.incomeJailed,
+        materials: materialsOutcome,
+        lastUpdate: actualTimestamp,
+        upgrades: incomeUpgrade
       };
     case C.ADD_MATERIAL:
+      const materialTimestamp = action.timestamp;
       return {
         ...state,
-        materialsQueue: [...state.materialsQueue, {
-          timestamp: action.timestamp,
-          qty: action.qty
-        }]
+        materials: state.materials + action.qty * state.clickModifier,
+        lastUpdate: materialTimestamp
       };
     case C.APPEND_MATERIALS:
       return {

@@ -155,6 +155,9 @@ class GameField extends Component {
             : <div>Максимум доносчиков</div>
           }
         </Column>
+        <Column>
+          <Title>Улучшения</Title>
+        </Column>
       </Row>
     );
   }
