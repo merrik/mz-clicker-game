@@ -14,9 +14,9 @@ const calculateIncomeFromInformers = ({state}) => {
   let income = 0;
 
   for (let i = 0; i < informers.length; i++) {
-    let multipliers = state.informerModifier.global;
-    if(state.informerModifier.local[i]) {
-      multipliers += state.informerModifier.local[i];
+    let multipliers = state.informerModifier;
+    if(state.informerLocalModifier[i]) {
+      multipliers += state.informerLocalModifier[i];
     }
     income += U.production({production: informerList[i].production, owned: informers[i], multipliers});
   }
@@ -33,11 +33,10 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
   };
 
   for(let i = 0; i < courts.length; i++) {
-    let multipliersJailed = state.courtModifier.globalJailed;
-    let multipliersBalance = state.courtModifier.globalBalance;
-    let multipliersMaterials = state.courtModifier.globalMaterials;
-
-    const localModifier = state.courtModifier.local[i];
+    let multipliersJailed = state.courtsJailedModifier;
+    let multipliersBalance = state.courtsModifierBalance;
+    let multipliersMaterials = state.courtsModifierMaterials;
+    const localModifier = state.courtsLocalModifier[i];
 
     if(localModifier && localModifier.jailed) {
       multipliersJailed += localModifier.jailed
@@ -51,7 +50,11 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
       multipliersMaterials += localModifier.materials
     }
 
-    calculate.incomeBalance += courtList[i].productionBalance * multipliersBalance;
+    calculate.incomeBalance +=  U.production({
+      production: courtList[i].productionBalance,
+      owned: courts[i],
+      multipliers: multipliersBalance
+    });
 
     calculate.incomeJailed += U.production({
       production: courtList[i].productionJailed,
@@ -59,7 +62,11 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
       multipliers: multipliersJailed
     });
 
-    calculate.outcomeMaterials += courtList[i].materials * multipliersMaterials;
+    calculate.outcomeMaterials += U.production({
+      production: courtList[i].materials,
+      owned: courts[i],
+      multipliers: multipliersMaterials
+    });
   }
 
   if(calculate.outcomeMaterials > 0) {
@@ -76,13 +83,15 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
 const calculateIncomeUpgrades = (state) => {
   let availableUpgrades = [];
 
-  for(let i = 0; i < upgradesList.length; i++) {
-    if(upgradesList[i]) {
-      if(upgradesList[i].point <= state.jailed) {
-        availableUpgrades.push(upgradesList[i].index)
-      }
+
+  for(let i = 0; i <= upgradesList.size; i++) {
+    const upgrade = upgradesList.get(i);
+    if(!upgrade) continue;
+    if(state.jailed >= upgrade.point) {
+      availableUpgrades.push(i);
     }
   }
+
   return availableUpgrades
 };
 
@@ -127,48 +136,39 @@ const initialState = {
   jailed: 0,
   balance: 0,
 
-  courts: [8, 1],
+  courts: [1],
   upgrades: [],
 
   secretaries: [],
   secretaryWorkTimestamp: 0,
 
-  informers: [10],
+  informers: [],
 
   lastUpdate: 0,
   clickModifier: 1,
-  courtModifier: {
-    globalBalance: 1,
-    globalJailed: 1,
-    globalMaterials: 1,
-    local: {}
-  },
-  informerModifier: {
-    global: 1,
-    local: []
-  }
+  courtsModifierBalance: 1,
+  courtsJailedModifier: 1,
+  courtsModifierMaterials: 1,
+  courtsLocalModifier: [],
+  informerModifier: 1,
+  informerLocalModifier: []
 };
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
-      const actualTimestamp = action.timestamp;
-      const timeDiff = actualTimestamp - state.lastUpdate;
+      const infromersIncome = calculateIncomeFromInformers({state});
+      const nextMaterialsCount = state.materials + (infromersIncome);
 
-      const timeIndex = timeDiff / C.SECOND;
-
-      const infromersIncome = calculateIncomeFromInformers({state}) * timeIndex;
-
-      const nextMaterialsCount = state.materials + infromersIncome;
       const courtsResult = calculateIncomeFromCourts(state, infromersIncome);
-      let materialsOutcome = nextMaterialsCount - courtsResult.outcomeMaterials * timeIndex;
+      let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
 
-      if ((actualTimestamp - state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
+      if ((state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
         U.saveState(LOCAL_STORAGE_KEY, state)
       }
 
-      if(materialsOutcome < 0) {
-        materialsOutcome = 0;
+      if(materialsResult < 0) {
+        materialsResult = 0;
       }
 
       const incomeUpgrade = calculateIncomeUpgrades(state);
@@ -177,16 +177,13 @@ export default (state = persistedState || initialState, action) => {
         ...state,
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
-        materials: materialsOutcome,
-        lastUpdate: actualTimestamp,
+        materials: materialsResult,
         upgrades: incomeUpgrade
       };
     case C.ADD_MATERIAL:
-      const materialTimestamp = action.timestamp;
       return {
         ...state,
         materials: state.materials + action.qty * state.clickModifier,
-        lastUpdate: materialTimestamp
       };
     case C.APPEND_MATERIALS:
       return {
@@ -255,6 +252,24 @@ export default (state = persistedState || initialState, action) => {
         ...state,
         secretaries: [...state.secretaries, action.index],
         balance: state.balance - action.cost
+      };
+    case C.BUY_UPGRADE:
+      if(action.cost > state.balance || !upgradesList.get(action.index)) return state;
+      const buffs = upgradesList.get(action.index).buffs;
+
+      const newModifiers = buffs.reduce((prev, curr) => {
+        return {...prev, [curr[0]]: state[curr[0]] * curr[1]}
+      }, {});
+
+      console.log(newModifiers)
+
+      const upgrades = R.reject(R.equals(action.index), state.upgrades);
+      upgradesList.delete(action.index);
+      return {
+        ...state,
+        ...newModifiers,
+        balance: state.balance - action.cost,
+        upgrades
       };
     case C.RESET_GAME:
       return initialState;

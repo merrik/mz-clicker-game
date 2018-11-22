@@ -7,7 +7,8 @@ import {
   addInformer,
   updateInformer,
   resetGame,
-  updateCourt
+  updateCourt,
+  buyUpgrade
 } from '../store/actions'
 import {courtList, informerList} from "../store/selectors";
 
@@ -16,6 +17,7 @@ import Column from './Column';
 import ClickArea from './ClickArea';
 import Court from './Court';
 import Informer from './Informer'
+import Upgrade from './Upgrade';
 import Title from './Header';
 
 import Statistics from './Statistics';
@@ -30,6 +32,7 @@ const mapStateToProps = (state) => {
     courtList: S.courtList,
     balance: S.balance(state),
     informers: S.informers(state),
+    upgrades: S.upgrades(state),
     informersOwned: game.informersOwned,
     queue: game.queue,
     secretaries: game.secretaries,
@@ -42,7 +45,8 @@ const mapDispatchToProps = {
   addInformer,
   updateInformer,
   resetGame,
-  updateCourt
+  updateCourt,
+  buyUpgrade
 };
 
 const courtArray = ({courts, sendMaterials, updateCourt}) => {
@@ -64,6 +68,27 @@ const courtArray = ({courts, sendMaterials, updateCourt}) => {
         upgradeCost={upgradeCost}
         key={index}
         onClick={() => updateCourt({cost: upgradeCost, index})}
+      />
+    )
+  })
+};
+
+const upgradesArray = ({upgrades, buyUpgrade}) => {
+  return upgrades.map((upgrade) => {
+    const {
+      name,
+      description,
+      cost,
+      index
+    } = upgrade;
+
+    return (
+      <Upgrade
+        name={name}
+        description={description}
+        cost={cost}
+        key={name}
+        onClick={() => buyUpgrade({cost, index})}
       />
     )
   })
@@ -157,6 +182,7 @@ class GameField extends Component {
         </Column>
         <Column>
           <Title>Улучшения</Title>
+          {upgradesArray(this.props)}
         </Column>
       </Row>
     );

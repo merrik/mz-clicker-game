@@ -20,34 +20,40 @@ export const removeMaterials = ({timestamp, qty}) => ({
   qty: -1 * qty
 });
 
+export const buyUpgrade = ({cost, index}) => ({
+  type: C.BUY_UPGRADE,
+  cost,
+  index
+});
+
 export const addCourt = ({cost}) => ({
   type: C.ADD_COURT,
-  cost: cost
+  cost
 });
 
 export const updateCourt = ({index, cost}) => {
   return({
     type: C.UPDATE_COURT,
     courtIndex: index,
-    cost: cost
+    cost
   });
 };
 
 export const addInformer = ({cost}) => ({
   type: C.ADD_INFORMER,
-  cost: cost
+  cost
 });
 
 export const updateInformer = ({index, cost}) => ({
   type: C.UPDATE_INFORMER,
-  index: index,
-  cost: cost
+  index,
+  cost
 });
 
 export const addSecretary = ({index, cost}) => ({
   type: C.ADD_SECRETARY,
-  index: index,
-  cost: cost
+  index,
+  cost
 });
 
 export const resetGame = () => ({

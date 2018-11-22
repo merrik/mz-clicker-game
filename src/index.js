@@ -13,4 +13,4 @@ render(
     document.getElementById('root')
 )
 
-setInterval(() => {store.dispatch(calculate({timestamp: Date.now()}))}, 100)
+setInterval(() => {store.dispatch(calculate({timestamp: Date.now()}))}, 1000);

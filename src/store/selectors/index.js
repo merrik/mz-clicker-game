@@ -1,24 +1,55 @@
 import {createSelector} from 'reselect';
 import * as U from "../../utils";
 
-export const upgradesList = [
-  {index: 0, name: 'КЛИНОК АРМАГЕДОНА', courtBalance: 0.1, cost: 2000, point: 10000},
-  {index: 1, name: 'ТЯПКА', click: 1, cost: 10000, point: 100000}
+const upgradesListNotIndex = [
+  [
+    0,
+    {
+      name: 'КЛИНОК АРМАГЕДОНА',
+      description: 'Эта штука оч крутая дает +10% к доходу судов',
+      cost: 20,
+      point: 1,
+      buffs: [
+        ['courtsModifierBalance', 100]
+      ]
+    }
+  ],
+  [
+    1,
+    {
+      name: 'ТЯПКА ВРЕМЕНИ',
+      description:  'Замедляет время тем самым увеличивает шанс посадить человека за дело',
+      cost: 10,
+      point: 1,
+      buffs: [
+        ['courtsJailedModifier', 50],
+        ['clickModifier', 20]
+      ]
+    }
+  ],
 ];
+
+export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
+  value[1].index = index;
+  return value
+}));
+
+console.log(upgradesList)
+
 // optimal rate between 1.07 and 1.15
 export const courtList = [
-  {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 1, cost: 100, rate: 1.11},
+  {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 5, cost: 100, rate: 1.11},
   {name: 'Суд 2', materials: 20, productionJailed: 4, productionBalance: 10, cost: 1000, rate: 1.11},
-  {name: 'Суд 3', materials: 30, productionJailed: 6, productionBalance: 45, cost: 10000, rate: 1.11},
-  {name: 'Суд 4', materials: 40, productionJailed: 10, productionBalance: 400, cost: 130000, rate: 1.11},
-  {name: 'Суд 5', materials: 50, productionJailed: 20, productionBalance: 40000, cost: 1400000, rate: 1.11},
+  {name: 'Суд 3', materials: 30, productionJailed: 6, productionBalance: 23, cost: 10000, rate: 1.11},
+  {name: 'Суд 4', materials: 45, productionJailed: 10, productionBalance: 42, cost: 130000, rate: 1.11},
+  {name: 'Суд 5', materials: 60, productionJailed: 20, productionBalance: 58, cost: 1400000, rate: 1.11},
   {name: 'Суд 6', materials: 60, productionJailed: 40, productionBalance: 400000, cost: 40000000, rate: 1.11},
   {name: 'Суд 7', materials: 70, productionJailed: 60, productionBalance: 3000000, cost: 30000000, rate: 1.11},
   {name: 'Суд 8', materials: 80, productionJailed: 100, productionBalance: 50000000, cost: 500000000, rate: 1.11},
 ];
 
 export const informerList = [
-  {name: 'Доносчик 1', production: 1, cost: 100, rate: 1.11},
+  {name: 'Доносчик 1', production: 1, cost: 10, rate: 1.11},
   {name: 'Доносчик 2', production: 10, cost: 5000, rate: 1.11},
   {name: 'Доносчик 3', production: 50, cost: 30000, rate: 1.11},
 ];
@@ -56,8 +87,16 @@ export const courts = createSelector(
             owned,
             multipliers: 1
           }),
-          productionBalance: court.productionBalance,
-          materials: court.materials,
+          productionBalance: U.production({
+            production: court.productionBalance,
+            owned,
+            multipliers: 1
+          }),
+          materials: U.production({
+            production: court.materials,
+            owned,
+            multipliers: 1
+          }),
           upgradeCost: U.nextCost({base: court.cost, rate: court.rate, owned}),
         };
       })
@@ -67,7 +106,11 @@ export const court = (_, props) => courtList[props.index];
 
 export const upgrades = createSelector(
   upgradesState,
-
+  (upgradesState) =>
+    upgradesState
+      .map((upgrade) => {
+        return upgradesList.get(upgrade)
+      })
 );
 
 export const informers = createSelector(

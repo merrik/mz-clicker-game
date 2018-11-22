@@ -24,3 +24,5 @@ export const SET_MATERIAL_TO_JUDGE = 'SET_MATERIAL_TO_JUDGE';
 
 export const UPDATE_COURT = 'UPDATE_COURT';
 export const RESET_GAME = 'RESET_GAME';
+
+export const BUY_UPGRADE = 'BUY_UPGRADE';
