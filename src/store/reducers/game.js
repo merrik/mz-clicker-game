@@ -87,6 +87,7 @@ const calculateIncomeUpgrades = (state) => {
 
   for(let i = 0; i <= upgradesList.size; i++) {
     const upgrade = upgradesList.get(i);
+    if(state.buyingItems[i]) continue;
     if(!upgrade) continue;
     if(state.jailed >= upgrade.point) {
       availableUpgrades.push(i);
@@ -150,7 +151,8 @@ const initialState = {
   courtsLocalModifier: [],
   informerModifier: 1,
   informerLocalModifier: [],
-  saveDate: Date.now()
+  saveDate: Date.now(),
+  buyingItems: []
 };
 
 export default (state = persistedState || initialState, action) => {
@@ -263,15 +265,13 @@ export default (state = persistedState || initialState, action) => {
         return {...prev, [curr[0]]: state[curr[0]] * curr[1]}
       }, {});
 
-      console.log(newModifiers)
-
       const upgrades = R.reject(R.equals(action.index), state.upgrades);
-      upgradesList.delete(action.index);
       return {
         ...state,
         ...newModifiers,
         balance: state.balance - action.cost,
-        upgrades
+        upgrades,
+        buyingItems: [...state.buyingItems, action.index]
       };
     case C.RESET_GAME:
       return initialState;
