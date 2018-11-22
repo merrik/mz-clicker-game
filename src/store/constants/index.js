@@ -9,7 +9,7 @@ export const MATERIALS = 'materials';
 export const STATUS_FREE = 'STATUS_FREE';
 export const STATUS_BUSY = 'STATUS_BUSY';
 export const SECOND = 1000;
-export const SECRETARY_WORKING_DELTA = 5 * SECOND;
+export const SAVE_DELTA_TIME = 5 * SECOND;
 
 
 export const ADD_COURT = 'ADD_COURT';

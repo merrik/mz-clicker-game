@@ -29,14 +29,6 @@ const upgradesListNotIndex = [
   ],
 ];
 
-export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
-  value[1].index = index;
-  return value
-}));
-
-console.log(upgradesList)
-
-// optimal rate between 1.07 and 1.15
 export const courtList = [
   {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 5, cost: 100, rate: 1.11},
   {name: 'Суд 2', materials: 20, productionJailed: 4, productionBalance: 10, cost: 1000, rate: 1.11},
@@ -53,6 +45,15 @@ export const informerList = [
   {name: 'Доносчик 2', production: 10, cost: 5000, rate: 1.11},
   {name: 'Доносчик 3', production: 50, cost: 30000, rate: 1.11},
 ];
+
+console.log(upgradesList)
+
+export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
+  value[1].index = index;
+  return value
+}));
+
+// optimal rate between 1.07 and 1.15
 
 export const MAX_COURTS = courtList.length;
 export const MAX_INFORMERS = informerList.length;

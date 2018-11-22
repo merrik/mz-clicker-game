@@ -3,6 +3,7 @@ import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
 import { informerList, courtList, upgradesList } from "../selectors";
+import {saveState} from "../../utils";
 
 const LOCAL_STORAGE_KEY = 'game-state';
 
@@ -139,9 +140,6 @@ const initialState = {
   courts: [1],
   upgrades: [],
 
-  secretaries: [],
-  secretaryWorkTimestamp: 0,
-
   informers: [],
 
   lastUpdate: 0,
@@ -151,7 +149,8 @@ const initialState = {
   courtsModifierMaterials: 1,
   courtsLocalModifier: [],
   informerModifier: 1,
-  informerLocalModifier: []
+  informerLocalModifier: [],
+  saveDate: Date.now()
 };
 
 export default (state = persistedState || initialState, action) => {
@@ -159,12 +158,14 @@ export default (state = persistedState || initialState, action) => {
     case C.CALCULATE:
       const infromersIncome = calculateIncomeFromInformers({state});
       const nextMaterialsCount = state.materials + (infromersIncome);
+      let saveDate = state.saveDate;
 
       const courtsResult = calculateIncomeFromCourts(state, infromersIncome);
       let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
 
-      if ((state.secretaryWorkTimestamp) > C.SECRETARY_WORKING_DELTA) {
-        U.saveState(LOCAL_STORAGE_KEY, state)
+      if(Date.now() - C.SAVE_DELTA_TIME > saveDate) {
+        U.saveState(LOCAL_STORAGE_KEY, state);
+        saveDate = Date.now();
       }
 
       if(materialsResult < 0) {
@@ -178,7 +179,8 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
         materials: materialsResult,
-        upgrades: incomeUpgrade
+        upgrades: incomeUpgrade,
+        saveDate
       };
     case C.ADD_MATERIAL:
       return {
