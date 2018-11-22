@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
-import { informerList, courtList, upgradesList } from "../selectors";
+import {informerList, courtList, upgradesList} from "../selectors";
 import {progressPoint} from "../selectors";
 
 const LOCAL_STORAGE_KEY = 'game-state';
@@ -15,10 +15,14 @@ const calculateIncomeFromInformers = ({state}) => {
 
   for (let i = 0; i < informers.length; i++) {
     let multipliers = state.informerModifier;
-    if(state.informerLocalModifier[i]) {
-      multipliers += state.informerLocalModifier[i];
+    if (state.informerLocalModifier[i]) {
+      multipliers += state.informerLocalModifier[i].createMaterial;
     }
-    income += U.production({production: informerList[i].production, owned: informers[i], multipliers});
+    income += U.production({
+      production: informerList[i].production,
+      owned: informers[i],
+      multipliers: multipliers < 1 ? 1 : multipliers
+    });
   }
 
   return income
@@ -32,44 +36,44 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
     outcomeMaterials: 0
   };
 
-  for(let i = 0; i < courts.length; i++) {
+  for (let i = 0; i < courts.length; i++) {
     let multipliersJailed = state.courtsJailedModifier;
     let multipliersBalance = state.courtsModifierBalance;
     let multipliersMaterials = state.courtsModifierMaterials;
     const localModifier = state.courtsLocalModifier[i];
 
-    if(localModifier && localModifier.jailed) {
+    if (localModifier && localModifier.jailed) {
       multipliersJailed += localModifier.jailed
     }
 
-    if(localModifier && localModifier.balance) {
+    if (localModifier && localModifier.balance) {
       multipliersBalance += localModifier.balance
     }
 
-    if(localModifier && localModifier.materials) {
+    if (localModifier && localModifier.materials) {
       multipliersMaterials += localModifier.materials
     }
 
-    calculate.incomeBalance +=  U.production({
+    calculate.incomeBalance += U.production({
       production: courtList[i].productionBalance,
       owned: courts[i],
-      multipliers: multipliersBalance
+      multipliers: multipliersBalance < 1 ? 1 : multipliersBalance
     });
 
     calculate.incomeJailed += U.production({
       production: courtList[i].productionJailed,
       owned: courts[i],
-      multipliers: multipliersJailed
+      multipliers: multipliersJailed < 1 ? 1 : multipliersJailed
     });
 
     calculate.outcomeMaterials += U.production({
       production: courtList[i].materials,
       owned: courts[i],
-      multipliers: multipliersMaterials
+      multipliers: multipliersMaterials < 1 ? 1 : multipliersMaterials
     });
   }
 
-  if(calculate.outcomeMaterials > 0) {
+  if (calculate.outcomeMaterials > 0) {
     const allMaterials = state.materials + infromersIncome;
     const prodactionСoeff = Math.min(allMaterials / calculate.outcomeMaterials, 1);
 
@@ -82,11 +86,11 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
 
 const calculateIncomeUpgrades = (state) => {
   let availableUpgrades = [];
-  for(let i = 0; i <= upgradesList.size; i++) {
+  for (let i = 0; i <= upgradesList.size; i++) {
     const upgrade = upgradesList.get(i);
-    if(state.buyingItems[i]) continue;
-    if(!upgrade) continue;
-    if(state.jailed >= upgrade.point) {
+    if (state.buyingItems[i]) continue;
+    if (!upgrade) continue;
+    if (state.jailed >= upgrade.point) {
       availableUpgrades.push(i);
     }
   }
@@ -95,33 +99,34 @@ const calculateIncomeUpgrades = (state) => {
 };
 
 const initialState = {
-  allMaterials: 0,
-  materials: 0,
+  allMaterials: 500,
+  materials: 500,
 
-  jailed: 0,
+  jailed: 1000,
   balance: 0,
 
-  courts: [1],
+  courts: [300],
   upgrades: [],
 
-  informers: [],
+  informers: [600],
 
   lastUpdate: 0,
-  clickModifier: 1,
-  courtsModifierBalance: 1,
-  courtsJailedModifier: 1,
-  courtsModifierMaterials: 1,
-  courtsLocalModifier: [],
-  informerModifier: 1,
-  informerLocalModifier: [],
+  clickModifier: 0,
+  courtsModifierBalance: 0,
+  courtsJailedModifier: 0,
+  courtsModifierMaterials: 0,
+  courtsLocalModifier: {},
+  informerModifier: 0,
+  informerLocalModifier: {},
   saveDate: Date.now(),
-  buyingItems: {}
+  buyingItems: {},
+  moneyClick: false
 };
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
-      if(state.allMaterials < progressPoint.courtsAvailable) return state;
+      if (state.allMaterials < progressPoint.courtsAvailable) return state;
       const infromersIncome = calculateIncomeFromInformers({state});
       const nextMaterialsCount = state.materials + (infromersIncome);
       let saveDate = state.saveDate;
@@ -129,12 +134,12 @@ export default (state = persistedState || initialState, action) => {
       const courtsResult = calculateIncomeFromCourts(state, infromersIncome);
       let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
 
-      if(Date.now() - C.SAVE_DELTA_TIME > saveDate) {
+      if (Date.now() - C.SAVE_DELTA_TIME > saveDate) {
         U.saveState(LOCAL_STORAGE_KEY, state);
         saveDate = Date.now();
       }
 
-      if(materialsResult < 0) {
+      if (materialsResult < 0) {
         materialsResult = 0;
       }
 
@@ -150,10 +155,17 @@ export default (state = persistedState || initialState, action) => {
         saveDate
       };
     case C.ADD_MATERIAL:
+      let balance = state.balance;
+
+      if (state.moneyClick) {
+        balance += action.qty * state.clickModifier
+      }
+
       return {
         ...state,
         materials: state.materials + action.qty * state.clickModifier,
-        allMaterials: state.allMaterials + action.qty * state.clickModifier
+        allMaterials: state.allMaterials + action.qty * state.clickModifier,
+        balance
       };
     case C.APPEND_MATERIALS:
       return {
@@ -224,19 +236,63 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance - action.cost
       };
     case C.BUY_UPGRADE:
-      if(action.cost > state.balance || !upgradesList.get(action.index)) return state;
+      if (action.cost > state.balance || !upgradesList.get(action.index)) return state;
       const buffs = upgradesList.get(action.index).buffs;
+      let newModifiers = {};
+      const skills = upgradesList.get(action.index).skills;
 
-      const newModifiers = buffs.reduce((prev, curr) => {
-        return {...prev, [curr[0]]: state[curr[0]] * curr[1]}
-      }, {});
+      if (buffs) {
+        newModifiers = buffs.reduce((prev, curr) => {
+          if (typeof curr[1] === 'object') {
+            let value = state[[curr[0]]];
 
+            for (let index in curr[1]) {
+              if (curr[1][index]) {
+                let balance = 0;
+                let jailed = 0;
+                let materials = 0;
+                let createMaterial = 0;
+                if (!value[index]) {
+                  value[index] = {
+                    balance,
+                    jailed,
+                    materials,
+                    createMaterial
+                  };
+                }
+
+                if (curr[1][index].balance) {
+                  value[index].balance += curr[1][index].balance;
+                }
+
+                if (curr[1][index].jailed) {
+                  value[index].jailed += curr[1][index].jailed;
+                }
+
+                if (curr[1][index].materials) {
+                  value[index].materials += curr[1][index].materials;
+                }
+
+                if(curr[1][index].createMaterial) {
+                  value[index].createMaterial += curr[1][index].createMaterial;
+                }
+
+                console.log(value)
+              }
+            }
+            return {...prev, [curr[0]]: value}
+          }
+
+          return {...prev, [curr[0]]: state[curr[0]] * curr[1]}
+        }, {})
+      };
       const upgrades = R.reject(R.equals(action.index), state.upgrades);
       const buyingItems = {...state.buyingItems};
       buyingItems[action.index] = true;
       return {
         ...state,
         ...newModifiers,
+        ...skills,
         balance: state.balance - action.cost,
         upgrades,
         buyingItems

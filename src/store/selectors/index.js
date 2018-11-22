@@ -5,51 +5,84 @@ const upgradesListNotIndex = [
   [
     0,
     {
-      name: 'КЛИНОК АРМАГЕДОНА',
-      description: 'Эта штука оч крутая дает +10% к доходу судов',
-      cost: 20,
-      point: 1,
-      buffs: [
-        ['courtsModifierBalance', 100]
-      ]
+      name: 'Клики приносят мани',
+      description: 'Деньги за клики',
+      cost: 200,
+      point: 1000,
+      skills: {
+        moneyClick: true
+      }
     }
   ],
   [
     1,
     {
-      name: 'ТЯПКА ВРЕМЕНИ',
-      description:  'Замедляет время тем самым увеличивает шанс посадить человека за дело',
-      cost: 10,
-      point: 1,
+      name: 'Суды эффективнее',
+      description:  'Повышает доход первого суда на 100%',
+      cost: 600,
+      point: 2000,
       buffs: [
-        ['courtsJailedModifier', 50],
-        ['clickModifier', 20]
+        ['courtsLocalModifier', {
+          '0': {
+            balance: 2
+          }
+        }],
+      ]
+    }
+  ],
+  [
+    2,
+    {
+      name: 'Суды эффективнеssе',
+      description:  'Повышает доход первого суда на 100%',
+      cost: 600,
+      point: 2000,
+      buffs: [
+        ['informerModifier', 2],
+        ['courtsLocalModifier', {
+          '0': {
+            balance: 2
+          },
+          '1': {
+            jailed: 3
+          }
+        }],
+        ['informerLocalModifier', {
+          '0': {
+            createMaterial: 20
+          }
+        }]
       ]
     }
   ],
 ];
 
 export const courtList = [
-  {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 5, cost: 10, rate: 1.11},
-  {name: 'Суд 2', materials: 20, productionJailed: 4, productionBalance: 10, cost: 1000, rate: 1.11},
-  {name: 'Суд 3', materials: 30, productionJailed: 6, productionBalance: 23, cost: 10000, rate: 1.11},
-  {name: 'Суд 4', materials: 45, productionJailed: 10, productionBalance: 42, cost: 130000, rate: 1.11},
-  {name: 'Суд 5', materials: 60, productionJailed: 20, productionBalance: 58, cost: 1400000, rate: 1.11},
-  {name: 'Суд 6', materials: 60, productionJailed: 40, productionBalance: 400000, cost: 40000000, rate: 1.11},
-  {name: 'Суд 7', materials: 70, productionJailed: 60, productionBalance: 3000000, cost: 30000000, rate: 1.11},
-  {name: 'Суд 8', materials: 80, productionJailed: 100, productionBalance: 50000000, cost: 500000000, rate: 1.11},
+  {name: 'Суд 1', materials: 3, productionJailed: 1, productionBalance: 0.5, cost: 15, rate: 1.14},
+  {name: 'Суд 2', materials: 10, productionJailed: 3, productionBalance: 2, cost: 100, rate: 1.14},
+  {name: 'Суд 3', materials: 34, productionJailed: 9, productionBalance: 5, cost: 500, rate: 1.14},
+  {name: 'Суд 4', materials: 76, productionJailed: 27, productionBalance: 9, cost: 3000, rate: 1.14},
+  {name: 'Суд 5', materials: 200, productionJailed: 100, productionBalance: 40  , cost: 10000, rate: 1.14},
+  {name: 'Суд 6', materials: 550, productionJailed: 350, productionBalance: 100, cost: 40000, rate: 1.14},
+  {name: 'Суд 7', materials: 1600, productionJailed: 700, productionBalance: 400, cost: 200000, rate: 1.14},
+  {name: 'Суд 8', materials: 3200, productionJailed: 1500, productionBalance: 4000, cost: 1000000, rate: 1.14},
 ];
 
 export const informerList = [
-  {name: 'Доносчик 1', production: 1, cost: 10, rate: 1.11},
-  {name: 'Доносчик 2', production: 10, cost: 5000, rate: 1.11},
-  {name: 'Доносчик 3', production: 50, cost: 30000, rate: 1.11},
+  {name: 'Доносчик 1', production: 1, cost: 10, rate: 1.13},
+  {name: 'Доносчик 2', production: 3, cost: 50, rate: 1.13},
+  {name: 'Доносчик 3', production: 10, cost: 300, rate: 1.13},
+  {name: 'Доносчик 4', production: 32, cost: 2000, rate: 1.13},
+  {name: 'Доносчик 5', production: 85, cost: 11000, rate: 1.13},
+  {name: 'Доносчик 6', production: 250, cost: 50000, rate: 1.13},
+  {name: 'Доносчик 7', production: 650, cost: 260000, rate: 1.13},
+  {name: 'Доносчик 8', production: 1700, cost: 900000, rate: 1.13},
 ];
 
 export const progressPoint = {
-  courtsAvailable: 5,
-  informersAvailable: 10,
-  upgradesAvailable: 15
+  courtsAvailable: 50,
+  informersAvailable: 150,
+  upgradesAvailable: 1000
 };
 
 export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
@@ -84,30 +117,65 @@ export const allMaterials = createSelector(
 const informersState = state => state.game.informers;
 const courtsState = state => state.game.courts;
 const upgradesState = state => state.game.upgrades;
+const clickModifier = state => state.game.clickModifier;
+const courtsModifierBalance = state => state.game.courtsModifierBalance;
+const courtsModifierMaterials = state => state.game.courtsModifierMaterials;
+const courtsJailedModifier = state => state.game.courtsJailedModifier;
+const courtsLocalModifier = state => state.game.courtsLocalModifier;
+const informerModifier = state => state.game.informerModifier;
+const informerLocalModifier = state => state.game.informerLocalModifier;
+
 
 export const courts = createSelector(
   courtsState,
-  (courtsState) =>
+  courtsModifierBalance,
+  courtsJailedModifier,
+  courtsLocalModifier,
+  courtsModifierMaterials,
+    (
+      courtsState,
+      courtsModifierBalance,
+      courtsJailedModifier,
+      courtsLocalModifier,
+      courtsModifierMaterials,
+    ) =>
     courtList
       .slice(0, courtsState.length)
       .map((court, index) => {
         const owned = courtsState[index];
+        let multipliersJailed = courtsJailedModifier;
+        let multipliersBalance = courtsModifierBalance;
+        let multipliersMaterials = courtsModifierMaterials;
+        const localModifier = courtsLocalModifier[index];
+
+        if(localModifier && localModifier.jailed) {
+          multipliersJailed += localModifier.jailed
+        }
+
+        if(localModifier && localModifier.balance) {
+          multipliersBalance += localModifier.balance
+        }
+
+        if(localModifier && localModifier.materials) {
+          multipliersMaterials += localModifier.materials
+        }
+
         return {
           ...court,
           productionJailed: U.production({
             production: court.productionJailed,
             owned,
-            multipliers: 1
+            multipliers: multipliersJailed < 1 ? 1 : multipliersJailed
           }),
           productionBalance: U.production({
             production: court.productionBalance,
             owned,
-            multipliers: 1
+            multipliers: multipliersBalance < 1 ? 1 : multipliersBalance
           }),
           materials: U.production({
             production: court.materials,
             owned,
-            multipliers: 1
+            multipliers: multipliersMaterials < 1 ? 1 : multipliersMaterials
           }),
           upgradeCost: U.nextCost({base: court.cost, rate: court.rate, owned}),
         };
@@ -127,17 +195,29 @@ export const upgrades = createSelector(
 
 export const informers = createSelector(
   informersState,
-  (informersState) =>
+  informerModifier,
+  informerLocalModifier,
+  (
+    informersState,
+    informerModifier,
+    informerLocalModifier,
+  ) =>
     informerList
       .slice(0, informersState.length)
       .map((informer, index) => {
         const owned = informersState[index];
+        let informersMultipliers = informerModifier;
+        const localModifier = informerLocalModifier[index];
+
+        if(localModifier && localModifier.createMaterial) {
+          informersMultipliers += localModifier.createMaterial
+        }
         return {
           ...informer,
           production: U.production({
             production: informer.production,
             owned,
-            multipliers: 1
+            multipliers: informersMultipliers < 1 ? 1 : informersMultipliers
           }),
           upgradeCost: U.nextCost({base: informer.cost, rate: informer.rate, owned}),
         }
