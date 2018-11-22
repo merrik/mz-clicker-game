@@ -10,7 +10,7 @@ import {
   updateCourt,
   buyUpgrade
 } from '../store/actions'
-import {courtList, informerList} from "../store/selectors";
+import {courtList, informerList, progressPoint} from "../store/selectors";
 
 import Row from './Row';
 import Column from './Column';
@@ -33,9 +33,11 @@ const mapStateToProps = (state) => {
     balance: S.balance(state),
     informers: S.informers(state),
     upgrades: S.upgrades(state),
+    allMaterials: S.allMaterials(state),
     informersOwned: game.informersOwned,
     queue: game.queue,
     secretaries: game.secretaries,
+    jailed: game.jailed,
   };
 };
 
@@ -56,7 +58,7 @@ const courtArray = ({courts, sendMaterials, updateCourt}) => {
       materials,
       productionJailed,
       productionBalance,
-      upgradeCost,
+      upgradeCost
     } = court;
 
     return (
@@ -126,7 +128,9 @@ class GameField extends Component {
       addCourt,
       balance,
       courts,
-      informers
+      jailed,
+      informers,
+      allMaterials
     } = this.props;
 
     let nextCourtCost = 0;
@@ -154,36 +158,42 @@ class GameField extends Component {
             CLICK ME</ClickArea>
           <button onClick={resetGame}>Заново</button>
         </Column>
-        <Column>
-          <Title>Суды</Title>
-          {courtArray(this.props)}
-          {nextCourt ? (
-            <button
-              onClick={() => addCourt({cost: nextCourtCost})}
-              disabled={nextCourtCost > balance}
-            >
-              {(`Добавить ${nextCourt.name} ${nextCourtCost}$`)}
-            </button>
-          ) : null
-          }
-        </Column>
-        <Column>
-          <Title>Доносчики</Title>
-          {informersArray(this.props)}
-          {nextInformerCost
-            ? <button
-              onClick={() => addInformer({cost: nextInformerCost})}
-              disabled={nextInformerCost > balance}
-            >
-              Добавить доносчика ({nextInformerCost}$)
-            </button>
-            : <div>Максимум доносчиков</div>
-          }
-        </Column>
-        <Column>
-          <Title>Улучшения</Title>
-          {upgradesArray(this.props)}
-        </Column>
+        {allMaterials >= progressPoint.courtsAvailable ?
+          <Column>
+            <Title>Суды</Title>
+            {courtArray(this.props)}
+            {nextCourt ? (
+              <button
+                onClick={() => addCourt({cost: nextCourtCost})}
+                disabled={nextCourtCost > balance}
+              >
+                {(`Добавить ${nextCourt.name} ${nextCourtCost}$`)}
+              </button>
+            ) : null
+            }
+          </Column> : null
+        }
+        {jailed >= progressPoint.informersAvailable ?
+          <Column>
+            <Title>Доносчики</Title>
+            {informersArray(this.props)}
+            {nextInformerCost
+              ? <button
+                onClick={() => addInformer({cost: nextInformerCost})}
+                disabled={nextInformerCost > balance}
+              >
+                Добавить доносчика ({nextInformerCost}$)
+              </button>
+              : <div>Максимум доносчиков</div>
+            }
+          </Column> : null
+        }
+        {jailed >= progressPoint.upgradesAvailable ?
+          <Column>
+            <Title>Улучшения</Title>
+            {upgradesArray(this.props)}
+          </Column> : null
+        }
       </Row>
     );
   }

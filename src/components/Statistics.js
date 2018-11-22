@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
     return {
       materials: S.materials(state),
       jailed: Math.floor(game.jailed),
-      balance: S.balance(state)
+      balance: S.balance(state),
+      allMaterials: S.allMaterials(state)
     };
   };
 
@@ -21,6 +22,7 @@ class Statistics extends Component {
         return (
           <Column>
             <Title>Статистика</Title>
+            {this.props.allMaterials >= 0 && <Counter header='Все материалы' count={this.props.allMaterials} />}
             {this.props.materials >= 0 && <Counter header='Материалы дела' count={this.props.materials} />}
             {this.props.jailed >= 0 && <Counter header='Посажено' count={this.props.jailed} />}
             {this.props.balance >= 0 && <Counter header='Бюджет' count={this.props.balance} />}

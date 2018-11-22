@@ -30,7 +30,7 @@ const upgradesListNotIndex = [
 ];
 
 export const courtList = [
-  {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 5, cost: 100, rate: 1.11},
+  {name: 'Суд 1', materials: 10, productionJailed: 2, productionBalance: 5, cost: 10, rate: 1.11},
   {name: 'Суд 2', materials: 20, productionJailed: 4, productionBalance: 10, cost: 1000, rate: 1.11},
   {name: 'Суд 3', materials: 30, productionJailed: 6, productionBalance: 23, cost: 10000, rate: 1.11},
   {name: 'Суд 4', materials: 45, productionJailed: 10, productionBalance: 42, cost: 130000, rate: 1.11},
@@ -46,7 +46,11 @@ export const informerList = [
   {name: 'Доносчик 3', production: 50, cost: 30000, rate: 1.11},
 ];
 
-console.log(upgradesList)
+export const progressPoint = {
+  courtsAvailable: 5,
+  informersAvailable: 10,
+  upgradesAvailable: 15
+};
 
 export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
   value[1].index = index;
@@ -69,6 +73,13 @@ export const materials = createSelector(
   intMaterials,
   (b) => b
 );
+
+export const intAllMaterials = state => Math.floor(state.game.allMaterials)
+export const allMaterials = createSelector(
+  intAllMaterials,
+  (b) => b
+);
+
 
 const informersState = state => state.game.informers;
 const courtsState = state => state.game.courts;

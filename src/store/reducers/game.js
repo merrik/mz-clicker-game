@@ -3,12 +3,11 @@ import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
 import { informerList, courtList, upgradesList } from "../selectors";
-import {saveState} from "../../utils";
+import {progressPoint} from "../selectors";
 
 const LOCAL_STORAGE_KEY = 'game-state';
 
 let persistedState = U.loadState(LOCAL_STORAGE_KEY);
-console.log(persistedState);
 
 const calculateIncomeFromInformers = ({state}) => {
   const {informers} = state;
@@ -83,8 +82,6 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
 
 const calculateIncomeUpgrades = (state) => {
   let availableUpgrades = [];
-
-
   for(let i = 0; i <= upgradesList.size; i++) {
     const upgrade = upgradesList.get(i);
     if(state.buyingItems[i]) continue;
@@ -97,42 +94,8 @@ const calculateIncomeUpgrades = (state) => {
   return availableUpgrades
 };
 
-const getInintialMaterialsCount = (state) => state.materials;
-const calcSessionIncome = ({state, sessionTime}) => {
-  return calculateIncomeFromInformers({state})
-};
-const divideTimeDiffBySessions = ({timeDiff, sessionTime}) => Math.ceil(timeDiff / sessionTime);
-
-
-if (persistedState) {
-  const sessionTime = 1 * C.SECOND;
-  const actualTimestamp = Date.now();
-  let timeDiff = actualTimestamp - persistedState.lastUpdate;
-  if (timeDiff < (10 * C.SECOND)) timeDiff = 0;
-  const sessionsCount = divideTimeDiffBySessions({timeDiff, sessionTime});
-  let materilas = getInintialMaterialsCount(persistedState);
-  const sessionIncome = calcSessionIncome({state: persistedState, sessionTime});
-  const courts = S.courts({game: persistedState});
-  const materialsBySession = sessionsCount > 0 ? materilas / sessionsCount : 0;
-
-  let restMaterials = materialsBySession + sessionIncome;
-  let sessionOutcome = 0;
-  let sessionBalanceIncome = 0;
-  let sessionJailedIncome = 0;
-
-  const overallIncome = (sessionIncome - sessionOutcome) * sessionsCount;
-  const overallBalanceIncome = sessionBalanceIncome * sessionsCount;
-  const overallJailedIncome = sessionJailedIncome * sessionsCount;
-
-  persistedState.materials = materilas + overallIncome;
-  persistedState.materials = persistedState.materials > 0 ? persistedState.materials : 1
-  persistedState.balance += overallBalanceIncome;
-  persistedState.jailed += overallJailedIncome;
-
-  persistedState.lastUpdate = Date.now()
-}
-
 const initialState = {
+  allMaterials: 0,
   materials: 0,
 
   jailed: 0,
@@ -152,12 +115,13 @@ const initialState = {
   informerModifier: 1,
   informerLocalModifier: [],
   saveDate: Date.now(),
-  buyingItems: []
+  buyingItems: {}
 };
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
+      if(state.allMaterials < progressPoint.courtsAvailable) return state;
       const infromersIncome = calculateIncomeFromInformers({state});
       const nextMaterialsCount = state.materials + (infromersIncome);
       let saveDate = state.saveDate;
@@ -181,6 +145,7 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
         materials: materialsResult,
+        allMaterials: state.allMaterials + infromersIncome,
         upgrades: incomeUpgrade,
         saveDate
       };
@@ -188,6 +153,7 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         materials: state.materials + action.qty * state.clickModifier,
+        allMaterials: state.allMaterials + action.qty * state.clickModifier
       };
     case C.APPEND_MATERIALS:
       return {
@@ -266,12 +232,14 @@ export default (state = persistedState || initialState, action) => {
       }, {});
 
       const upgrades = R.reject(R.equals(action.index), state.upgrades);
+      const buyingItems = {...state.buyingItems};
+      buyingItems[action.index] = true;
       return {
         ...state,
         ...newModifiers,
         balance: state.balance - action.cost,
         upgrades,
-        buyingItems: [...state.buyingItems, action.index]
+        buyingItems
       };
     case C.RESET_GAME:
       return initialState;
