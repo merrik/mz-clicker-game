@@ -16,12 +16,12 @@ const calculateIncomeFromInformers = ({state}) => {
   for (let i = 0; i < informers.length; i++) {
     let multipliers = state.informerModifier;
     if (state.informerLocalModifier[i]) {
-      multipliers += state.informerLocalModifier[i].createMaterial;
+      multipliers = multipliers * state.informerLocalModifier[i].createMaterial;
     }
     income += U.production({
       production: informerList[i].production,
       owned: informers[i],
-      multipliers: multipliers < 1 ? 1 : multipliers
+      multipliers: multipliers <= 0 ? 1 : multipliers
     });
   }
 
@@ -43,33 +43,33 @@ const calculateIncomeFromCourts = (state, infromersIncome) => {
     const localModifier = state.courtsLocalModifier[i];
 
     if (localModifier && localModifier.jailed) {
-      multipliersJailed += localModifier.jailed
+      multipliersJailed = multipliersJailed * localModifier.jailed
     }
 
     if (localModifier && localModifier.balance) {
-      multipliersBalance += localModifier.balance
+      multipliersBalance = multipliersBalance * localModifier.balance
     }
 
     if (localModifier && localModifier.materials) {
-      multipliersMaterials += localModifier.materials
+      multipliersMaterials = multipliersMaterials * localModifier.materials
     }
 
     calculate.incomeBalance += U.production({
       production: courtList[i].productionBalance,
       owned: courts[i],
-      multipliers: multipliersBalance < 1 ? 1 : multipliersBalance
+      multipliers: multipliersBalance <= 0 ? 1 : multipliersBalance
     });
 
     calculate.incomeJailed += U.production({
       production: courtList[i].productionJailed,
       owned: courts[i],
-      multipliers: multipliersJailed < 1 ? 1 : multipliersJailed
+      multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
     });
 
     calculate.outcomeMaterials += U.production({
       production: courtList[i].materials,
       owned: courts[i],
-      multipliers: multipliersMaterials < 1 ? 1 : multipliersMaterials
+      multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
     });
   }
 
@@ -109,7 +109,6 @@ const initialState = {
   upgrades: [],
 
   informers: [600],
-
   lastUpdate: 0,
   clickModifier: 0,
   courtsModifierBalance: 0,
@@ -118,9 +117,9 @@ const initialState = {
   courtsLocalModifier: {},
   informerModifier: 0,
   informerLocalModifier: {},
-  saveDate: Date.now(),
   buyingItems: {},
-  moneyClick: false
+  moneyClick: false,
+  saveDate: Date.now()
 };
 
 export default (state = persistedState || initialState, action) => {
@@ -248,10 +247,10 @@ export default (state = persistedState || initialState, action) => {
 
             for (let index in curr[1]) {
               if (curr[1][index]) {
-                let balance = 0;
-                let jailed = 0;
-                let materials = 0;
-                let createMaterial = 0;
+                let balance = 1;
+                let jailed = 1;
+                let materials = 1;
+                let createMaterial = 1;
                 if (!value[index]) {
                   value[index] = {
                     balance,
@@ -262,30 +261,30 @@ export default (state = persistedState || initialState, action) => {
                 }
 
                 if (curr[1][index].balance) {
-                  value[index].balance += curr[1][index].balance;
+                  value[index].balance = value[index].balance * curr[1][index].balance;
                 }
 
                 if (curr[1][index].jailed) {
-                  value[index].jailed += curr[1][index].jailed;
+                  value[index].jailed = value[index].jailed * curr[1][index].jailed;
                 }
 
                 if (curr[1][index].materials) {
-                  value[index].materials += curr[1][index].materials;
+                  value[index].materials = value[index].materials * curr[1][index].materials;
                 }
 
                 if(curr[1][index].createMaterial) {
-                  value[index].createMaterial += curr[1][index].createMaterial;
+                  value[index].createMaterial = value[index].createMaterial * curr[1][index].createMaterial;
                 }
 
-                console.log(value)
               }
             }
             return {...prev, [curr[0]]: value}
           }
 
-          return {...prev, [curr[0]]: state[curr[0]] * curr[1]}
+          return {...prev, [curr[0]]: state[curr[0]] + curr[1]}
         }, {})
       };
+
       const upgrades = R.reject(R.equals(action.index), state.upgrades);
       const buyingItems = {...state.buyingItems};
       buyingItems[action.index] = true;

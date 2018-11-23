@@ -18,7 +18,7 @@ const upgradesListNotIndex = [
     1,
     {
       name: 'Суды эффективнее',
-      description:  'Повышает доход первого суда на 100%',
+      description:  '',
       cost: 600,
       point: 2000,
       buffs: [
@@ -33,25 +33,52 @@ const upgradesListNotIndex = [
   [
     2,
     {
-      name: 'Суды эффективнеssе',
-      description:  'Повышает доход первого суда на 100%',
+      name: 'Суды эффективнеее посадка',
+      description:  '',
       cost: 600,
       point: 2000,
       buffs: [
-        ['informerModifier', 2],
         ['courtsLocalModifier', {
           '0': {
-            balance: 2
-          },
-          '1': {
-            jailed: 3
+            jailed: 2
           }
         }],
-        ['informerLocalModifier', {
-          '0': {
-            createMaterial: 20
-          }
-        }]
+      ]
+    }
+  ],
+  [
+    3,
+    {
+      name: 'Повышает скорость производства материалов',
+      description:  '',
+      cost: 600,
+      point: 2000,
+      buffs: [
+        ['informerModifier', 1.05],
+      ]
+    }
+  ],
+  [
+    4,
+    {
+      name: 'Повышает доход судов в 2 раза',
+      description:  '',
+      cost: 600,
+      point: 2000,
+      buffs: [
+        ['courtsModifierBalance', 2],
+      ]
+    }
+  ],
+  [
+    5,
+    {
+      name: 'Скорость посадки эффективнее',
+      description:  'Повышает скорость посадки всех судов',
+      cost: 600,
+      point: 2000,
+      buffs: [
+        ['courtsJailedModifier', 1.05],
       ]
     }
   ],
@@ -165,17 +192,17 @@ export const courts = createSelector(
           productionJailed: U.production({
             production: court.productionJailed,
             owned,
-            multipliers: multipliersJailed < 1 ? 1 : multipliersJailed
+            multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
           }),
           productionBalance: U.production({
             production: court.productionBalance,
             owned,
-            multipliers: multipliersBalance < 1 ? 1 : multipliersBalance
+            multipliers: multipliersBalance <= 0 ? 1 : multipliersBalance
           }),
           materials: U.production({
             production: court.materials,
             owned,
-            multipliers: multipliersMaterials < 1 ? 1 : multipliersMaterials
+            multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
           }),
           upgradeCost: U.nextCost({base: court.cost, rate: court.rate, owned}),
         };
@@ -217,7 +244,7 @@ export const informers = createSelector(
           production: U.production({
             production: informer.production,
             owned,
-            multipliers: informersMultipliers < 1 ? 1 : informersMultipliers
+            multipliers: informersMultipliers <= 0 ? 1 : informersMultipliers
           }),
           upgradeCost: U.nextCost({base: informer.cost, rate: informer.rate, owned}),
         }
