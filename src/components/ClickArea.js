@@ -4,8 +4,8 @@ import * as PIXI from "pixi.js";
 
 import comp from '../comp.png';
 
-const HEIGHT = 200;
-const WIDTH = 200;
+const HEIGHT = 227;
+const WIDTH = 326;
 const CENTER = new PIXI.Point(0.5, 1);
 
 // Scale mode for all textures, will retain pixelation

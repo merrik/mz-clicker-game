@@ -1,33 +1,49 @@
 import React from 'react';
 import styled from "styled-components";
 import * as U from '../utils';
+import {
+  TitleItem,
+  TitleItemContainer,
+  AddButton,
+  LabelItemContainer,
+  LabelItemTitle,
+  LabelStatisticContainer,
+  LabelIncome
+} from "./index";
 
-const Label = styled.p`
-    margin: 0;
-`
-
-const Court = styled.div`
+const Informer = styled.div`
   display: flex;
+  min-width: 260px;
   flex-direction: column;
   margin-bottom: 10px;
-  /* justify-content: center;
   align-content: flex-start;
-  align-items: flex-start; */
-  /* border: 1px solid red; */
-
+  padding-bottom: 20px;
+  border-bottom: 1px solid #434343;
 `;
 
-export default ({income, updateInformer, updateCost}) => {
-    // const value = (income * 1000 * (multiply ? multiply : 1)).toFixed(2)
-
-return (
-    
-    <Court>
-        <Label>доносов: {parseInt(income)} в секунду</Label>
-        <button
-            onClick={updateInformer}
-            // disabled={}
-        >Улучшить ({U.fixed(updateCost)}$)</button>
-    </Court>
-)
+export default ({income, updateInformer, updateCost, name, balance, oneProduction}) => {
+  return (
+    <Informer>
+      <TitleItemContainer>
+        <TitleItem>{name}</TitleItem>
+        <AddButton
+          onClick={updateInformer}
+          disabled={updateCost > balance}
+        >Улучшить</AddButton>
+      </TitleItemContainer>
+      <LabelItemContainer>
+        <LabelItemTitle>Доносов:</LabelItemTitle>
+        <LabelIncome>
+          +{U.makeFormatM(U.fixed(oneProduction))}
+        </LabelIncome>
+        <LabelStatisticContainer>{U.makeFormatM(parseInt(income))} в секунду</LabelStatisticContainer>
+      </LabelItemContainer>
+      <LabelItemContainer>
+        <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+        <LabelStatisticContainer>
+          <strong>{U.makeFormatM(U.fixed(updateCost))}</strong>
+        </LabelStatisticContainer>
+      </LabelItemContainer>
+    </Informer>
+  )
 }

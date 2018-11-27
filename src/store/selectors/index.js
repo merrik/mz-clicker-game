@@ -2,24 +2,24 @@ import {createSelector} from 'reselect';
 import * as U from "../../utils";
 
 export const courtList = [
-  {name: 'Суд 1', materials: 3, productionJailed: 0.1, productionBalance: 0.5, cost: 15, rate: 1.14},
-  {name: 'Суд 2', materials: 10, productionJailed: 3, productionBalance: 2, cost: 100, rate: 1.14},
-  {name: 'Суд 3', materials: 34, productionJailed: 9, productionBalance: 5, cost: 500, rate: 1.14},
-  {name: 'Суд 4', materials: 76, productionJailed: 27, productionBalance: 15, cost: 3000, rate: 1.14},
-  {name: 'Суд 5', materials: 200, productionJailed: 100, productionBalance: 40  , cost: 10000, rate: 1.14},
-  {name: 'Суд 6', materials: 550, productionJailed: 350, productionBalance: 150, cost: 40000, rate: 1.14},
-  {name: 'Суд 7', materials: 1600, productionJailed: 700, productionBalance: 400, cost: 200000, rate: 1.14},
-  {name: 'Суд 8', materials: 3200, productionJailed: 8000, productionBalance: 4000, cost: 1000000, rate: 1.14},
+  {name: 'мировой суд', materials: 3, productionJailed: 0.1, productionBalance: 0.5, cost: 15, rate: 1.14},
+  {name: 'районный', materials: 10, productionJailed: 3, productionBalance: 2, cost: 100, rate: 1.14},
+  {name: 'городской', materials: 34, productionJailed: 9, productionBalance: 5, cost: 500, rate: 1.14},
+  {name: 'областной', materials: 76, productionJailed: 27, productionBalance: 15, cost: 3000, rate: 1.14},
+  {name: 'верховный', materials: 200, productionJailed: 100, productionBalance: 40  , cost: 10000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 550, productionJailed: 350, productionBalance: 150, cost: 40000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 1600, productionJailed: 700, productionBalance: 400, cost: 200000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 3200, productionJailed: 8000, productionBalance: 4000, cost: 1000000, rate: 1.14},
 ];
 
 export const informerList = [
-  {name: 'Доносчик 1', production: 1, cost: 10, rate: 1.14},
-  {name: 'Доносчик 2', production: 3, cost: 50, rate: 1.14},
-  {name: 'Доносчик 3', production: 10, cost: 200, rate: 1.14},
-  {name: 'Доносчик 4', production: 32, cost: 1500, rate: 1.14},
-  {name: 'Доносчик 5', production: 85, cost: 4000, rate: 1.14},
-  {name: 'Доносчик 6', production: 250, cost: 15000, rate: 1.14},
-  {name: 'Доносчик 7', production: 650, cost: 80000, rate: 1.14},
+  {name: 'Студент юрфака', production: 1, cost: 10, rate: 1.14},
+  {name: 'Набожная старушка', production: 3, cost: 50, rate: 1.14},
+  {name: 'Казачья кибердружина', production: 10, cost: 200, rate: 1.14},
+  {name: 'АВТОДОНОС 3000', production: 32, cost: 1500, rate: 1.14},
+  {name: 'Госмемконтроль', production: 85, cost: 4000, rate: 1.14},
+  {name: 'Интернет-бюро Интерпола', production: 250, cost: 15000, rate: 1.14},
+  {name: 'Глобальная комиссия по запрету репостов', production: 650, cost: 80000, rate: 1.14},
   {name: 'Доносчик 8', production: 1700, cost: 450000, rate: 1.14},
 ];
 
@@ -1382,10 +1382,14 @@ export const courts = createSelector(
             multipliersMaterials = localModifier.materials * multipliersMaterials
           }
 
+          const multiJailed = multipliersJailed <= 0 ? 1 : multipliersJailed;
+          const multiBalance = multipliersBalance <= 0 ? 1 : multipliersBalance;
+          const multiMaterials = multipliersMaterials <= 0 ? 1 : multipliersMaterials;
+
           const productionJailed = U.production({
               production: court.productionJailed,
               owned,
-              multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
+              multipliers: multiJailed
           });
 
           courtsInfo.incomeJailed += productionJailed;
@@ -1393,7 +1397,7 @@ export const courts = createSelector(
           const productionBalance = U.production({
               production: court.productionBalance,
               owned,
-              multipliers: multipliersBalance <= 0 ? 1 : multipliersBalance
+              multipliers: multiBalance
           });
 
           courtsInfo.incomeBalance += productionBalance;
@@ -1401,16 +1405,23 @@ export const courts = createSelector(
           const materials = U.production({
               production: court.materials,
               owned,
-              multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
+              multipliers: multiMaterials
           });
 
           courtsInfo.outcomeMaterials += materials;
+
+          const oneProductionJailed = court.productionJailed * multiJailed;
+          const oneProductionBalance = court.productionBalance * multiBalance;
+          const oneMaterials = court.materials * multiMaterials;
 
           return {
             ...court,
             productionJailed,
             productionBalance,
             materials,
+            oneProductionJailed,
+            oneProductionBalance,
+            oneMaterials,
             upgradeCost: U.nextCost({base: court.cost, rate: court.rate, owned}),
           };
         });
@@ -1453,10 +1464,14 @@ export const informers = createSelector(
           informersMultipliers = localModifier.createMaterial * informersMultipliers;
         }
 
+        const multiProd = informersMultipliers <= 0 ? 1 : informersMultipliers;
+
+        const oneProduction = informer.production * multiProd;
+
         const production = U.production({
           production: informer.production,
           owned,
-          multipliers: informersMultipliers <= 0 ? 1 : informersMultipliers
+          multipliers: multiProd
         });
 
         informerInfo.incomeMaterials += production;
@@ -1464,6 +1479,7 @@ export const informers = createSelector(
         return {
           ...informer,
           production,
+          oneProduction,
           upgradeCost: U.nextCost({base: informer.cost, rate: informer.rate, owned}),
         }
       });

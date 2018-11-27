@@ -1,32 +1,45 @@
 import React from 'react';
 import styled from "styled-components";
 import * as U from '../utils';
+import {
+  TitleItem,
+  TitleItemContainer,
+  AddButton,
+  LabelItemContainer,
+  LabelItemTitle,
+  LabelStatisticContainer,
+  LabelIncome
+} from "./index";
 
 const Label = styled.p`
     margin: 0;
-`
+`;
 
 const Upgrade = styled.div`
   display: flex;
+  min-width: 260px;
   flex-direction: column;
   margin-bottom: 10px;
-  /* justify-content: center;
   align-content: flex-start;
-  align-items: flex-start; */
-  /* border: 1px solid red; */
-
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border-bottom: 1px solid #434343;
+  :last-of-type {
+    border-bottom: none;
+  }
 `;
 
-export default ({name, description, cost, onClick}) => {
-  // const value = (income * 1000 * (multiply ? multiply : 1)).toFixed(2)
+export default ({name, description, cost, balance, onClick}) => {
   return (
     <Upgrade>
-      <Label>{name}</Label>
-      <Label>{description}</Label>
-      <button
+      <LabelItemContainer>
+        <LabelItemTitle>{name}</LabelItemTitle>
+      </LabelItemContainer>
+      <AddButton
         onClick={onClick}
-        // disabled={}
-      >Улучшить ({U.fixed(cost)}$)</button>
+        align={'start'}
+        disabled={cost > balance}
+      >Купить ${U.makeFormatM(U.fixed(cost))}</AddButton>
     </Upgrade>
   )
 }

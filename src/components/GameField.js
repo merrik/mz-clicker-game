@@ -22,12 +22,17 @@ import Upgrade from './Upgrade';
 import {
   Column,
   Row,
-  TitleColumn
+  TitleColumn,
+  AddButton,
+  GameArea,
+  Main,
+  Head
 } from "./index";
 
-import Statistics from './Statistics';
+import MinStatistics from './MinStatistics';
 
 import * as S from '../store/selectors';
+import * as U from "../utils";
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -59,27 +64,20 @@ const mapDispatchToProps = {
   setShowedShareBanner
 };
 
-const courtArray = ({courts, sendMaterials, updateCourt}) => {
+const courtArray = ({courts, sendMaterials, updateCourt, balance}) => {
   const {
     courtsArr
   } = courts;
 
   return courtsArr.map((court, index) => {
     const {
-      name,
-      materials,
-      productionJailed,
-      productionBalance,
       upgradeCost
     } = court;
 
     return (
       <Court
-        name={name}
-        materials={materials}
-        productionJailed={productionJailed}
-        productionBalance={productionBalance}
-        upgradeCost={upgradeCost}
+        balance={balance}
+        court={court}
         key={index}
         onClick={() => updateCourt({cost: upgradeCost, index})}
       />
@@ -87,7 +85,7 @@ const courtArray = ({courts, sendMaterials, updateCourt}) => {
   })
 };
 
-const upgradesArray = ({upgrades, buyUpgrade}) => {
+const upgradesArray = ({upgrades, buyUpgrade, balance}) => {
   return upgrades.map((upgrade) => {
     const {
       name,
@@ -99,6 +97,7 @@ const upgradesArray = ({upgrades, buyUpgrade}) => {
     return (
       <Upgrade
         name={name}
+        balance={balance}
         description={description}
         cost={cost}
         key={name}
@@ -117,7 +116,8 @@ const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
     const {
       name,
       production,
-      upgradeCost
+      upgradeCost,
+      oneProduction
     } = informer;
 
     return (
@@ -125,6 +125,8 @@ const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
         name={name}
         income={production}
         key={index}
+        oneProduction={oneProduction}
+        balance={balance}
         updateCost={upgradeCost}
         enoughBudget={balance >= upgradeCost}
         updateInformer={
@@ -208,8 +210,7 @@ class GameField extends Component {
     }
 
     return (
-      <Row>
-        <Statistics/>
+      <GameArea>
         {stage.title ? (
           <Modal
             title={stage.title}
@@ -217,28 +218,32 @@ class GameField extends Component {
             fadeIn={isOpenModal}
             handleClose={this.handleClose}
           />
-          ) : null
+        ) : null
         }
-        <Column>
-          <TitleColumn>Кликни</TitleColumn>
-          <ClickArea
-            onClick={() => {
-              addMaterial()
-            }}>
-            CLICK ME</ClickArea>
-          <button onClick={resetGame}>Заново</button>
-        </Column>
+        <Head>
+          <Column>
+            <ClickArea
+              onClick={() => {
+                addMaterial()
+              }}>
+              CLICK ME</ClickArea>
+            <button onClick={resetGame}>Заново</button>
+          </Column>
+          <MinStatistics/>
+        </Head>
+        <Main>
         {allMaterials >= progressPoint.courtsAvailable ?
           <Column>
             <TitleColumn>Суды</TitleColumn>
             {courtArray(this.props)}
             {nextCourt ? (
-              <button
+              <AddButton
+                align={'start'}
                 onClick={() => addCourt({cost: nextCourtCost})}
                 disabled={nextCourtCost > balance}
               >
-                {(`Добавить ${nextCourt.name} ${nextCourtCost}$`)}
-              </button>
+                {(`Добавить ${nextCourt.name} $${U.makeFormatM(nextCourtCost)}`)}
+              </AddButton>
             ) : null
             }
           </Column> : null
@@ -248,12 +253,13 @@ class GameField extends Component {
             <TitleColumn>Доносчики</TitleColumn>
             {informersArray(this.props)}
             {nextInformerCost
-              ? <button
+              ? <AddButton
+                align={'start'}
                 onClick={() => addInformer({cost: nextInformerCost})}
                 disabled={nextInformerCost > balance}
               >
-                Добавить доносчика ({nextInformerCost}$)
-              </button>
+                Добавить доносчика ${U.makeFormatM(nextInformerCost)}
+              </AddButton>
               : <div>Максимум доносчиков</div>
             }
           </Column> : null
@@ -264,7 +270,8 @@ class GameField extends Component {
             {upgradesArray(this.props)}
           </Column> : null
         }
-      </Row>
+        </Main>
+      </GameArea>
     );
   }
 }
