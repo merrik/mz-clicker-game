@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import Modal from './StageModal';
 import {
   addMaterial,
   removeMaterials,
@@ -8,22 +9,25 @@ import {
   updateInformer,
   resetGame,
   updateCourt,
-  buyUpgrade
+  buyUpgrade,
+  handlePauseGame,
+  setShowedShareBanner
 } from '../store/actions'
-import {courtList, informerList, progressPoint} from "../store/selectors";
+import {courtList, informerList, progressPoint, stageShareList} from "../store/selectors";
 
-import Row from './Row';
-import Column from './Column';
 import ClickArea from './ClickArea';
 import Court from './Court';
 import Informer from './Informer'
 import Upgrade from './Upgrade';
-import Title from './Header';
+import {
+  Column,
+  Row,
+  TitleColumn
+} from "./index";
 
 import Statistics from './Statistics';
 
 import * as S from '../store/selectors';
-import * as U from '../utils';
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -38,6 +42,8 @@ const mapStateToProps = (state) => {
     queue: game.queue,
     secretaries: game.secretaries,
     jailed: game.jailed,
+    shareStage: game.shareStage,
+    showedShareStage: game.showedShareStage
   };
 };
 
@@ -48,11 +54,17 @@ const mapDispatchToProps = {
   updateInformer,
   resetGame,
   updateCourt,
-  buyUpgrade
+  buyUpgrade,
+  handlePauseGame,
+  setShowedShareBanner
 };
 
 const courtArray = ({courts, sendMaterials, updateCourt}) => {
-  return courts.map((court, index) => {
+  const {
+    courtsArr
+  } = courts;
+
+  return courtsArr.map((court, index) => {
     const {
       name,
       materials,
@@ -96,8 +108,12 @@ const upgradesArray = ({upgrades, buyUpgrade}) => {
   })
 };
 
-const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
-  informers.map((informer, index) => {
+const informersArray = ({informers, informersOwned, updateInformer, balance}) => {
+  const {
+    informersArr
+  } = informers;
+
+  return informersArr.map((informer, index) => {
     const {
       name,
       production,
@@ -117,9 +133,40 @@ const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
           }
         }
       />)
-  });
+  })
+};
 
 class GameField extends Component {
+  state = {
+    isOpenModal: false,
+    stage: {}
+  };
+
+  handleClose = () => {
+    this.setState({
+      isOpenModal: false
+    });
+    this.props.handlePauseGame(false);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      shareStage,
+      showedShareStage
+    } = nextProps;
+
+    if(shareStage <= showedShareStage) return;
+
+    if(shareStage > 0 && shareStage < stageShareList.length) {
+      this.setState({
+        stage: stageShareList[shareStage],
+        isOpenModal: true
+      });
+      this.props.handlePauseGame(true);
+      this.props.setShowedShareBanner(shareStage);
+    }
+  }
+
   render() {
     const {
       addMaterial,
@@ -130,13 +177,27 @@ class GameField extends Component {
       courts,
       jailed,
       informers,
-      allMaterials
+      allMaterials,
+      upgrades
     } = this.props;
+
+    const {
+      isOpenModal,
+      stage
+    } = this.state;
+
+    const {
+      courtsArr
+    } = courts;
+
+    const {
+      informersArr
+    } = informers;
 
     let nextCourtCost = 0;
     let nextInformerCost = 0;
-    const nextCourt = courts.length < courtList.length ? courtList[courts.length] : null;
-    const nextInformer = informers.length < informerList.length ? informerList[informers.length] : null;
+    const nextCourt = courtsArr.length < courtList.length ? courtList[courtsArr.length] : null;
+    const nextInformer = informersArr.length < informerList.length ? informerList[informersArr.length] : null;
 
     if (nextCourt) {
       nextCourtCost = nextCourt.cost;
@@ -149,8 +210,17 @@ class GameField extends Component {
     return (
       <Row>
         <Statistics/>
+        {stage.title ? (
+          <Modal
+            title={stage.title}
+            text={stage.description}
+            fadeIn={isOpenModal}
+            handleClose={this.handleClose}
+          />
+          ) : null
+        }
         <Column>
-          <Title>Кликни</Title>
+          <TitleColumn>Кликни</TitleColumn>
           <ClickArea
             onClick={() => {
               addMaterial()
@@ -160,7 +230,7 @@ class GameField extends Component {
         </Column>
         {allMaterials >= progressPoint.courtsAvailable ?
           <Column>
-            <Title>Суды</Title>
+            <TitleColumn>Суды</TitleColumn>
             {courtArray(this.props)}
             {nextCourt ? (
               <button
@@ -175,7 +245,7 @@ class GameField extends Component {
         }
         {jailed >= progressPoint.informersAvailable ?
           <Column>
-            <Title>Доносчики</Title>
+            <TitleColumn>Доносчики</TitleColumn>
             {informersArray(this.props)}
             {nextInformerCost
               ? <button
@@ -188,9 +258,9 @@ class GameField extends Component {
             }
           </Column> : null
         }
-        {jailed >= progressPoint.upgradesAvailable ?
+        {upgrades.length > 0 ?
           <Column>
-            <Title>Улучшения</Title>
+            <TitleColumn>Улучшения</TitleColumn>
             {upgradesArray(this.props)}
           </Column> : null
         }

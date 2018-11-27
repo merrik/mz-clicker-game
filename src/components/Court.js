@@ -1,49 +1,65 @@
 import React from 'react';
 import styled from "styled-components";
-import { addSecretary } from '../store/actions';
+import {addSecretary} from '../store/actions';
+import {
+  TitleItem,
+  TitleItemContainer,
+  AddButton,
+  LabelItemContainer,
+  LabelItemTitle,
+  LabelStatisticContainer,
+  LabelIncome
+} from "./index";
 import * as U from '../utils';
-
-const Label = styled.p`
-    margin: 0;
-    margin-bottom: 3px;
-    font-size: 12px;
-`;
-
-const AddButton = styled.button`
-    /* border: 1px solid blue; */
-`;
 
 const Court = styled.div`
   display: flex;
+  min-width: 300px;
   flex-direction: column;
   margin-bottom: 15px;
-`;
-
-const Labels = styled.div`
-  background-color: white;
-  color: black;
+  border-bottom: 1px solid #151515;
 `;
 
 export default ({
-    name,
-    materials,
-    productionJailed,
-    productionBalance,
-    upgradeCost,
-    onClick
-}) => (
-    <Court>
-        <Labels>
-            <Label>Имя&nbsp;<strong>{name}</strong></Label>
-            <Label>Стоимость&nbsp;<strong>{materials}</strong></Label>
-            <Label>Скорость посадки&nbsp;<strong>{productionJailed}</strong></Label>
-            <Label>Инкам бюджета&nbsp;<strong>{productionBalance}</strong></Label>
-            <Label>Стоимость апргрейда&nbsp;<strong>{U.fixed(upgradeCost)}</strong></Label>
-            <Label><strong></strong></Label>
-        </Labels>
-        <AddButton
-            onClick={onClick}>
-            Добавить судью
-        </AddButton>
-    </Court>
+                  name,
+                  materials,
+                  productionJailed,
+                  productionBalance,
+                  upgradeCost,
+                  onClick
+                }) => (
+  <Court>
+    <TitleItemContainer>
+      <TitleItem>{name}</TitleItem>
+      <AddButton
+        onClick={onClick}>
+        Добавить судью
+      </AddButton>
+    </TitleItemContainer>
+    <LabelItemContainer>
+      <LabelItemTitle>Расход материалов м/c&nbsp;</LabelItemTitle>
+      <LabelStatisticContainer>
+        {parseInt(materials)}
+      </LabelStatisticContainer>
+    </LabelItemContainer>
+    <LabelItemContainer>
+      <LabelItemTitle>Скорость посадки п/c&nbsp;</LabelItemTitle>
+      <LabelStatisticContainer>
+        {U.fixed(productionJailed)}
+      </LabelStatisticContainer>
+    </LabelItemContainer>
+    <LabelItemContainer>
+      <LabelItemTitle>Инкам бюджета&nbsp;</LabelItemTitle>
+      <LabelStatisticContainer>
+        {U.fixed(productionBalance)}
+      </LabelStatisticContainer>
+    </LabelItemContainer>
+    <LabelItemContainer>
+      <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+      <LabelStatisticContainer>
+        <strong>{U.fixed(upgradeCost)}</strong>
+      </LabelStatisticContainer>
+    </LabelItemContainer>
+    <LabelItemContainer><strong></strong></LabelItemContainer>
+  </Court>
 )

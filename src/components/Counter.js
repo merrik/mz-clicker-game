@@ -6,7 +6,10 @@ const Title = styled.span`
 `;
 
 const Count = styled.span`
+`;
 
+const ColorCount = styled.span`
+  color: ${props => props.isUp ? 'green' : 'red'}
 `;
 
 const Counter = styled.p`
@@ -23,10 +26,23 @@ const Counter = styled.p`
 
 `;
 
-export default ({header, count}) => (
+export default ({header, count, color}) => {
+  let isUp = false;
+
+  if(count >= 0) {
+    isUp = true;
+  } else {
+    isUp = false;
+  }
+
+  return (
     <Counter>
-        <Title>{header}</Title>
-        <br />
-        <Count>{count}</Count> 
+      <Title>{header}</Title>
+      <br/>
+      { color ?
+        <ColorCount isUp={isUp}>{count}</ColorCount> :
+        <Count>{count}</Count>
+      }
     </Counter>
-)
+  )
+}

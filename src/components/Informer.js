@@ -23,7 +23,7 @@ export default ({income, updateInformer, updateCost}) => {
 return (
     
     <Court>
-        <Label>доносов: {U.fixed(income)} в секунду</Label>
+        <Label>доносов: {parseInt(income)} в секунду</Label>
         <button
             onClick={updateInformer}
             // disabled={}
