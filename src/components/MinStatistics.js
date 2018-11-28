@@ -10,9 +10,14 @@ import {
   ColumnMainStatistics,
   TitleColumn,
   ClickButton,
-  MainStatisticsContainer
+  MainStatisticsContainer,
+  MiniStatistic,
+  MiniStatisticProgressBar,
+  ProgressContainer
 } from "./index";
 import Achievement from "./Achievement";
+import Computer from "./Computer";
+import {progressPoint} from "../store/selectors";
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -36,7 +41,8 @@ class MinStatistics extends Component {
       informers,
       courts,
       addMaterial,
-      showedShareStage
+      showedShareStage,
+      miniStatistic
     } = this.props;
 
     const deltaMaterials = parseInt(informers.incomeMaterials - courts.outcomeMaterials);
@@ -45,6 +51,32 @@ class MinStatistics extends Component {
 
     const incomeJailed = courts.incomeJailed * prodactionСoeff;
     const incomeBalance = courts.incomeBalance * prodactionСoeff;
+
+    if(miniStatistic) {
+      const progress = Math.min(allMaterials / progressPoint.courtsAvailable * 100, 100);
+
+
+      return (
+        <MiniStatistic>
+          <Computer
+            jailed={jailed}
+            addMaterial={addMaterial}
+            width={'325px'}
+          />
+          <ProgressContainer>
+            <MiniStatisticProgressBar
+              progress={progress}
+            />
+          </ProgressContainer>
+          <ClickButton
+            width={'280px'}
+            onClick={addMaterial}
+          >
+            Сфабриковать дело
+          </ClickButton>
+        </MiniStatistic>
+      )
+    }
 
     return (
       <MainStatistics>

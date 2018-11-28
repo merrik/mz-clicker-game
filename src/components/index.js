@@ -13,6 +13,7 @@ export const GameArea = styled.div`
 export const Head = styled.div`
   display: flex;
   width: 100%;
+  flex-direction: ${props => props.column ? 'column' : 'row'}
   justify-content: center;
   align-items: start;
   margin-bottom: 45px;
@@ -144,6 +145,30 @@ export const MainStatisticsContainer = styled.div`
   }
 `;
 
+export const MiniStatistic = styled.div`
+  display: flex;
+  font: bold 14px "Fira Mono";
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const MiniStatisticProgressBar = styled.div`
+  background-color: white;
+  height: 12px;
+  border-radius: 6px;
+  width: ${props => props.progress < 100 ? `${props.progress}%` : '100%'}
+`;
+
+export const ProgressContainer = styled.div`
+  width: 260px;
+  margin: 10px 0;
+  border: 1px solid #434343;
+  border-radius: 6px;
+`;
+
 export const ColumnMainStatistics = styled.div`
   display: flex;
   flex-direction: column;
@@ -182,7 +207,7 @@ export const ClickButton = styled.span`
   align-items: center;
   justify-content: center;
   font: bold 12px "Fira Mono";
-  width: 610px;
+  width: ${props => props.width ? props.width : '610px'};
   height: 50px;
   margin: 0 auto;
   margin-top: 30px;

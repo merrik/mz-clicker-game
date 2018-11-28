@@ -68,8 +68,17 @@ const calculateIncomeUpgrades = (state) => {
 
 const calculateShareStage = state => {
   let shareStageLvl = 0;
-  const jailed = state.jailed;
+  const {
+    jailed,
+    allMaterials
+  } = state;
   for(let i = 1; i < stageShareList.length; i++) {
+    if(stageShareList[i].materialsPoint) {
+      if(allMaterials >= stageShareList[i].materialsPoint && i > state.showedShareStage) {
+        shareStageLvl = i;
+        return shareStageLvl;
+      }
+    }
     if(jailed >= stageShareList[i].point && i > state.showedShareStage) {
       shareStageLvl = i;
       return shareStageLvl;
