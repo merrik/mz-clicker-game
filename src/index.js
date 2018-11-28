@@ -8,14 +8,22 @@ import {LOCAL_STORAGE_KEY} from './store/constants/index'
 import './index.css';
 import {saveState} from './utils'
 
+let rootNode = document.getElementById("clicker_root");
 
+if(!rootNode) {
+  rootNode = document.createElement("div");
+  const body = document.body;
+  if (body !== null) {
+    body.appendChild(rootNode);
+  }
+}
 
 render(
     <Provider store={store}>
         <App />
     </Provider>,
-    document.getElementById('root')
-)
+    rootNode
+);
 
 const doCalc = () => {
   store.dispatch(calculate({timestamp: Date.now()}))
