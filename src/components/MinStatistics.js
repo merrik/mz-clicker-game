@@ -5,12 +5,14 @@ import * as S from '../store/selectors'
 import * as U from '../utils';
 
 import Counter from './Counter';
-import {progressPoint} from "../store/selectors";
 import {
   MainStatistics,
   ColumnMainStatistics,
-  TitleColumn
+  TitleColumn,
+  ClickButton,
+  MainStatisticsContainer
 } from "./index";
+import Achievement from "./Achievement";
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -33,25 +35,39 @@ class MinStatistics extends Component {
       balance,
       informers,
       courts,
+      addMaterial,
+      showedShareStage
     } = this.props;
 
     const deltaMaterials = parseInt(informers.incomeMaterials - courts.outcomeMaterials);
     const generateMaterials = materials + informers.incomeMaterials;
     const prodactionСoeff = Math.min(generateMaterials / courts.outcomeMaterials, 1);
 
-    const incomeJailed = U.fixed(courts.incomeJailed * prodactionСoeff);
-    const incomeBalance = U.fixed(courts.incomeBalance * prodactionСoeff);
+    const incomeJailed = courts.incomeJailed * prodactionСoeff;
+    const incomeBalance = courts.incomeBalance * prodactionСoeff;
 
     return (
       <MainStatistics>
-        <ColumnMainStatistics>
-          {allMaterials >= 0 && <Counter header='Все материалы' count={allMaterials}/>}
-          {materials >= 0 && <Counter header='Материалы дела' count={materials}/>}
-        </ColumnMainStatistics>
-        <ColumnMainStatistics>
-          {jailed >= 0 && <Counter header='Посажено' count={jailed}/>}
-          {balance >= 0 && <Counter header='Бюджет' count={balance}/>}
-        </ColumnMainStatistics>
+        <MainStatisticsContainer>
+          <ColumnMainStatistics>
+            {allMaterials >= 0 && <Counter header='Все материалы' count={allMaterials}/>}
+            {jailed >= 0 && <Counter header='Посажено' count={jailed}/>}
+            {incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)}/>}
+            {U.fixed(deltaMaterials) && <Counter header='Эффективность' color={true} count={deltaMaterials}/>}
+          </ColumnMainStatistics>
+          <ColumnMainStatistics>
+            {materials >= 0 && <Counter header='Материалы дела' count={materials}/>}
+            {balance >= 0 && <Counter header='Бюджет' count={balance}/>}
+            {incomeBalance >= 0 && <Counter header='Прирост бюджета' count={incomeBalance}/>}
+            {courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials}/>}
+          </ColumnMainStatistics>
+        </MainStatisticsContainer>
+        <Achievement
+          showedShareStage={showedShareStage}
+        />
+        <ClickButton onClick={addMaterial}>
+          Сфабриковать дело
+        </ClickButton>
       </MainStatistics>
     )
   }

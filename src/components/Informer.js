@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from "styled-components";
 import * as U from '../utils';
 import {
@@ -21,29 +21,74 @@ const Informer = styled.div`
   border-bottom: 1px solid #434343;
 `;
 
-export default ({income, updateInformer, updateCost, name, balance, oneProduction}) => {
-  return (
-    <Informer>
-      <TitleItemContainer>
-        <TitleItem>{name}</TitleItem>
-        <AddButton
-          onClick={updateInformer}
-          disabled={updateCost > balance}
-        >Улучшить</AddButton>
-      </TitleItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Доносов:</LabelItemTitle>
-        <LabelIncome>
-          +{U.makeFormatM(U.fixed(oneProduction))}
-        </LabelIncome>
-        <LabelStatisticContainer>{U.makeFormatM(parseInt(income))} в секунду</LabelStatisticContainer>
-      </LabelItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
-        <LabelStatisticContainer>
-          <strong>{U.makeFormatM(U.fixed(updateCost))}</strong>
-        </LabelStatisticContainer>
-      </LabelItemContainer>
-    </Informer>
-  )
+export default class InformerContainer extends Component {
+  state = {
+    isShowUpgrade: false
+  };
+
+  handleShowUpgrade = (isShow) => () => {
+    this.setState({
+      isShowUpgrade: isShow
+    })
+  };
+
+  componentDidUpdate(next) {
+    const {
+      updateCost,
+      balance
+    } = next;
+
+    if(!this.state.isShowUpgrade) return;
+
+    if(updateCost > balance) {
+      this.setState({
+        isShowUpgrade: false
+      })
+    }
+  }
+
+  render() {
+    const {
+      income,
+      updateInformer,
+      updateCost,
+      name,
+      balance,
+      oneProduction
+    } = this.props;
+
+    const {
+      isShowUpgrade
+    } = this.state;
+
+    return (
+      <Informer>
+        <TitleItemContainer>
+          <TitleItem>{name}</TitleItem>
+          <AddButton
+            onMouseEnter={this.handleShowUpgrade(true)}
+            onMouseLeave={this.handleShowUpgrade(false)}
+            onClick={updateInformer}
+            disabled={updateCost > balance}
+          >Добавить</AddButton>
+        </TitleItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Доносов:</LabelItemTitle>
+          <LabelIncome
+            disabled={updateCost > balance}
+            isShowUpgrade={isShowUpgrade}
+          >
+            +{U.makeFormatM(oneProduction)}
+          </LabelIncome>
+          <LabelStatisticContainer>{U.makeFormatM(parseInt(income))} в секунду</LabelStatisticContainer>
+        </LabelItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+          <LabelStatisticContainer>
+            <strong>{U.makeFormatM(updateCost)}</strong>
+          </LabelStatisticContainer>
+        </LabelItemContainer>
+      </Informer>
+    )
+  }
 }

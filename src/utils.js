@@ -1,15 +1,16 @@
-export const nextCost = ({base, rate, owned}) => base * (rate ** owned)
-export const production = ({production, owned, multipliers}) => production * owned * multipliers
-export const expired = actualTimestamp => el => el.timestamp <= actualTimestamp
-export const notExpired = actualTimestamp => el => el.timestamp > actualTimestamp
-export const reduceQTY = (x, y) => x + y.qty
-export const reduceBalance = (x, y) => x + y.balance
-export const fixed = x => typeof x === 'number' ? x.toFixed(2) : parseFloat(x).toFixed(2)
+export const nextCost = ({base, rate, owned}) => base * (rate ** owned);
+export const production = ({production, owned, multipliers}) => production * owned * multipliers;
+export const expired = actualTimestamp => el => el.timestamp <= actualTimestamp;
+export const notExpired = actualTimestamp => el => el.timestamp > actualTimestamp;
+export const reduceQTY = (x, y) => x + y.qty;
+export const reduceBalance = (x, y) => x + y.balance;
+export const fixed = x => typeof x === 'number' ? x.toFixed(2) : parseFloat(x).toFixed(2);
+const countFloat = x => ( (x.toString().includes('.')) ? (x.toString().split('.').pop().length) : (0) );
+export const intlFormat = (num) => {
+  if(countFloat(num) < 2) return num;
+  return parseFloat(num).toFixed(2)
+};
 export const makeFormatM = num => {
-  function intlFormat(num)
-  {
-    return new Intl.NumberFormat().format(Math.round(num*10)/10);
-  }
   if(num >= 10**18)
     return intlFormat(num/10**18)+' квид';
   if(num >= 10**15)

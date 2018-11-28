@@ -3,24 +3,24 @@ import * as U from "../../utils";
 
 export const courtList = [
   {name: 'мировой суд', materials: 3, productionJailed: 0.1, productionBalance: 0.5, cost: 15, rate: 1.14},
-  {name: 'районный', materials: 10, productionJailed: 3, productionBalance: 2, cost: 100, rate: 1.14},
-  {name: 'городской', materials: 34, productionJailed: 9, productionBalance: 5, cost: 500, rate: 1.14},
-  {name: 'областной', materials: 76, productionJailed: 27, productionBalance: 15, cost: 3000, rate: 1.14},
-  {name: 'верховный', materials: 200, productionJailed: 100, productionBalance: 40  , cost: 10000, rate: 1.14},
-  {name: 'ЕСПЧ', materials: 550, productionJailed: 350, productionBalance: 150, cost: 40000, rate: 1.14},
-  {name: 'Международный суд ООН', materials: 1600, productionJailed: 700, productionBalance: 400, cost: 200000, rate: 1.14},
-  {name: 'Международный уголовный суд', materials: 3200, productionJailed: 8000, productionBalance: 4000, cost: 1000000, rate: 1.14},
+  {name: 'районный', materials: 20, productionJailed: 3, productionBalance: 2, cost: 150, rate: 1.14},
+  {name: 'городской', materials: 50, productionJailed: 9, productionBalance: 5, cost: 700, rate: 1.14},
+  {name: 'областной', materials: 100, productionJailed: 27, productionBalance: 15, cost: 5000, rate: 1.14},
+  {name: 'верховный', materials: 300, productionJailed: 100, productionBalance: 40  , cost: 20000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
 ];
 
 export const informerList = [
   {name: 'Студент юрфака', production: 1, cost: 10, rate: 1.14},
   {name: 'Набожная старушка', production: 3, cost: 50, rate: 1.14},
-  {name: 'Казачья кибердружина', production: 10, cost: 200, rate: 1.14},
-  {name: 'АВТОДОНОС 3000', production: 32, cost: 1500, rate: 1.14},
-  {name: 'Госмемконтроль', production: 85, cost: 4000, rate: 1.14},
-  {name: 'Интернет-бюро Интерпола', production: 250, cost: 15000, rate: 1.14},
-  {name: 'Глобальная комиссия по запрету репостов', production: 650, cost: 80000, rate: 1.14},
-  {name: 'Доносчик 8', production: 1700, cost: 450000, rate: 1.14},
+  {name: 'Казачья кибердружина', production: 10, cost: 450, rate: 1.14},
+  {name: 'АВТОДОНОС 3000', production: 32, cost: 2500, rate: 1.14},
+  {name: 'Госмемконтроль', production: 85, cost: 9000, rate: 1.14},
+  {name: 'Интернет-бюро Интерпола', production: 250, cost: 35000, rate: 1.14},
+  {name: 'Глобальная комиссия по запрету репостов', production: 650, cost: 180000, rate: 1.14},
+  {name: 'Доносчик 8', production: 1700, cost: 900000, rate: 1.14},
 ];
 
 export const progressPoint = {
@@ -1291,7 +1291,7 @@ const upgradesListNotIndex = [
     {
       name: 'Покорение земли',
       description:  '',
-      cost: 3500000000,
+      cost: 14000000000,
       jailedPoint: 7000000000,
       buffs: [
         ['informerModifier', 1],

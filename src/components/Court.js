@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from "styled-components";
 import {addSecretary} from '../store/actions';
 import {
@@ -20,70 +20,117 @@ const Court = styled.div`
   margin-bottom: 15px;
   padding-bottom: 20px;
   border-bottom: 1px solid #434343;
+  :last-child {
+    border-bottom: none;
+  }
 `;
 
-export default ({
-                  court,
-                  onClick,
-                  balance
-                }) => {
+export default class CourtComponent extends Component {
+  state = {
+    isShowUpgrade: false
+  };
 
-  const {
-    name,
-    materials,
-    productionJailed,
-    productionBalance,
-    upgradeCost,
-    oneProductionJailed,
-    oneProductionBalance,
-    oneMaterials
-  } = court;
+  handleShowUpgrade = (isShow) => () => {
+    this.setState({
+      isShowUpgrade: isShow
+    })
+  };
 
-  return (
-    <Court>
-      <TitleItemContainer>
-        <TitleItem>{name}</TitleItem>
-        <AddButton
-          minWidth={'120px'}
-          disabled={upgradeCost > balance}
-          onClick={onClick}>
-          Добавить судью
-        </AddButton>
-      </TitleItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Расход материалов м/c&nbsp;</LabelItemTitle>
-        <LabelStatisticContainer>
-          <LabelIncome>
-            +{U.makeFormatM(U.fixed(oneMaterials))}
-          </LabelIncome>
-          {parseInt(materials)}
-        </LabelStatisticContainer>
-      </LabelItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Скорость посадки п/c&nbsp;</LabelItemTitle>
-        <LabelStatisticContainer>
-          <LabelIncome>
-            +{U.makeFormatM(U.fixed(oneProductionJailed))}
-          </LabelIncome>
-          {U.makeFormatM(U.fixed(productionJailed))}
-        </LabelStatisticContainer>
-      </LabelItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Инкам бюджета&nbsp;</LabelItemTitle>
-        <LabelStatisticContainer>
-          <LabelIncome>
-            +{U.makeFormatM(U.fixed(oneProductionBalance))}
-          </LabelIncome>
-          {U.makeFormatM(U.fixed(productionBalance))}
-        </LabelStatisticContainer>
-      </LabelItemContainer>
-      <LabelItemContainer>
-        <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
-        <LabelStatisticContainer>
-          <strong>{U.makeFormatM(U.fixed(upgradeCost))}</strong>
-        </LabelStatisticContainer>
-      </LabelItemContainer>
-      <LabelItemContainer><strong></strong></LabelItemContainer>
-    </Court>
-  )
+  componentDidUpdate(next) {
+    const {
+      court,
+      balance
+    } = next;
+
+    const {
+      upgradeCost
+    } = court;
+
+    if(!this.state.isShowUpgrade) return;
+
+    if(upgradeCost > balance) {
+      this.setState({
+        isShowUpgrade: false
+      })
+    }
+  }
+
+  render() {
+    const {
+      court,
+      onClick,
+      balance
+    } = this.props;
+
+    const {
+      isShowUpgrade
+    } = this.state;
+
+    const {
+      name,
+      materials,
+      productionJailed,
+      productionBalance,
+      upgradeCost,
+      oneProductionJailed,
+      oneProductionBalance,
+      oneMaterials
+    } = court;
+
+    return (
+      <Court>
+        <TitleItemContainer>
+          <TitleItem>{name}</TitleItem>
+          <AddButton
+            onMouseOver={this.handleShowUpgrade(true)}
+            onMouseOut={this.handleShowUpgrade(false)}
+            minWidth={'120px'}
+            disabled={upgradeCost > balance}
+            onClick={onClick}>
+            Добавить судью
+          </AddButton>
+        </TitleItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Расход материалов м/c&nbsp;</LabelItemTitle>
+          <LabelStatisticContainer>
+            <LabelIncome
+              isShowUpgrade={isShowUpgrade}
+            >
+              +{U.makeFormatM(oneMaterials)}
+            </LabelIncome>
+            {parseInt(materials)}
+          </LabelStatisticContainer>
+        </LabelItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Скорость посадки п/c&nbsp;</LabelItemTitle>
+          <LabelStatisticContainer>
+            <LabelIncome
+              isShowUpgrade={isShowUpgrade}
+            >
+              +{U.makeFormatM(oneProductionJailed)}
+            </LabelIncome>
+            {U.makeFormatM(productionJailed)}
+          </LabelStatisticContainer>
+        </LabelItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Инкам бюджета&nbsp;</LabelItemTitle>
+          <LabelStatisticContainer>
+            <LabelIncome
+              isShowUpgrade={isShowUpgrade}
+            >
+              +{U.makeFormatM(oneProductionBalance)}
+            </LabelIncome>
+            {U.makeFormatM(productionBalance)}
+          </LabelStatisticContainer>
+        </LabelItemContainer>
+        <LabelItemContainer>
+          <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+          <LabelStatisticContainer>
+            <strong>{U.makeFormatM(upgradeCost)}</strong>
+          </LabelStatisticContainer>
+        </LabelItemContainer>
+        <LabelItemContainer><strong></strong></LabelItemContainer>
+      </Court>
+    )
+  }
 }

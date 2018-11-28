@@ -15,7 +15,7 @@ import {
 } from '../store/actions'
 import {courtList, informerList, progressPoint, stageShareList} from "../store/selectors";
 
-import ClickArea from './ClickArea';
+import Computer from './Computer';
 import Court from './Court';
 import Informer from './Informer'
 import Upgrade from './Upgrade';
@@ -157,9 +157,9 @@ class GameField extends Component {
       showedShareStage
     } = nextProps;
 
-    if(shareStage <= showedShareStage) return;
+    if (shareStage <= showedShareStage) return;
 
-    if(shareStage > 0 && shareStage < stageShareList.length) {
+    if (shareStage > 0 && shareStage < stageShareList.length) {
       this.setState({
         stage: stageShareList[shareStage],
         isOpenModal: true
@@ -180,7 +180,8 @@ class GameField extends Component {
       jailed,
       informers,
       allMaterials,
-      upgrades
+      upgrades,
+      showedShareStage
     } = this.props;
 
     const {
@@ -221,55 +222,52 @@ class GameField extends Component {
         ) : null
         }
         <Head>
-          <Column>
-            <ClickArea
-              onClick={() => {
-                addMaterial()
-              }}>
-              CLICK ME</ClickArea>
-            <button onClick={resetGame}>Заново</button>
-          </Column>
-          <MinStatistics/>
+          <Computer
+            jailed={jailed}
+          />
+          <MinStatistics
+            showedShareStage={showedShareStage}
+            addMaterial={() => {
+              addMaterial()
+            }}
+          />
         </Head>
         <Main>
-        {allMaterials >= progressPoint.courtsAvailable ?
-          <Column>
-            <TitleColumn>Суды</TitleColumn>
-            {courtArray(this.props)}
-            {nextCourt ? (
-              <AddButton
-                align={'start'}
-                onClick={() => addCourt({cost: nextCourtCost})}
-                disabled={nextCourtCost > balance}
-              >
-                {(`Добавить ${nextCourt.name} $${U.makeFormatM(nextCourtCost)}`)}
-              </AddButton>
-            ) : null
-            }
-          </Column> : null
-        }
-        {jailed >= progressPoint.informersAvailable ?
-          <Column>
-            <TitleColumn>Доносчики</TitleColumn>
-            {informersArray(this.props)}
-            {nextInformerCost
-              ? <AddButton
-                align={'start'}
-                onClick={() => addInformer({cost: nextInformerCost})}
-                disabled={nextInformerCost > balance}
-              >
-                Добавить доносчика ${U.makeFormatM(nextInformerCost)}
-              </AddButton>
-              : <div>Максимум доносчиков</div>
-            }
-          </Column> : null
-        }
-        {upgrades.length > 0 ?
-          <Column>
-            <TitleColumn>Улучшения</TitleColumn>
-            {upgradesArray(this.props)}
-          </Column> : null
-        }
+          {allMaterials >= progressPoint.courtsAvailable ?
+            <Column maxWidth={'340px'}>
+              <TitleColumn>Суды</TitleColumn>
+              {courtArray(this.props)}
+              {nextCourt ? (
+                <AddButton
+                  align={'start'}
+                  onClick={() => addCourt({cost: nextCourtCost})}
+                  disabled={nextCourtCost > balance}
+                >
+                  {(`Добавить ${nextCourt.name} $${U.makeFormatM(nextCourtCost)}`)}
+                </AddButton>
+              ) : null
+              }
+            </Column> : null
+          }
+          {jailed >= progressPoint.informersAvailable ?
+            <Column maxWidth={'330px'}>
+              <TitleColumn>Доносчики</TitleColumn>
+              {informersArray(this.props)}
+                <AddButton
+                  align={'start'}
+                  onClick={() => addInformer({cost: nextInformerCost})}
+                  disabled={nextInformerCost > balance}
+                >
+                  Добавить доносчика ${U.makeFormatM(nextInformerCost)}
+                </AddButton>
+            </Column> : null
+          }
+          {upgrades.length > 0 ?
+            <Column maxWidth={'300px'}>
+              <TitleColumn>Улучшения</TitleColumn>
+              {upgradesArray(this.props)}
+            </Column> : null
+          }
         </Main>
       </GameArea>
     );

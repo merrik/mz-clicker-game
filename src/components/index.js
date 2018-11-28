@@ -4,9 +4,10 @@ import styled from "styled-components";
 export const GameArea = styled.div`
   display: flex;
   flex-direction: column;
-  width: 900px;
+  width: 1000px;
   margin: 0 auto;
   margin-bottom: 25px;
+  margin-top: 115px;
 `;
 
 export const Head = styled.div`
@@ -14,12 +15,13 @@ export const Head = styled.div`
   width: 100%;
   justify-content: center;
   align-items: start;
+  margin-bottom: 35px;
 `;
 
 export const Main = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: start;
   align-items: start;
 `;
 
@@ -70,7 +72,7 @@ export const LabelItemTitle = styled.span`
 `;
 
 export const LabelStatisticContainer = styled.span`
-  min-width: 110px;
+  min-width: 140px;
   font: 12px "Fira Mono";
   text-align: right;
   color: #ffffff;
@@ -80,6 +82,8 @@ export const LabelStatisticContainer = styled.span`
 `;
 
 export const LabelIncome = styled.span`
+  opacity: ${props => props.isShowUpgrade ? '1' : '0'};
+  transition: opacity 0s, opacity 0.5s linear;
   float: left;
   font: 10px "Fira Mono";
   line-height: 1.8;
@@ -92,10 +96,13 @@ export const Column = styled.div`
   box-sizing: border-box;
   flex-direction: column;
   margin-right: 10px;
+  max-width: ${props => props.maxWidth ? props.maxWidth : '300px'};
   user-select: none;
-  border: 1px solid #434343;
   padding: 20px;
   margin-right: 20px;
+  :first-child {
+    padding-left: 0;
+  }
   :last-of-type {
     margin-right: 0;
   }
@@ -107,7 +114,6 @@ export const TitleColumn = styled.h2`
   line-height: 1.5;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
 `;
 
 export const Row = styled.div`
@@ -119,8 +125,22 @@ export const Row = styled.div`
 export const MainStatistics = styled.div`
   display: flex;
   box-sizing: border-box;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const MainStatisticsContainer = styled.div`
+  display: flex;
   flex-direction: row;
-  width: 360px;
+  width: 600px;
+  margin: 0 auto;
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+    :last-of-type {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 export const ColumnMainStatistics = styled.div`
@@ -129,4 +149,45 @@ export const ColumnMainStatistics = styled.div`
   align-content: flex-start;
   justify-content: space-between;
   width: 100%;
+  margin-right: 15px; 
+  :last-child {
+    margin-right: 0;
+  }
+`;
+
+export const Circle = styled.span`
+  width: 50px;
+  height: 50px;
+  margin-right: 27px;
+  background-color: ${props => props.test ? 'red' : 'auto'};
+  border-radius: 100%;
+  border: 1px solid #434343;
+  :last-child {
+    margin-right: 0;
+  }
+`;
+
+export const AchievementContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  align-self: center;
+  margin-top: 25px;
+`;
+
+export const ClickButton = styled.span`
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font: bold 12px "Fira Mono";
+  width: 610px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-radius: 24.5px;
+  background-color: #ff8b86;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
 `;

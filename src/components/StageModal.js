@@ -17,6 +17,7 @@ const show = keyframes`
 `;
 
 const Overlay = styled.div`
+  z-index: 100;
   transform-style: preserve-3d;
   perspective: 100px;
   display: ${props => props.fadeIn ? 'flex' : 'none'}
@@ -31,7 +32,7 @@ const Overlay = styled.div`
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: 0;  
   transform: translateZ(100px);
 `;
 
@@ -42,22 +43,50 @@ const Modal = styled.div`
   opacity: 1;
   max-width: 95%;
   max-height: 90%;
-  /* /* overflow: auto; */
-  /* overflow-y: auto; */ */
-  /* overflow-x: hidden; */
   padding: 0 20px;
   min-width: 320px;
   animation: ${props => props.fadeIn ? `${show} 0.5s linear` : null};
-  @media(min-width: 980px) {
-    margin-top: 173px;
-  }
 `;
 
 const Column = styled.div`
   width: 500px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+`;
+
+const Title = styled.h2`
+  margin: 0;
+  margin-bottom: 28px;
+  font: bold 44px 'Graphik LC';
+  color: #ffffff;
+  text-align: center;
+`;
+
+const Description = styled.p`
+  margin: 0;
+  font: 14px 'Fira Mono';
+  color: #ffffff;
+  text-align: center;
+`;
+
+const Accept = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 280px;
+  height: 50px;
+  margin-top: 48px;
+  color: white;
+  border-radius: 24.5px;
+  background-color: #ff8b86;
+  font: bold 12px 'Fira Mono';
+  line-height: 1.67;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
 `;
 
 export default class ModalContainer extends Component {
@@ -69,6 +98,10 @@ export default class ModalContainer extends Component {
     }
   };
 
+  closeModal = () => {
+    this.props.handleClose();
+  };
+
   componentDidMount() {
     new PerfectScrollbar(this.scrollRef);
     document.addEventListener('keydown', this.handleKeyDown, false);
@@ -78,20 +111,16 @@ export default class ModalContainer extends Component {
     document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 
-  hideModalOverlay = (e) => {
-    if (e.target === e.currentTarget) {
-      this.props.handleClose();
-    }
-  };
 
   render() {
     const { children, fadeIn, background, title, text } = this.props;
     return (
-      <Overlay onClick={e => this.hideModalOverlay(e)} fadeIn={fadeIn} background={background} innerRef={(node) => {this.scrollRef = node}}>
+      <Overlay fadeIn={fadeIn} background={background} innerRef={(node) => {this.scrollRef = node}}>
         <Modal fadeIn={fadeIn}>
-          {title}
           <Column>
-            {text}
+            <Title>{title}</Title>
+            <Description>{text}</Description>
+            <Accept onClick={this.closeModal}>Поехали</Accept>
           </Column>
         </Modal>
       </Overlay>

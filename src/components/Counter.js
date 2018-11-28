@@ -8,30 +8,37 @@ import * as U from "../utils";
 const Title = styled.span`
   display: flex;
   align-self: flex-start;
-  font: 12px "Fira Mono";c
-  line-height: 1.83;
+  font: 12px "Fira Mono";
+  line-height: 1.5;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
+  text-align: start;
 `;
 
 const Count = styled.span`
   display: flex;
+  text-align: right;
   align-self: flex-start;
-  font: bold 12px "Fira Mono";
+  font: 12px "Fira Mono";
+  float: right;
   letter-spacing: 2px;
   color: white;
-  text-transform: uppercase;
 `;
 
 const ColorCount = styled.span`
+  display: flex;
+  align-self: flex-end;
+  font: bold 12px "Fira Mono";
+  letter-spacing: 2px;
   color: ${props => props.isUp ? 'green' : 'red'}
+  text-transform: uppercase;
 `;
 
 const Counter = styled.p`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  min-width: 65;
+  justify-content: space-between;
+  text-align: start;
   align-content: flex-start;
   align-items: flex-start;
   line-height: 10px;

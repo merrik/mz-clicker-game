@@ -131,13 +131,13 @@ const initialState = {
   jailed: 0,
   balance: 0,
 
-  courts: [5],
+  courts: [1],
   upgrades: [],
 
   shareStage: 0,
   showedShareStage: 0,
 
-  informers: [5],
+  informers: [],
   lastUpdate: 0,
   clickModifier: 1,
   courtsModifierBalance: 1,
@@ -149,7 +149,8 @@ const initialState = {
   buyingItems: {},
   moneyClick: false,
   saveDate: Date.now(),
-  pause: false
+  pause: false,
+  upgradesAvailable: false
 };
 
 export default (state = persistedState || initialState, action) => {
