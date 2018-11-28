@@ -94,6 +94,7 @@ const initialState = {
   informers: [],
   lastUpdate: 0,
   clickModifier: 1,
+  clickStat: 0,
   courtsModifierBalance: 1,
   courtsJailedModifier: 1,
   courtsModifierMaterials: 1,
@@ -114,12 +115,13 @@ export default (state = persistedState || initialState, action) => {
       if (state.pause) return state;
       if (state.allMaterials < progressPoint.courtsAvailable) return state;
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
+      console.log(infromersIncome)
       const nextMaterialsCount = state.materials + (infromersIncome);
 
 
       const courtOutcome = R.map(x => x * timeCoeff, courtCalculate(state));
 
-      const courtsResult = calculateIncomeFromCourts(courtOutcome, state.allMaterials + infromersIncome);
+      const courtsResult = calculateIncomeFromCourts(courtOutcome, state.materials + infromersIncome);
       let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
 
       if (materialsResult < 0) {
@@ -141,15 +143,18 @@ export default (state = persistedState || initialState, action) => {
     case C.ADD_MATERIAL:
       let balance = state.balance;
 
+      const clickBonus = action.qty * state.clickModifier
+
       if (state.moneyClick) {
-        balance += action.qty * state.clickModifier
+        balance += clickBonus
       }
 
       return {
         ...state,
-        materials: state.materials + action.qty * state.clickModifier,
-        allMaterials: state.allMaterials + action.qty * state.clickModifier,
-        balance
+        materials: state.materials + clickBonus,
+        allMaterials: state.allMaterials + clickBonus,
+        balance,
+        clickStat: state.clickStat + 1,
       };
     case C.APPEND_MATERIALS:
       return {

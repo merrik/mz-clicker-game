@@ -8,7 +8,6 @@ export const calculate = ({timestamp}) => ({
 
 export const addMaterial = (timestamp) => ({
   type: C.ADD_MATERIAL,
-  timestamp: +new Date(),
   target: C.MATERIALS,
   qty: 1
 });
