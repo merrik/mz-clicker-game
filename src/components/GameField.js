@@ -11,7 +11,8 @@ import {
   updateCourt,
   buyUpgrade,
   handlePauseGame,
-  setShowedShareBanner
+  setShowedShareBanner,
+  setUpgradesAvailable
 } from '../store/actions'
 import {courtList, informerList, progressPoint, stageShareList} from "../store/selectors";
 
@@ -19,6 +20,7 @@ import Computer from './Computer';
 import Court from './Court';
 import Informer from './Informer'
 import Upgrade from './Upgrade';
+import Share from './Share';
 import {
   Column,
   Row,
@@ -48,7 +50,8 @@ const mapStateToProps = (state) => {
     secretaries: game.secretaries,
     jailed: game.jailed,
     shareStage: game.shareStage,
-    showedShareStage: game.showedShareStage
+    showedShareStage: game.showedShareStage,
+    upgradesAvailable: game.upgradesAvailable
   };
 };
 
@@ -61,7 +64,8 @@ const mapDispatchToProps = {
   updateCourt,
   buyUpgrade,
   handlePauseGame,
-  setShowedShareBanner
+  setShowedShareBanner,
+  setUpgradesAvailable
 };
 
 const courtArray = ({courts, sendMaterials, updateCourt, balance}) => {
@@ -154,8 +158,14 @@ class GameField extends Component {
   componentWillReceiveProps(nextProps) {
     const {
       shareStage,
-      showedShareStage
+      showedShareStage,
+      upgrades,
+      upgradesAvailable
     } = nextProps;
+
+    if(upgrades.length > 0 && !upgradesAvailable) {
+      this.props.setUpgradesAvailable();
+    }
 
     if (shareStage <= showedShareStage) return;
 
@@ -180,8 +190,8 @@ class GameField extends Component {
       jailed,
       informers,
       allMaterials,
-      upgrades,
-      showedShareStage
+      showedShareStage,
+      upgradesAvailable
     } = this.props;
 
     const {
@@ -232,6 +242,7 @@ class GameField extends Component {
             }}
           />
         </Head>
+        <Share/>
         <Main>
           {allMaterials >= progressPoint.courtsAvailable ?
             <Column maxWidth={'340px'}>
@@ -262,7 +273,7 @@ class GameField extends Component {
                 </AddButton>
             </Column> : null
           }
-          {upgrades.length > 0 ?
+          {upgradesAvailable ?
             <Column maxWidth={'300px'}>
               <TitleColumn>Улучшения</TitleColumn>
               {upgradesArray(this.props)}

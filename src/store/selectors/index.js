@@ -7,9 +7,9 @@ export const courtList = [
   {name: 'городской', materials: 50, productionJailed: 9, productionBalance: 5, cost: 700, rate: 1.14},
   {name: 'областной', materials: 100, productionJailed: 27, productionBalance: 15, cost: 5000, rate: 1.14},
   {name: 'верховный', materials: 300, productionJailed: 100, productionBalance: 40  , cost: 20000, rate: 1.14},
-  {name: 'ЕСПЧ', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
-  {name: 'Международный суд ООН', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
-  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
+  {name: 'конституционный', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
 ];
 
 export const informerList = [
@@ -99,7 +99,7 @@ const upgradesListNotIndex = [
     1,
     {
       name: 'Первый суд эффективнее 1',
-      description:  '',
+      description:  'Первый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 195,
       point: 2,
       courtIndex: '0',
@@ -115,7 +115,7 @@ const upgradesListNotIndex = [
     2,
     {
       name: 'Первый суд эффективнее 2',
-      description:  '',
+      description:  'Первый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 300,
       point: 5,
       courtIndex: '0',
@@ -131,7 +131,7 @@ const upgradesListNotIndex = [
     3,
     {
       name: 'Первый суд эффективнее 3',
-      description:  '',
+      description:  'Первый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 4000,
       point: 25,
       courtIndex: '0',
@@ -147,7 +147,7 @@ const upgradesListNotIndex = [
     4,
     {
       name: 'Первый суд эффективнее 4',
-      description:  '',
+      description:  'Первый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 105000,
       point: 50,
       courtIndex: '0',
@@ -163,7 +163,7 @@ const upgradesListNotIndex = [
     5,
     {
       name: 'Первый суд эффективнее 5',
-      description:  '',
+      description:  'Первый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 7360000,
       point: 100,
       courtIndex: '0',
@@ -179,7 +179,7 @@ const upgradesListNotIndex = [
     6,
     {
       name: 'Второй суд эффективнее 1',
-      description:  '',
+      description:  'Второй суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 1300,
       point: 2,
       courtIndex: '1',
@@ -195,7 +195,7 @@ const upgradesListNotIndex = [
     7,
     {
       name: 'Второй суд эффективнее 2',
-      description:  '',
+      description:  'Второй суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 2000,
       point: 5,
       courtIndex: '1',
@@ -211,7 +211,7 @@ const upgradesListNotIndex = [
     8,
     {
       name: 'Второй суд эффективнее 3',
-      description:  '',
+      description:  'Второй суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 26500,
       point: 25,
       courtIndex: '1',
@@ -227,7 +227,7 @@ const upgradesListNotIndex = [
     9,
     {
       name: 'Второй суд эффективнее 4',
-      description:  '',
+      description:  'Второй суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 700000,
       point: 50,
       courtIndex: '1',
@@ -243,7 +243,7 @@ const upgradesListNotIndex = [
     10,
     {
       name: 'Третий суд эффективнее 1',
-      description:  '',
+      description:  'Третий суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 6500,
       point: 2,
       courtIndex: '2',
@@ -259,7 +259,7 @@ const upgradesListNotIndex = [
     11,
     {
       name: 'Третий суд эффективнее 2',
-      description:  '',
+      description:  'Третий суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 10000,
       point: 5,
       courtIndex: '2',
@@ -275,7 +275,7 @@ const upgradesListNotIndex = [
     12,
     {
       name: 'Третий суд эффективнее 3',
-      description:  '',
+      description:  'Третий суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 133000,
       point: 25,
       courtIndex: '2',
@@ -291,7 +291,7 @@ const upgradesListNotIndex = [
     13,
     {
       name: 'Третий суд эффективнее 4',
-      description:  '',
+      description:  'Третий суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 3500000,
       point: 50,
       courtIndex: '2',
@@ -307,7 +307,7 @@ const upgradesListNotIndex = [
     14,
     {
       name: 'Четвертый суд эффективнее 1',
-      description:  '',
+      description:  'Четвертая суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 40000,
       point: 2,
       courtIndex: '3',
@@ -323,7 +323,7 @@ const upgradesListNotIndex = [
     15,
     {
       name: 'Четвертый суд эффективнее 2',
-      description:  '',
+      description:  'Четвертая суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 60000,
       point: 5,
       courtIndex: '3',
@@ -339,7 +339,7 @@ const upgradesListNotIndex = [
     16,
     {
       name: 'Четвертый суд эффективнее 3',
-      description:  '',
+      description:  'Четвертая суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 800000,
       point: 25,
       courtIndex: '3',
@@ -355,7 +355,7 @@ const upgradesListNotIndex = [
     17,
     {
       name: 'Четвертый суд эффективнее 4',
-      description:  '',
+      description:  'Четвертая суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 21000000,
       point: 50,
       courtIndex: '3',
@@ -371,7 +371,7 @@ const upgradesListNotIndex = [
     18,
     {
       name: 'Пятый суд эффективнее 1',
-      description:  '',
+      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 120000,
       point: 2,
       courtIndex: '4',
@@ -387,7 +387,7 @@ const upgradesListNotIndex = [
     19,
     {
       name: 'Пятый суд эффективнее 2',
-      description:  '',
+      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 190000,
       point: 5,
       courtIndex: '4',
@@ -403,7 +403,7 @@ const upgradesListNotIndex = [
     20,
     {
       name: 'Пятый суд эффективнее 3',
-      description:  '',
+      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 2600000,
       point: 25,
       courtIndex: '4',
@@ -419,7 +419,7 @@ const upgradesListNotIndex = [
     21,
     {
       name: 'Пятый суд эффективнее 4',
-      description:  '',
+      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 70000000,
       point: 50,
       courtIndex: '4',
@@ -435,7 +435,7 @@ const upgradesListNotIndex = [
     22,
     {
       name: 'Шестой суд эффективнее 1',
-      description:  '',
+      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 500000,
       point: 2,
       courtIndex: '5',
@@ -451,7 +451,7 @@ const upgradesListNotIndex = [
     23,
     {
       name: 'Шестой суд эффективнее 2',
-      description:  '',
+      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 770000,
       point: 5,
       courtIndex: '5',
@@ -467,7 +467,7 @@ const upgradesListNotIndex = [
     24,
     {
       name: 'Шестой суд эффективнее 3',
-      description:  '',
+      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 10500000,
       point: 25,
       courtIndex: '5',
@@ -483,7 +483,7 @@ const upgradesListNotIndex = [
     25,
     {
       name: 'Шестой суд эффективнее 4',
-      description:  '',
+      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 280000000,
       point: 50,
       courtIndex: '5',
@@ -499,7 +499,7 @@ const upgradesListNotIndex = [
     26,
     {
       name: 'Седьмой суд эффективнее 1',
-      description:  '',
+      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 2600000,
       point: 2,
       courtIndex: '6',
@@ -515,7 +515,7 @@ const upgradesListNotIndex = [
     27,
     {
       name: 'Седьмой суд эффективнее 2',
-      description:  '',
+      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 3850000,
       point: 5,
       courtIndex: '6',
@@ -531,7 +531,7 @@ const upgradesListNotIndex = [
     28,
     {
       name: 'Седьмой суд эффективнее 3',
-      description:  '',
+      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 53000000,
       point: 25,
       courtIndex: '6',
@@ -547,7 +547,7 @@ const upgradesListNotIndex = [
     29,
     {
       name: 'Седьмой суд эффективнее 4',
-      description:  '',
+      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 1400000000,
       point: 50,
       courtIndex: '6',
@@ -563,7 +563,7 @@ const upgradesListNotIndex = [
     30,
     {
       name: 'Восьмой суд эффективнее 1',
-      description:  '',
+      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 13000000,
       point: 2,
       courtIndex: '7',
@@ -579,7 +579,7 @@ const upgradesListNotIndex = [
     31,
     {
       name: 'Восьмой суд эффективнее 2',
-      description:  '',
+      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 19200000,
       point: 5,
       courtIndex: '7',
@@ -595,7 +595,7 @@ const upgradesListNotIndex = [
     32,
     {
       name: 'Восьмой суд эффективнее 3',
-      description:  '',
+      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 265000000,
       point: 25,
       courtIndex: '7',
@@ -611,7 +611,7 @@ const upgradesListNotIndex = [
     33,
     {
       name: 'Восьмой суд эффективнее 4',
-      description:  '',
+      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
       cost: 7000000000,
       point: 50,
       courtIndex: '7',
@@ -1138,7 +1138,7 @@ const upgradesListNotIndex = [
       cost: 6000,
       jailedPoint: 10000,
       buffs: [
-        ['courtsModifierBalance', 0.05],
+        ['courtsModifierBalance', 0.15],
       ]
     }
   ],
@@ -1150,7 +1150,7 @@ const upgradesListNotIndex = [
       cost: 40000,
       jailedPoint: 100000,
       buffs: [
-        ['informerModifier', 0.025],
+        ['informerModifier', 0.05],
       ]
     }
   ],
@@ -1162,7 +1162,7 @@ const upgradesListNotIndex = [
       cost: 80000,
       jailedPoint: 250000,
       buffs: [
-        ['courtsJailedModifier', 0.025],
+        ['courtsJailedModifier', 0.15],
       ]
     }
   ],
@@ -1174,7 +1174,7 @@ const upgradesListNotIndex = [
       cost: 140000,
       jailedPoint: 500000,
       buffs: [
-        ['courtsModifierBalance', 0.05],
+        ['courtsModifierBalance', 0.15],
       ]
     }
   ],
@@ -1186,7 +1186,7 @@ const upgradesListNotIndex = [
       cost: 180000,
       jailedPoint: 1000000,
       buffs: [
-        ['courtsJailedModifier', 0.025],
+        ['courtsJailedModifier', 0.05],
       ]
     }
   ],
@@ -1198,7 +1198,7 @@ const upgradesListNotIndex = [
       cost: 300000,
       jailedPoint: 2500000,
       buffs: [
-        ['informerModifier', 0.025],
+        ['informerModifier', 0.05],
       ]
     }
   ],
@@ -1210,7 +1210,7 @@ const upgradesListNotIndex = [
       cost: 1000000,
       jailedPoint: 5000000,
       buffs: [
-        ['courtsModifierBalance', 0.05],
+        ['courtsModifierBalance', 0.15],
       ]
     }
   ],
@@ -1222,7 +1222,7 @@ const upgradesListNotIndex = [
       cost: 2500000,
       jailedPoint: 10000000,
       buffs: [
-        ['courtsJailedModifier', 0.025],
+        ['courtsJailedModifier', 0.15],
       ]
     }
   ],
@@ -1234,7 +1234,7 @@ const upgradesListNotIndex = [
       cost: 5000000,
       jailedPoint: 25000000,
       buffs: [
-        ['informerModifier', 0.025],
+        ['informerModifier', 0.05],
       ]
     }
   ],
@@ -1246,7 +1246,7 @@ const upgradesListNotIndex = [
       cost: 100000000,
       jailedPoint: 500000000,
       buffs: [
-        ['informerModifier', 0.025],
+        ['informerModifier', 0.05],
       ]
     }
   ],
@@ -1258,7 +1258,7 @@ const upgradesListNotIndex = [
       cost: 250000000,
       jailedPoint: 1000000000,
       buffs: [
-        ['courtsModifierBalance', 0.05],
+        ['courtsModifierBalance', 0.15],
       ]
     }
   ],
@@ -1270,7 +1270,7 @@ const upgradesListNotIndex = [
       cost: 650000000,
       jailedPoint: 2500000000,
       buffs: [
-        ['courtsJailedModifier', 0.025],
+        ['courtsJailedModifier', 0.15],
       ]
     }
   ],
@@ -1282,7 +1282,7 @@ const upgradesListNotIndex = [
       cost: 1000000000,
       jailedPoint: 5000000000,
       buffs: [
-        ['informerModifier', 0.025],
+        ['informerModifier', 0.15],
       ]
     }
   ],
