@@ -304,6 +304,11 @@ export default (state = persistedState || initialState, action) => {
       };
     case C.RESET_GAME:
       return initialState;
+    case C.SET_UPGRADES_AVAILABLE:
+      return {
+        ...state,
+        upgradesAvailable: true
+      };
     default:
       return state
   }

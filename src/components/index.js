@@ -15,12 +15,13 @@ export const Head = styled.div`
   width: 100%;
   justify-content: center;
   align-items: start;
-  margin-bottom: 35px;
+  margin-bottom: 45px;
 `;
 
 export const Main = styled.div`
   display: flex;
   width: 100%;
+  margin-top: 15px;
   justify-content: start;
   align-items: start;
 `;

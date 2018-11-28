@@ -69,3 +69,7 @@ export const setShowedShareBanner = (index) => ({
   type: C.SET_SHOWED_SHARE_BANNER,
   index
 });
+
+export const setUpgradesAvailable = () => ({
+  type: C.SET_UPGRADES_AVAILABLE
+});
