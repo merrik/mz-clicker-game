@@ -118,10 +118,8 @@ export default (state = persistedState || initialState, action) => {
 
 
       const courtOutcome = R.map(x => x * timeCoeff, courtCalculate(state));
-      console.log('court outcome', courtOutcome);
 
       const courtsResult = calculateIncomeFromCourts(courtOutcome, state.allMaterials + infromersIncome);
-      console.log('court result', courtsResult);
       let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
 
       if (materialsResult < 0) {
