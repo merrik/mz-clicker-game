@@ -16,10 +16,7 @@ import {
   ProgressContainer
 } from "./index";
 import Achievement from "./Achievement";
-<<<<<<< HEAD
 import Computer from "./Computer";
-=======
->>>>>>> 604c04f7b2c75ca4771d69a69c1f630cbb0019b3
 import {progressPoint} from "../store/selectors";
 
 const mapStateToProps = (state) => {
@@ -47,12 +44,9 @@ class MinStatistics extends Component {
       courts,
       addMaterial,
       showedShareStage,
-<<<<<<< HEAD
-      miniStatistic
-=======
+      miniStatistic,
       showJailed,
       showInformers
->>>>>>> 604c04f7b2c75ca4771d69a69c1f630cbb0019b3
     } = this.props;
 
     const deltaMaterials = parseInt(informers.incomeMaterials - courts.outcomeMaterials);
