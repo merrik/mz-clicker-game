@@ -10,7 +10,6 @@ import {
   resetGame,
   updateCourt,
   buyUpgrade,
-  handlePauseGame,
   setShowedShareBanner,
   setUpgradesAvailable
 } from '../store/actions'
@@ -63,7 +62,6 @@ const mapDispatchToProps = {
   resetGame,
   updateCourt,
   buyUpgrade,
-  handlePauseGame,
   setShowedShareBanner,
   setUpgradesAvailable
 };
@@ -152,7 +150,6 @@ class GameField extends Component {
     this.setState({
       isOpenModal: false
     });
-    this.props.handlePauseGame(false);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -174,7 +171,6 @@ class GameField extends Component {
         stage: stageShareList[shareStage],
         isOpenModal: true
       });
-      this.props.handlePauseGame(true);
       this.props.setShowedShareBanner(shareStage);
     }
   }
@@ -220,6 +216,8 @@ class GameField extends Component {
       nextInformerCost = nextInformer.cost
     }
 
+    const courtsAvailable = allMaterials >= progressPoint.courtsAvailable;
+
     return (
       <GameArea>
         {stage.title ? (
@@ -231,20 +229,32 @@ class GameField extends Component {
           />
         ) : null
         }
-        <Head>
-          <Computer
-            jailed={jailed}
-          />
+        <Head
+          column={!courtsAvailable}
+        >
+          { courtsAvailable ? (
+            <Computer
+              addMaterial={() => {
+                addMaterial()
+              }}
+              jailed={jailed}
+            /> ) : null
+          }
           <MinStatistics
             showedShareStage={showedShareStage}
             addMaterial={() => {
               addMaterial()
             }}
+            miniStatistic={!courtsAvailable}
           />
         </Head>
-        <Share/>
+        {
+          courtsAvailable ? (
+            <Share/>
+          ) : null
+        }
         <Main>
-          {allMaterials >= progressPoint.courtsAvailable ?
+          {courtsAvailable ?
             <Column maxWidth={'340px'}>
               <TitleColumn>Суды</TitleColumn>
               {courtArray(this.props)}

@@ -68,8 +68,17 @@ const calculateIncomeUpgrades = (state) => {
 
 const calculateShareStage = state => {
   let shareStageLvl = 0;
-  const jailed = state.jailed;
+  const {
+    jailed,
+    allMaterials
+  } = state;
   for(let i = 1; i < stageShareList.length; i++) {
+    if(stageShareList[i].materialsPoint) {
+      if(allMaterials >= stageShareList[i].materialsPoint && i > state.showedShareStage) {
+        shareStageLvl = i;
+        return shareStageLvl;
+      }
+    }
     if(jailed >= stageShareList[i].point && i > state.showedShareStage) {
       shareStageLvl = i;
       return shareStageLvl;
@@ -103,7 +112,6 @@ const initialState = {
   informerLocalModifier: {},
   buyingItems: {},
   moneyClick: false,
-  pause: false,
   upgradesAvailable: false
 };
 
@@ -112,8 +120,11 @@ const timeCoeff = 0.2;
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
-      if (state.pause) return state;
-      if (state.allMaterials < progressPoint.courtsAvailable) return state;
+      const shareStage = calculateShareStage(state);
+      if (state.allMaterials < progressPoint.courtsAvailable) return {
+        ...state,
+        shareStage
+      };
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
       console.log(infromersIncome)
       const nextMaterialsCount = state.materials + (infromersIncome);
@@ -129,7 +140,6 @@ export default (state = persistedState || initialState, action) => {
       }
 
       const incomeUpgrade = calculateIncomeUpgrades(state);
-      const shareStage = calculateShareStage(state);
 
       return {
         ...state,
@@ -160,11 +170,6 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         materials: state.materials + action.qty
-      };
-    case C.HANDLE_PAUSE_GAME:
-      return {
-        ...state,
-        pause: action.pause
       };
     case C.SET_SHOWED_SHARE_BANNER:
       return {

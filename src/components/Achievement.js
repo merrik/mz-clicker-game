@@ -17,10 +17,11 @@ class Achievement extends Component {
 
     const openAchievement = stageShareList.map((value, index) => {
       if(index === 0) return;
+      if(value.isNotAchievement) return;
       if(showedShareStage >= index) {
         return (
           <Circle
-            key={stageShareList[index].title}
+            key={value.title}
             test={true}
           />
         )

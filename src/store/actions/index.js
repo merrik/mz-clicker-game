@@ -59,11 +59,6 @@ export const resetGame = () => ({
   type: C.RESET_GAME
 });
 
-export const handlePauseGame = (pause) => ({
-  type: C.HANDLE_PAUSE_GAME,
-  pause
-});
-
 export const setShowedShareBanner = (index) => ({
   type: C.SET_SHOWED_SHARE_BANNER,
   index
