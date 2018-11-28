@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   AchievementContainer,
-  Circle
+  Circle,
+  CircleLine
 } from "./index";
 
 import {
@@ -15,26 +16,28 @@ class Achievement extends Component {
       showedShareStage
     } = this.props;
 
-    const openAchievement = stageShareList.map((value, index) => {
-      if(index === 0) return;
-      if(value.isNotAchievement) return;
+    const openAchievement = stageShareList.reduce((acc, value, index) => {
+      if(!value || value.isNotAchievement) return acc;
       if(showedShareStage >= index) {
-        return (
+        return acc.concat(
           <Circle
             key={value.title}
             test={true}
           />
         )
       } else {
-        return (
+        return acc.concat(
           <Circle key={index}/>
         )
       }
-    });
+    }, []);
+
+    console.log(openAchievement)
 
     return (
       <AchievementContainer>
-        {openAchievement}
+        <CircleLine>{openAchievement.slice(0, 4)}</CircleLine>
+        <CircleLine>{openAchievement.slice(4)}</CircleLine>
       </AchievementContainer>
     )
   }

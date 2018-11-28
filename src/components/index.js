@@ -210,14 +210,33 @@ export const ColumnMainStatistics = styled.div`
   :last-child {
     margin-right: 0;
   }
-  @media screen and (max-width: 1000px)  {
-    width: 
-  }
 `;
+
+export const CircleLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  align-self: center;
+  @media screen and (max-width: 1000px)  {
+    justify-content: space-between;
+    align-content: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    :first-child{
+      margin-bottom: 10px;
+    }
+  }
+`
 
 export const Circle = styled.span`
   width: 50px;
   height: 50px;
+  @media screen and (max-width: 1000px)  {
+    width: 50px;
+    height: 50px;
+    margin-right: 0;
+  }
   margin-right: 27px;
   background-color: ${props => props.test ? 'red' : 'auto'};
   border-radius: 100%;
@@ -234,8 +253,9 @@ export const AchievementContainer = styled.div`
   align-self: center;
   margin-top: 25px;
   @media screen and (max-width: 1000px)  {
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-between;
+    width: 100%;
   }
 `;
 
