@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect';
 import * as U from "../../utils";
+import * as R from 'ramda'
 
 export const courtList = [
   {name: 'мировой суд', materials: 3, productionJailed: 0.1, productionBalance: 0.5, cost: 15, rate: 1.14},
@@ -1486,5 +1487,59 @@ export const informers = createSelector(
     return informerInfo;
   }
 );
+
+export const courtCalculate = createSelector(
+  (state) => state.courts,
+  (state) => state.courtsJailedModifier,
+  (state) => state.courtsModifierBalance,
+  (state) => state.courtsModifierMaterials,
+  (state) => state.courtsLocalModifier,
+  (courts, jailedModifier, balanceModifier, materialsModifier, localModifiers) => {
+    const calculate = {
+      incomeBalance: 0,
+      incomeJailed: 0,
+      outcomeMaterials: 0
+    };
+
+    for (let i = 0; i < courts.length; i++) {
+      let multipliersJailed = jailedModifier;
+      let multipliersBalance = balanceModifier;
+      let multipliersMaterials = materialsModifier;
+      const localModifier = localModifiers[i];
+
+      if (localModifier && localModifier.jailed) {
+        multipliersJailed = balanceModifier * localModifier.jailed
+      }
+
+      if (localModifier && localModifier.balance) {
+        multipliersBalance = multipliersBalance * localModifier.balance
+      }
+
+      if (localModifier && localModifier.materials) {
+        multipliersMaterials = multipliersMaterials * localModifier.materials
+      }
+
+      calculate.incomeBalance += U.production({
+        production: courtList[i].productionBalance,
+        owned: courts[i],
+        multipliers: balanceModifier
+      });
+
+      calculate.incomeJailed += U.production({
+        production: courtList[i].productionJailed,
+        owned: courts[i],
+        multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
+      });
+
+      calculate.outcomeMaterials += U.production({
+        production: courtList[i].materials,
+        owned: courts[i],
+        multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
+      });
+    }
+    return calculate
+  }
+);
+
 
 export const informer = (_, props) => informerList[props.index]
