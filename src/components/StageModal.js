@@ -25,7 +25,7 @@ const Overlay = styled.div`
   align-content: center;
   justify-content: center;
   position: fixed;
-  overflow-y: scroll;
+  overflow-y: hidden;
   background: ${props => props.background ? props.background : 'rgba(0, 0, 0, 0.9)'};
   width: 100%;
   height: 100%;
@@ -39,6 +39,7 @@ const Overlay = styled.div`
 const Modal = styled.div`
   padding: 1rem;
   box-sizing: border-box;
+  overflow-y: scroll;
   z-index: 9999;
   opacity: 1;
   max-width: 95%;

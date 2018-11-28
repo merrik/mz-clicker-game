@@ -111,7 +111,6 @@ const initialState = {
   informerLocalModifier: {},
   buyingItems: {},
   moneyClick: false,
-  pause: false,
   upgradesAvailable: false
 };
 
@@ -120,8 +119,11 @@ const timeCoeff = 0.2;
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
-      if (state.pause) return state;
-      if (state.allMaterials < progressPoint.courtsAvailable) return state;
+      const shareStage = calculateShareStage(state);
+      if (state.allMaterials < progressPoint.courtsAvailable) return {
+        ...state,
+        shareStage
+      };
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
       const nextMaterialsCount = state.materials + (infromersIncome);
 
@@ -136,7 +138,6 @@ export default (state = persistedState || initialState, action) => {
       }
 
       const incomeUpgrade = calculateIncomeUpgrades(state);
-      const shareStage = calculateShareStage(state);
 
       return {
         ...state,
@@ -164,11 +165,6 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         materials: state.materials + action.qty
-      };
-    case C.HANDLE_PAUSE_GAME:
-      return {
-        ...state,
-        pause: action.pause
       };
     case C.SET_SHOWED_SHARE_BANNER:
       return {
