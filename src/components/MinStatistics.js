@@ -16,7 +16,10 @@ import {
   ProgressContainer
 } from "./index";
 import Achievement from "./Achievement";
+<<<<<<< HEAD
 import Computer from "./Computer";
+=======
+>>>>>>> 604c04f7b2c75ca4771d69a69c1f630cbb0019b3
 import {progressPoint} from "../store/selectors";
 
 const mapStateToProps = (state) => {
@@ -27,7 +30,9 @@ const mapStateToProps = (state) => {
     balance: S.balance(state),
     allMaterials: S.allMaterials(state),
     informers: S.informers(state),
-    courts: S.courts(state)
+    courts: S.courts(state),
+    showJailed: state.game.allMaterials >= progressPoint.courtsAvailable,
+    showInformers: state.game.jailed >= progressPoint.informersAvailable,
   };
 };
 
@@ -42,7 +47,12 @@ class MinStatistics extends Component {
       courts,
       addMaterial,
       showedShareStage,
+<<<<<<< HEAD
       miniStatistic
+=======
+      showJailed,
+      showInformers
+>>>>>>> 604c04f7b2c75ca4771d69a69c1f630cbb0019b3
     } = this.props;
 
     const deltaMaterials = parseInt(informers.incomeMaterials - courts.outcomeMaterials);
@@ -84,14 +94,14 @@ class MinStatistics extends Component {
           <ColumnMainStatistics>
             {allMaterials >= 0 && <Counter header='Все материалы' count={allMaterials}/>}
             {jailed >= 0 && <Counter header='Посажено' count={jailed}/>}
-            {incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)}/>}
-            {U.fixed(deltaMaterials) && <Counter header='Эффективность' color={true} count={deltaMaterials}/>}
+            {showJailed && incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)}/>}
+            {showJailed && showInformers && U.fixed(deltaMaterials) && <Counter header='Эффективность' color={true} count={deltaMaterials}/>}
           </ColumnMainStatistics>
           <ColumnMainStatistics>
             {materials >= 0 && <Counter header='Материалы дела' count={materials}/>}
-            {balance >= 0 && <Counter header='Бюджет' count={balance}/>}
-            {incomeBalance >= 0 && <Counter header='Прирост бюджета' count={incomeBalance}/>}
-            {courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials}/>}
+            {showJailed && balance >= 0 && <Counter header='Бюджет' count={balance}/>}
+            {showJailed && incomeBalance >= 0 && <Counter header='Прирост бюджета' count={incomeBalance}/>}
+            {showJailed && showInformers && courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials}/>}
           </ColumnMainStatistics>
         </MainStatisticsContainer>
         <Achievement
