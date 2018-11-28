@@ -112,10 +112,9 @@ const initialState = {
   informerLocalModifier: {},
   buyingItems: {},
   moneyClick: false,
-  upgradesAvailable: false
+  upgradesAvailable: false,
+  calcDate: Date.now()
 };
-
-const timeCoeff = 0.2;
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
@@ -123,10 +122,11 @@ export default (state = persistedState || initialState, action) => {
       const shareStage = calculateShareStage(state);
       if (state.allMaterials < progressPoint.courtsAvailable) return {
         ...state,
+        calcDate: action.timestamp,
         shareStage
       };
+      const timeCoeff = Math.min(10,  (action.timestamp - state.calcDate)/1000);
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
-      console.log(infromersIncome)
       const nextMaterialsCount = state.materials + (infromersIncome);
 
 
@@ -149,6 +149,7 @@ export default (state = persistedState || initialState, action) => {
         allMaterials: state.allMaterials + infromersIncome,
         upgrades: incomeUpgrade,
         shareStage,
+        calcDate: action.timestamp
       };
     case C.ADD_MATERIAL:
       let balance = state.balance;

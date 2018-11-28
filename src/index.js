@@ -17,6 +17,9 @@ render(
     document.getElementById('root')
 )
 
-
-setInterval(() => {store.dispatch(calculate({timestamp: Date.now()}))}, 200);
+const doCalc = () => {
+  store.dispatch(calculate({timestamp: Date.now()}))
+  setTimeout(() => requestAnimationFrame(doCalc), 200)
+}
+requestAnimationFrame(doCalc)
 setInterval(() => {saveState(LOCAL_STORAGE_KEY, store.getState().game);}, 5000);
