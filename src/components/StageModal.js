@@ -47,6 +47,9 @@ const Modal = styled.div`
   padding: 0 20px;
   min-width: 320px;
   animation: ${props => props.fadeIn ? `${show} 0.5s linear` : null};
+  @media screen and (max-width: 1000px)  {
+    width: 100%;
+  }
 `;
 
 const Column = styled.div`
@@ -55,6 +58,12 @@ const Column = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 1000px)  {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin: 40px 0 0 0;
+  }
 `;
 
 const Title = styled.h2`

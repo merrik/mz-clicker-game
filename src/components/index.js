@@ -129,7 +129,10 @@ export const Column = styled.div`
     max-width: unset;
     margin: 0;
     padding: 0;
-    margin-top: 30px;
+    margin-bottom: 30px;
+    :first-child {
+      margin-top: 30px;
+    }
   }
 `;
 export const TitleColumn = styled.h2`
