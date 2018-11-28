@@ -7,11 +7,30 @@ import russiaMap from '../assets/russiaMap.png';
 
 const Computer = styled.div`
   position: relative;
+  width: ${props => props.width ? props.width : '484px'};
+  height: 235px;
+  @media screen and (max-width: 1000px)  {
+    max-width: 326px;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    width: 100%;
+    height: auto; 
+  }
+`;
+
+const Map = styled.div`
+  position: relative;
   cursor: pointer;
   width: ${props => props.width ? props.width : '484px'};
   height: 235px;
   background-image: url(${russiaMap});
   background-repeat: no-repeat;
+  @media screen and (max-width: 1000px)  {
+    width: 100%;
+    height: 0;
+    padding-top: 69.63%;
+    background-size: contain;
+  }
 `;
 
 const Progress = styled.div`
@@ -35,9 +54,11 @@ export default class ComputerComponent extends React.Component {
         onClick={addMaterial}
         width={width}
       >
-        <Progress
-          progress={progress}
-        />
+        <Map width={width}>
+          <Progress
+            progress={progress}
+          />
+        </Map>
       </Computer>
     );
   }

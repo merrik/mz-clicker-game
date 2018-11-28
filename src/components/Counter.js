@@ -32,9 +32,9 @@ const ColorCount = styled.span`
   text-transform: uppercase;
 `;
 
-const Counter = styled.p`
+const Counter = styled.div`
   display: flex;
-  min-width: 65;
+  min-width: 65px;
   justify-content: space-between;
   text-align: start;
   align-content: flex-start;

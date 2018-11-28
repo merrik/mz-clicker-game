@@ -27,7 +27,7 @@ class Achievement extends Component {
         )
       } else {
         return (
-          <Circle/>
+          <Circle key={index}/>
         )
       }
     });
