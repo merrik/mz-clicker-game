@@ -28,3 +28,5 @@ export const RESET_GAME = 'RESET_GAME';
 export const BUY_UPGRADE = 'BUY_UPGRADE';
 export const HANDLE_PAUSE_GAME = 'HANDLE_PAUSE_GAME';
 export const SET_SHOWED_SHARE_BANNER = 'SET_SHOWED_SHARE_BANNER';
+
+export const LOCAL_STORAGE_KEY = 'game-state';

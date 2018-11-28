@@ -2,12 +2,12 @@ import * as R from 'ramda';
 import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
-import {informerList, courtList, upgradesList, stageShareList} from "../selectors";
+import {informerList, courtList, upgradesList, stageShareList, courtCalculate} from "../selectors";
 import {progressPoint} from "../selectors";
 
-const LOCAL_STORAGE_KEY = 'game-state';
 
-let persistedState = U.loadState(LOCAL_STORAGE_KEY);
+
+let persistedState = U.loadState(C.LOCAL_STORAGE_KEY);
 
 const calculateIncomeFromInformers = ({state}) => {
   const {informers} = state;
@@ -29,55 +29,9 @@ const calculateIncomeFromInformers = ({state}) => {
   return income
 };
 
-const calculateIncomeFromCourts = (state, infromersIncome) => {
-  const {courts} = state;
-  const calculate = {
-    incomeBalance: 0,
-    incomeJailed: 0,
-    outcomeMaterials: 0
-  };
-
-  for (let i = 0; i < courts.length; i++) {
-    let multipliersJailed = state.courtsJailedModifier;
-    let multipliersBalance = state.courtsModifierBalance;
-    let multipliersMaterials = state.courtsModifierMaterials;
-    const localModifier = state.courtsLocalModifier[i];
-
-    if (localModifier && localModifier.jailed) {
-      multipliersJailed = multipliersJailed * localModifier.jailed
-    }
-
-    if (localModifier && localModifier.balance) {
-      multipliersBalance = multipliersBalance * localModifier.balance
-    }
-
-    if (localModifier && localModifier.materials) {
-      multipliersMaterials = multipliersMaterials * localModifier.materials
-    }
-
-    calculate.incomeBalance += U.production({
-      production: courtList[i].productionBalance,
-      owned: courts[i],
-      multipliers: multipliersBalance <= 0 ? 1 : multipliersBalance
-    });
-
-    calculate.incomeJailed += U.production({
-      production: courtList[i].productionJailed,
-      owned: courts[i],
-      multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
-    });
-
-    calculate.outcomeMaterials += U.production({
-      production: courtList[i].materials,
-      owned: courts[i],
-      multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
-    });
-  }
-
+const calculateIncomeFromCourts = (calculate, allMaterials) => {
   if (calculate.outcomeMaterials > 0) {
-    const allMaterials = state.materials + infromersIncome;
     const prodactionСoeff = Math.min(allMaterials / calculate.outcomeMaterials, 1);
-
     calculate.incomeJailed = calculate.incomeJailed * prodactionСoeff;
     calculate.incomeBalance = calculate.incomeBalance * prodactionСoeff;
   }
@@ -148,27 +102,27 @@ const initialState = {
   informerLocalModifier: {},
   buyingItems: {},
   moneyClick: false,
-  saveDate: Date.now(),
   pause: false,
   upgradesAvailable: false
 };
+
+const timeCoeff = 0.2;
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE:
       if (state.pause) return state;
       if (state.allMaterials < progressPoint.courtsAvailable) return state;
-      const infromersIncome = calculateIncomeFromInformers({state});
+      const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
       const nextMaterialsCount = state.materials + (infromersIncome);
-      let saveDate = state.saveDate;
 
-      const courtsResult = calculateIncomeFromCourts(state, infromersIncome);
+
+      const courtOutcome = R.map(x => x * timeCoeff, courtCalculate(state));
+      console.log('court outcome', courtOutcome);
+
+      const courtsResult = calculateIncomeFromCourts(courtOutcome, state.allMaterials + infromersIncome);
+      console.log('court result', courtsResult);
       let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
-
-      if (Date.now() - C.SAVE_DELTA_TIME > saveDate) {
-        U.saveState(LOCAL_STORAGE_KEY, state);
-        saveDate = Date.now();
-      }
 
       if (materialsResult < 0) {
         materialsResult = 0;
@@ -185,7 +139,6 @@ export default (state = persistedState || initialState, action) => {
         allMaterials: state.allMaterials + infromersIncome,
         upgrades: incomeUpgrade,
         shareStage,
-        saveDate
       };
     case C.ADD_MATERIAL:
       let balance = state.balance;
