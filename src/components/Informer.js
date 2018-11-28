@@ -54,7 +54,8 @@ export default class InformerContainer extends Component {
       updateCost,
       name,
       balance,
-      oneProduction
+      oneProduction,
+      owned
     } = this.props;
 
     const {
@@ -64,7 +65,7 @@ export default class InformerContainer extends Component {
     return (
       <Informer>
         <TitleItemContainer>
-          <TitleItem>{name}</TitleItem>
+          <TitleItem>{name}{owned > 1 ? `(${owned})`:''}</TitleItem>
           <AddButton
             onMouseEnter={this.handleShowUpgrade(true)}
             onMouseLeave={this.handleShowUpgrade(false)}

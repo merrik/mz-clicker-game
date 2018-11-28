@@ -1443,6 +1443,7 @@ export const courts = createSelector(
             ...court,
             productionJailed,
             productionBalance,
+            owned,
             materials,
             oneProductionJailed,
             oneProductionBalance,
@@ -1503,6 +1504,7 @@ export const informers = createSelector(
 
         return {
           ...informer,
+          owned,
           production,
           oneProduction,
           upgradeCost: U.nextCost({base: informer.cost, rate: informer.rate, owned}),
