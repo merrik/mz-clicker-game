@@ -5,20 +5,34 @@ import {
 } from '../store/selectors';
 import russiaMap from '../assets/russiaMap.png';
 
-const Computer = styled.div`
+const Map = styled.div`
   position: relative;
   cursor: pointer;
-  width: ${props => props.width ? props.width : '484px'};
-  height: 235px;
+  width: 100%; 
+  height: 163px;
   background-image: url(${russiaMap});
   background-repeat: no-repeat;
+`;
+
+const ProgressBack = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  z-index: -2;
+  width: 300px;
+  height: 163px;
+  background-color: white;
 `;
 
 const Progress = styled.div`
   box-sizing: border-box;
   position: absolute;
   z-index: -1;
+  width: ${props => `${props.progress}px`};
+  height: 163px;
+  background-color: red;
 `;
+
+
 
 export default class ComputerComponent extends React.Component {
   render() {
@@ -28,17 +42,19 @@ export default class ComputerComponent extends React.Component {
       addMaterial
     } = this.props;
 
-    const progress = Math.min(jailed / 146000000, 1);
+    const progress = parseInt(Math.min(jailed / 146000000, 1) * 300);
+    // 300px / 58 частей 
 
     return (
-      <Computer
+      <Map
         onClick={addMaterial}
         width={width}
       >
+        <ProgressBack />
         <Progress
           progress={progress}
         />
-      </Computer>
+      </Map>
     );
   }
 }
