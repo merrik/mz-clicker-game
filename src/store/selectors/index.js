@@ -1,6 +1,15 @@
 import {createSelector} from 'reselect';
 import * as U from "../../utils";
 import * as R from 'ramda'
+import city from '../../assets/city.svg';
+import barnaule from '../../assets/barnaul.svg';
+import megapolis from '../../assets/megapolis.svg';
+import fed from '../../assets/fed.svg';
+import halfRussia from '../../assets/halfRussia.svg';
+import russia from '../../assets/russia.svg';
+import continent from '../../assets/continent.svg';
+import world from '../../assets/world.svg';
+import zahod from '../../assets/zahod.jpg';
 
 export const courtList = [
   {name: 'мировой суд', materials: 3, productionJailed: 0.5, productionBalance: 0.5, cost: 15, rate: 1.14},
@@ -42,12 +51,16 @@ export const WORLD_POPULATION = 7530000000;
 // Континент(4.5 млрд)
 // Мир (7 млрд)
 
+const gameTitle = window.title ? window.title :'Кликер';
+
 export const stageShareList = [
   null,
   {
     isNotAchievement: true,
     point: 0,
-    title: 'ЫЫЫЫЫЫ',
+    params: [],
+    title: gameTitle,
+    backgroundImg: zahod,
     description: 'Проснувшись однажды утром после беспокойного сна, вы — Семен Богданович Хуйко, фельдфебель Центра «Э» — твердо решили искоренить экстремизм в России. Едва допив кофе, вы побежали в свой кабинет, чтобы усесться за любимый компьютер.\n' +
       '\n' +
       'Чтобы воплотить мечту в жизнь, вам необходимо собирать материалы — скриншотить картинки «ВКонтакте», кликая на компьютер. Материалы превращаются в уголовные дела и направляются в независимый суд, который сажает экстремистов. \n'
@@ -71,41 +84,57 @@ export const stageShareList = [
   {
     point: 100000,
     title: 'Город',
+    params: [['achievement', 'city']],
+    img: city,
     description: ''
   },
   {
     point: 700000,
     title: 'Барнаул',
+    params: [['achievement', 'barnaul']],
+    img: barnaule,
     description: ''
   },
   {
     point: 1500000,
     title: 'Мегаполис',
+    params: [['achievement', 'megapolis']],
+    img: megapolis,
     description: ''
   },
   {
     point: 17000000,
     title: 'Федеральный округ',
+    params: [['achievement', 'fed']],
+    img: fed,
     description: ''
   },
   {
     point: 73000000,
     title: 'Пол-России',
+    params: [['achievement', 'half_russia']],
+    img: halfRussia,
     description: ''
   },
   {
     point: RUSSIAN_POPULATION,
     title: 'Россия',
+    params: [['achievement', 'russia']],
+    img: russia,
     description: ''
   },
   {
     point: 4500000000,
     title: 'Континент',
+    params: [['achievement', 'continent']],
+    img: continent,
     description: ''
   },
   {
     point: WORLD_POPULATION,
     title: 'Мир',
+    params: [['achievement', 'world']],
+    img: world,
     description: ''
   }
 ];

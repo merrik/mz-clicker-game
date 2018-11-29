@@ -1,45 +1,32 @@
-import React from 'react';
+import {Fb, Ok, Tg, Tw, Vk} from "./icons";
+import React from "react";
 import styled from "styled-components";
-import {
-  Tg,
-  Ok,
-  Fb,
-  Tw,
-  Vk
-} from './icons';
 import * as U from "../utils";
 
-const Container = styled.span`
-  display: flex;
-  position: relative;
-  width: 100%;
-  border-bottom: 1px solid #434343;
-  align-self: flex-start;
-  font: 12px "Fira Mono";
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.5);
-  text-align: start;
-`;
-
-const ShareContainer = styled.span`
-  position: absolute;
-  top: -20px;
-  left: 40px;
+const Share = styled.span`
   a {
     margin-right: 10px;
+    :last-of-type {
+      margin-right: 0;
+    }
   }
 `;
 
-export default () => {
+export default ({params}) => {
+  let shareLink = U.getShareLink();
+
+  for(let param of params) {
+    shareLink += `&${param[0]}=${param[1]}`
+  }
+
+  const encodeLink = encodeURIComponent(shareLink);
   return (
-    <Container>
-      <ShareContainer>
-        <a><Vk/></a>
-        <a><Tw/></a>
-        <a><Fb/></a>
-        <a><Ok/></a>
-        <a><Tg/></a>
-      </ShareContainer>
-    </Container>
+    <Share>
+      <a target="_blank" href={`http://vk.com/share.php?url=${encodeLink}`}><Vk/></a>
+      <a target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeLink}`}><Tw/></a>
+      <a target="_blank" href={`https://www.facebook.com/dialog/share?app_id=1727953450799543&display=popup&href=${encodeLink}`}><Fb/></a>
+      <a target="_blank" href={`https://connect.ok.ru/offer?url=${encodeLink}`}><Ok/></a>
+      <a target="_blank" href={`https://t.me/share/url?url=${encodeLink}`}><Tg/></a>
+    </Share>
   )
 }

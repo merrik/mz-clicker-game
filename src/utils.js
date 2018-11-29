@@ -26,6 +26,12 @@ export const makeFormatM = num => {
   return intlFormat(num);
 };
 
+export const getShareLink = () => {
+  const location = window.location;
+  if(!location) return '';
+  return `${location.origin}${location.pathname}?&_share=1`;
+};
+
 export const loadState = (key) => {
     try {
       const serializedState = localStorage.getItem(key);
