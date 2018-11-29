@@ -29,12 +29,22 @@ const Upgrade = styled.div`
   }
 `;
 
+const LabelItemDescription = styled.p`
+  font: 12px 'Fira Mono';
+  line-height: 1.5;
+`;
+
 export default ({name, description, cost, isAvailable, onClick}) => {
   return (
     <Upgrade>
       <LabelItemContainer>
-        <LabelItemTitle>{name}</LabelItemTitle>
+        <LabelItemTitle>
+          {name}
+        </LabelItemTitle>
       </LabelItemContainer>
+      <LabelItemDescription>
+        {description}
+      </LabelItemDescription>
       <AddButton
         onClick={onClick}
         align={'start'}

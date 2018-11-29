@@ -65,7 +65,9 @@ export default class InformerContainer extends Component {
     return (
       <Informer>
         <TitleItemContainer>
-          <TitleItem>{name}{owned > 1 ? `(${owned})`:''}</TitleItem>
+          <TitleItem>
+            {name}{owned > 1 ? `(${owned})`:''}
+          </TitleItem>
           <AddButton
             onMouseEnter={this.handleShowUpgrade(true)}
             onMouseLeave={this.handleShowUpgrade(false)}

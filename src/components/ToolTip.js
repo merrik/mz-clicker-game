@@ -35,15 +35,15 @@ const Tooltip = styled.div`
 export default class ToolTipComponent extends Component {
   render() {
     const {
-      children
+      children,
+      description
     } = this.props;
 
     return (
       <Tooltip>
         {children}
         <span className="tooltiptext">
-          Описание параметра.
-          Паддинги этого блока — 25рх со всех сторон!
+          {description}
         </span>
       </Tooltip>
     )
