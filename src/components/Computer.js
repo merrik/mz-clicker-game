@@ -14,6 +14,29 @@ import { BUY_UPGRADE } from "../store/constants";
 
 const BUBBLES_LIMIT = 20;
 
+const closest = function(selector, ele) {
+	if(!selector || !ele) return null;
+
+	//polyfill .matches()
+	if(Element && !Element.prototype.matches) {
+		Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;
+	}
+
+	if(ele.matches(selector)) return ele; //return self if it matches
+
+	var parent = ele.parentNode;
+	var i = 0;
+
+	while(!parent.matches(selector)) {
+		parent = parent.parentNode;
+		if(parent.tagName == undefined) return null; //reached the end of the DOM tree
+		if(i >= 100) return null; //emergency break
+		i += 1;
+	}
+
+	return parent;
+}
+
 const Computer = styled.div`
   position: relative;
   width: ${props => props.width ? props.width : '484px'};
@@ -83,16 +106,17 @@ const Bubble = styled.div`
   position: absolute;
   animation: ${props => `${move(props)} 2s linear`} ;
   z-index: 2;
-  width: 40px;
-  height: 40px;
+  text-align: center;
+  /* width: 40px;
+  height: 40px; */
   opacity: 0;
-  background-image: url(${bubbleImage});
-  background-size: contain;
+  /* background-image: url(${bubbleImage}); */
+  /* background-size: contain; */
   /* background-color: red; */
   /* border-radius: 100px; */
 `;
 
-const createBubble = () => {
+const generateBubble = () => {
   return {
     posX: parseInt(Math.random() * 300),
     posY: parseInt(-100 - (Math.random() * 100)),
@@ -109,7 +133,7 @@ const initialBubbles = (length = 10) => {
   return bubbles;
 }
 
-const setBubbles = (bubbles) => bubbles
+const setBubbles = (bubbles, modifier) => bubbles
   .filter(bubble => bubble.status === 'new')
   .map(bubble => 
   (<Bubble 
@@ -117,7 +141,7 @@ const setBubbles = (bubbles) => bubbles
     posX={bubble.posX} 
     posY={bubble.posY}
     onAnimationEnd={() => bubble.status = 'end'}
-  />)
+  >+{modifier}</Bubble>)
 )
 
 const calculateProcess = (jailed) => {
@@ -130,13 +154,40 @@ export default
 @connect(state => {
   return {
     progress: calculateProcess(state.game.jailed),
-    mapType: selectMap(state.game.jailed)
+    mapType: selectMap(state.game.jailed),
+    clickModifier: state.game.clickModifier
   }
 })
 class ComputerComponent extends React.Component {
   state = {
     bubbles: initialBubbles(20)
   };
+
+  createBubble() {
+    const newBubble = generateBubble()
+    this.setState({ bubbles: this.state.bubbles.filter(bubble => bubble.status === 'new') }, () => {
+      if (this.state.bubbles.length < BUBBLES_LIMIT) {
+        this.setState({ bubbles: [...this.state.bubbles, newBubble] })
+      }
+    })
+  }
+
+  componentDidMount(){
+    document.body.addEventListener('click', this.click);
+  }
+  
+  componentWillUnmount(){
+    document.body.removeEventListener('click', this.click);
+  }
+
+  click = (ev) => {
+    const clickButton = closest('.click-button', ev.target);
+    if (clickButton) {
+      this.createBubble()
+      this.props.addMaterial()
+    }
+  }
+
   render() {
     const {
       progress,
@@ -147,21 +198,13 @@ class ComputerComponent extends React.Component {
 
     return (
       <Computer
-        onClick={() => {
-          const newBubble = createBubble()
-          this.setState({ bubbles: this.state.bubbles.filter(bubble => bubble.status === 'new') }, () => {
-            if (this.state.bubbles.length < BUBBLES_LIMIT) {
-              this.setState({ bubbles: [...this.state.bubbles, newBubble] })
-            }
-          })
-          addMaterial()
-        }}
+        className="click-button"
         width={width}
       >
         <ProgressBack width={width} />
         <Progress progress={progress} />
         <Map width={width} mapType={mapType}></Map>
-        { (this.state.bubbles.length > 0) && setBubbles(this.state.bubbles) }
+        { (this.state.bubbles.length > 0) && setBubbles(this.state.bubbles, this.props.clickModifier) }
       </Computer>
     );
   }
