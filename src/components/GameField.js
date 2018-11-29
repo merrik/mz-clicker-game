@@ -379,7 +379,6 @@ class GameField extends Component {
         {
           courtsAvailable ? (
             <ShareGameArea
-              params={params}
             />
           ) : null
         }

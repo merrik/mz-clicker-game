@@ -25,10 +25,17 @@ const ShareContainer = styled.span`
 export default
 @connect((state) => {
   return {
-    params
+    params: [['jailed', parseInt(state.game.jailed, 10)]]
   }
 })
 class ShareGameArea extends Component {
+  refreshDate = Date.now();
+  shouldComponentUpdate() {
+    return Date.now() - this.refreshDate > 5000;
+  }
+  componentDidUpdate(){
+    this.refreshDate = Date.now();
+  }
   render() {
     const {params} = this.props;
     return <Container>
