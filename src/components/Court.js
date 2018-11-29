@@ -74,13 +74,14 @@ export default class CourtComponent extends Component {
       upgradeCost,
       oneProductionJailed,
       oneProductionBalance,
-      oneMaterials
+      oneMaterials,
+      owned
     } = court;
 
     return (
       <Court>
         <TitleItemContainer>
-          <TitleItem>{name}</TitleItem>
+          <TitleItem>{name}{owned>1?`(${owned})`:''}</TitleItem>
           <AddButton
             onMouseOver={this.handleShowUpgrade(true)}
             onMouseOut={this.handleShowUpgrade(false)}

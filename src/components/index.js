@@ -8,6 +8,12 @@ export const GameArea = styled.div`
   margin: 0 auto;
   margin-bottom: 25px;
   margin-top: 115px;
+  @media screen and (max-width: 1000px)  {
+    width: 100vw;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin: 40px 0 0 0;
+  }
 `;
 
 export const Head = styled.div`
@@ -17,6 +23,9 @@ export const Head = styled.div`
   justify-content: center;
   align-items: start;
   margin-bottom: 45px;
+  @media screen and (max-width: 1000px)  {
+    flex-direction: column;
+  }
 `;
 
 export const Main = styled.div`
@@ -25,6 +34,14 @@ export const Main = styled.div`
   margin-top: 15px;
   justify-content: start;
   align-items: start;
+  @media screen and (max-width: 1000px)  {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 400px;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+  }
 `;
 
 export const AddButton = styled.button`
@@ -108,6 +125,15 @@ export const Column = styled.div`
   :last-of-type {
     margin-right: 0;
   }
+  @media screen and (max-width: 1000px)  {
+    max-width: unset;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30px;
+    :first-child {
+      margin-top: 30px;
+    }
+  }
 `;
 export const TitleColumn = styled.h2`
   display: flex;
@@ -142,6 +168,11 @@ export const MainStatisticsContainer = styled.div`
     :last-of-type {
       margin-bottom: 0;
     }
+  }
+  @media screen and (max-width: 1000px)  {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
   }
 `;
 
@@ -181,9 +212,31 @@ export const ColumnMainStatistics = styled.div`
   }
 `;
 
+export const CircleLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  align-self: center;
+  @media screen and (max-width: 1000px)  {
+    justify-content: space-between;
+    align-content: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    :first-child{
+      margin-bottom: 10px;
+    }
+  }
+`
+
 export const Circle = styled.span`
   width: 50px;
   height: 50px;
+  @media screen and (max-width: 1000px)  {
+    width: 50px;
+    height: 50px;
+    margin-right: 0;
+  }
   margin-right: 27px;
   background-color: ${props => props.test ? 'red' : 'auto'};
   border-radius: 100%;
@@ -199,6 +252,11 @@ export const AchievementContainer = styled.div`
   align-content: flex-start;
   align-self: center;
   margin-top: 25px;
+  @media screen and (max-width: 1000px)  {
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 export const ClickButton = styled.span`
@@ -216,4 +274,7 @@ export const ClickButton = styled.span`
   text-transform: uppercase;
   cursor: pointer;
   user-select: none;
+  @media screen and (max-width: 1000px)  {
+    width: 100%;
+  }
 `;

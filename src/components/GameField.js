@@ -119,7 +119,8 @@ const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
       name,
       production,
       upgradeCost,
-      oneProduction
+      oneProduction,
+      owned
     } = informer;
 
     return (
@@ -130,6 +131,7 @@ const informersArray = ({informers, informersOwned, updateInformer, balance}) =>
         oneProduction={oneProduction}
         balance={balance}
         updateCost={upgradeCost}
+        owned={owned}
         enoughBudget={balance >= upgradeCost}
         updateInformer={
           () => {
