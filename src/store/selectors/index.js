@@ -695,8 +695,8 @@ const upgradesListNotIndex = [
   [
     35,
     {
-      name: 'Первый доносчик эффективнее 1',
-      description:  '',
+      name: 'Пинок',
+      description:  'Студент юрфака стал в два раза эффективнее',
       cost: 130,
       point: 2,
       informerIndex: '0',
@@ -710,7 +710,7 @@ const upgradesListNotIndex = [
   [
     36,
     {
-      name: 'Первый доносчик эффективнее 2',
+      name: 'Засекречивание',
       description:  '',
       cost: 192,
       point: 5,
@@ -725,7 +725,7 @@ const upgradesListNotIndex = [
   [
     37,
     {
-      name: 'Первый доносчик эффективнее 3',
+      name: 'Проставление практики',
       description:  '',
       cost: 2655,
       point: 25,
@@ -740,7 +740,7 @@ const upgradesListNotIndex = [
   [
     38,
     {
-      name: 'Первый доносчик эффективнее 4',
+      name: 'Повышение до стажера',
       description:  '',
       cost: 70000,
       point: 50,
@@ -755,7 +755,7 @@ const upgradesListNotIndex = [
   [
     39,
     {
-      name: 'Первый доносчик эффективнее 5',
+      name: 'Выдача погонов',
       description:  '',
       cost: 49000000,
       point: 100,
@@ -770,7 +770,7 @@ const upgradesListNotIndex = [
   [
     40,
     {
-      name: 'Второй доносчик эффективнее 1',
+      name: 'Святость',
       description:  '',
       cost: 650,
       point: 2,
@@ -785,7 +785,7 @@ const upgradesListNotIndex = [
   [
     41,
     {
-      name: 'Второй доносчик эффективнее 2',
+      name: '«Радонеж»',
       description:  '',
       cost: 960,
       point: 5,
@@ -800,7 +800,7 @@ const upgradesListNotIndex = [
   [
     42,
     {
-      name: 'Второй доносчик эффективнее 3',
+      name: 'Компьютерные курсы',
       description:  '',
       cost: 13250,
       point: 25,
@@ -815,7 +815,7 @@ const upgradesListNotIndex = [
   [
     43,
     {
-      name: 'Второй доносчик эффективнее 4',
+      name: 'Кагор с кофеином',
       description:  '',
       cost: 350000,
       point: 50,
@@ -830,7 +830,7 @@ const upgradesListNotIndex = [
   [
     44,
     {
-      name: 'Третий доносчик эффективнее 1',
+      name: 'Пузырь спирту',
       description:  '',
       cost: 2600,
       point: 2,
@@ -845,7 +845,7 @@ const upgradesListNotIndex = [
   [
     45,
     {
-      name: 'Третий доносчик эффективнее 2',
+      name: 'Кибернагайки',
       description:  '',
       cost: 3850,
       point: 5,
@@ -860,7 +860,7 @@ const upgradesListNotIndex = [
   [
     46,
     {
-      name: 'Третий доносчик эффективнее 3',
+      name: 'Контракт с МВД',
       description:  '',
       cost: 53000,
       point: 25,
@@ -875,7 +875,7 @@ const upgradesListNotIndex = [
   [
     47,
     {
-      name: 'Третий доносчик эффективнее 4',
+      name: 'Медали за интернет-оборону',
       description:  '',
       cost: 1400000,
       point: 50,
@@ -890,7 +890,7 @@ const upgradesListNotIndex = [
   [
     48,
     {
-      name: 'Четвертый доносчик эффективнее 1',
+      name: 'Новый алгоритм',
       description:  '',
       cost: 19500,
       point: 2,
@@ -905,7 +905,7 @@ const upgradesListNotIndex = [
   [
     49,
     {
-      name: 'Четвертый доносчик эффективнее 2',
+      name: 'Армия ботов',
       description:  '',
       cost: 30000,
       point: 5,
@@ -920,7 +920,7 @@ const upgradesListNotIndex = [
   [
     50,
     {
-      name: 'Четвертый доносчик эффективнее 3',
+      name: 'Логин по паспорту',
       description:  '',
       cost: 400000,
       point: 25,
@@ -935,7 +935,7 @@ const upgradesListNotIndex = [
   [
     51,
     {
-      name: 'Четвертый доносчик эффективнее 4',
+      name: 'Распознавание лиц',
       description:  '',
       cost: 10500000,
       point: 50,
@@ -950,7 +950,7 @@ const upgradesListNotIndex = [
   [
     52,
     {
-      name: 'Пятый доносчик эффективнее 1',
+      name: 'Перевыполненный план',
       description:  '',
       cost: 52000,
       point: 2,
@@ -965,7 +965,7 @@ const upgradesListNotIndex = [
   [
     53,
     {
-      name: 'Пятый доносчик эффективнее 2',
+      name: 'Куратор в каждый дом',
       description:  '',
       cost: 77000,
       point: 5,
@@ -980,7 +980,7 @@ const upgradesListNotIndex = [
   [
     54,
     {
-      name: 'Пятый доносчик эффективнее 3',
+      name: 'СОРМ-4',
       description:  '',
       cost: 1050000,
       point: 25,
@@ -995,7 +995,7 @@ const upgradesListNotIndex = [
   [
     55,
     {
-      name: 'Пятый доносчик эффективнее 4',
+      name: 'Курсы подготовки спецназа',
       description:  '',
       cost: 28009000,
       point: 50,
@@ -1010,7 +1010,7 @@ const upgradesListNotIndex = [
   [
     56,
     {
-      name: 'Шестой доносчик эффективнее 1',
+      name: 'Российский генерал',
       description:  '',
       cost: 195000,
       point: 2,
@@ -1025,7 +1025,7 @@ const upgradesListNotIndex = [
   [
     57,
     {
-      name: 'Шестой доносчик эффективнее 2',
+      name: 'Превентивный арест',
       description:  '',
       cost: 290000,
       point: 5,
@@ -1040,7 +1040,7 @@ const upgradesListNotIndex = [
   [
     58,
     {
-      name: 'Шестой доносчик эффективнее 3',
+      name: 'Доступ к видеокамерам',
       description:  '',
       cost: 3900000,
       point: 25,
@@ -1055,7 +1055,7 @@ const upgradesListNotIndex = [
   [
     59,
     {
-      name: 'Шестой доносчик эффективнее 4',
+      name: 'Ключи шифрования от Telegram',
       description:  '',
       cost: 105000000,
       point: 50,
@@ -1070,7 +1070,7 @@ const upgradesListNotIndex = [
   [
     60,
     {
-      name: 'Седьмой доносчик эффективнее 1',
+      name: 'Полный контроль соцсетей',
       description:  '',
       cost: 1040000,
       point: 2,
@@ -1085,7 +1085,7 @@ const upgradesListNotIndex = [
   [
     61,
     {
-      name: 'Седьмой доносчик эффективнее 2',
+      name: 'Анализ трафика',
       description:  '',
       cost: 1540000,
       point: 5,
@@ -1100,7 +1100,7 @@ const upgradesListNotIndex = [
   [
     62,
     {
-      name: 'Седьмой доносчик эффективнее 3',
+      name: 'Посадки за просмотр',
       description:  '',
       cost: 20000000,
       point: 25,
@@ -1115,7 +1115,7 @@ const upgradesListNotIndex = [
   [
     63,
     {
-      name: 'Седьмой доносчик эффективнее 4',
+      name: 'Чтение мыслей',
       description:  '',
       cost: 560000000,
       point: 50,
@@ -1354,6 +1354,66 @@ const upgradesListNotIndex = [
         ['informerModifier', 1],
         ['courtsModifierBalance', 1],
         ['courtsModifierBalance', 1],
+      ]
+    }
+  ],
+  [
+    82,
+    {
+      name: 'Упрощенный документооборот',
+      description:  'Из-за меньшего количества бумажной волокиты вы можете работать эффективнее. Один клик создает 5 материалов',
+      cost: 5000,
+      jailedPoint: 10000,
+      buffs: [
+        ['clickModifier', 4]
+      ]
+    }
+  ],
+  [
+    83,
+    {
+      name: 'Новые кадры',
+      description:  'Ваше подразделение расширяется — теперь вы и ваши коллеги могут скриншотить больше картинок. Один клик создает 50 материалов.',
+      cost: 100000,
+      jailedPoint: 250000,
+      buffs: [
+        ['clickModifier', 45]
+      ]
+    }
+  ],
+  [
+    84,
+    {
+      name: 'Антиэкстремистская повинность',
+      description:  'Новый закон, который вынуждает всех граждан тратить час времени на помощь вашему подразделению. Один клик — 500 материалов.',
+      cost: 400000,
+      jailedPoint: 1000000,
+      buffs: [
+        ['clickModifier', 450]
+      ]
+    }
+  ],
+  [
+    85,
+    {
+      name: 'Нейроимпланты',
+      description:  'Экспериментальные технологии на страже общественной безопасности. Один клик — 5000 материалов',
+      cost: 50000000,
+      jailedPoint: 100000000,
+      buffs: [
+        ['clickModifier', 4500]
+      ]
+    }
+  ],
+  [
+    86,
+    {
+      name: 'Турбореактивный ускоритель для пальцев',
+      description:  'Предел человеческой производительности. Один клик создает 50000 материалов',
+      cost: 1200000000,
+      jailedPoint: 2000000000,
+      buffs: [
+        ['clickModifier', 45000]
       ]
     }
   ],
