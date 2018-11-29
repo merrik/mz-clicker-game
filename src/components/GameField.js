@@ -19,7 +19,7 @@ import Computer from './Computer';
 import Court from './Court';
 import Informer from './Informer'
 import Upgrade from './Upgrade';
-import Share from './Share';
+import ShareGameArea from './ShareGameArea';
 import {
   Column,
   Row,
@@ -219,6 +219,7 @@ class GameField extends Component {
     }
 
     const courtsAvailable = allMaterials >= progressPoint.courtsAvailable;
+    const params = [['jailed', parseInt(jailed)]];
 
     return (
       <GameArea>
@@ -226,6 +227,8 @@ class GameField extends Component {
           <Modal
             title={stage.title}
             text={stage.description}
+            params={stage.params}
+            backgroundImg={stage.backgroundImg}
             fadeIn={isOpenModal}
             handleClose={this.handleClose}
           />
@@ -252,7 +255,9 @@ class GameField extends Component {
         </Head>
         {
           courtsAvailable ? (
-            <Share/>
+            <ShareGameArea
+              params={params}
+            />
           ) : null
         }
         <Main>
