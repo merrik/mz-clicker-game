@@ -1,38 +1,39 @@
 const GAME_NAME = 'clicker_game';
 
 let startTime = 0;
+let allTime = 0;
 const GAGameStart = () => {
   if (window.ga) {
+    const isStarted = localStorage.getItem('isStarted');
+    if (!isStarted) {
+        window.ga('send', 'event', GAME_NAME, 'start_game_uniq');
+        localStorage.setItem('isStarted', `true`);
+    }
+
     window.ga('send', 'event', GAME_NAME, 'start_game');
 
     startTime = Date.now();
+    allTime = parseInt(localStorage.getItem('alltime')) || 0;
+
     setInterval(() => {
       const now = Date.now();
-      const allTime = localStorage.getItem('alltime');
-      const newAllTime = 
-      window.ga('send', 'event', GAME_NAME, 'game_duration_alltime', currentTime.toString());
+
+      allTime = allTime + 5;
+      localStorage.setItem('alltime', `${allTime}`);
+      window.ga('send', 'event', GAME_NAME, 'game_duration_alltime_sec', `${allTime}`);
+
       const currentTime = parseInt((now - startTime) / 1000);
-      window.ga('send', 'event', GAME_NAME, 'game_duration', currentTime.toString());
+      window.ga('send', 'event', GAME_NAME, 'game_duration_sec', `${currentTime}`);
     }, 5000)
   } else {
     console.error('No GA in WINDOW')
   }
 };
 
-
-
 //C.ADD_MATERIAL
 const GAClicks = (count) => {
     if (window.ga) {
-        window.ga('send', 'event', GAME_NAME, 'game_clics', count.toString());
-    } else {
-        console.error('No GA in WINDOW')
-    }
-};
-
-const GAFirstBuy = (item) => {
-    if (window.ga) {
-        window.ga('send', 'event', GAME_NAME, 'game_first_buy', item);
+        window.ga('send', 'event', GAME_NAME, 'game_clics', `${count}`);
     } else {
         console.error('No GA in WINDOW')
     }
@@ -41,7 +42,13 @@ const GAFirstBuy = (item) => {
 //C.BUY_UPGRADE
 const GABuy = (item) => {
     if (window.ga) {
-        window.ga('send', 'event', GAME_NAME, 'game_buy', item);
+        const bought = localStorage.getItem(`game_first_buy_${item}`);
+        if (!bought) {
+            window.ga('send', 'event', GAME_NAME, 'game_first_buy', `${item}`);
+            localStorage.setItem(`game_first_buy_${item}`, `true`);
+        }
+
+        window.ga('send', 'event', GAME_NAME, 'game_buy', `${item}`);
     } else {
         console.error('No GA in WINDOW')
     }
@@ -50,7 +57,7 @@ const GABuy = (item) => {
 //C.SET_SHOWED_SHARE_BANNER
 const GAReachedStage = (stageIndex) => {
     if (window.ga) {
-        window.ga('send', 'event', GAME_NAME, 'game_stage_reached', stageIndex.toString());
+        window.ga('send', 'event', GAME_NAME, 'game_stage_reached', `${stageIndex}`);
     } else {
         console.error('No GA in WINDOW')
     }
@@ -68,7 +75,6 @@ const GAGameRestart = (stageIndex) => {
 export {
   GAGameStart,
   GAClicks,
-  GAFirstBuy,
   GABuy,
   GAReachedStage,
   GAGameRestart
