@@ -4,13 +4,16 @@ import {
   stageShareList
 } from '../store/selectors';
 import russiaMap from '../assets/russiaMap.png';
+import worldMap from '../assets/worldMap.png';
+
+import { RUSSIAN_POPULATION, WORLD_POPULATION } from '../store/selectors';
 
 const Computer = styled.div`
   position: relative;
   width: ${props => props.width ? props.width : '484px'};
+  max-width: 326px;
   height: 235px;
   @media screen and (max-width: 1000px)  {
-    max-width: 326px;
     left: 50%;
     transform: translate3d(-50%, 0, 0);
     width: 100%;
@@ -21,9 +24,8 @@ const Computer = styled.div`
 const Map = styled.div`
   position: relative;
   cursor: pointer;
-  /* width: ${props => props.width ? props.width : '484px'}; */
   height: 235px;
-  background-image: url(${russiaMap});
+  background-image: url(${props => props.mapType});
   background-repeat: no-repeat;
   @media screen and (max-width: 1000px)  {
     width: 100%;
@@ -66,10 +68,10 @@ export default class ComputerComponent extends React.Component {
       addMaterial
     } = this.props;
 
-    const progress = Math.min(jailed / 146000000, 1).toFixed(2);
-    console.log()
-    // 300px / 58 частей 
-    // const progress = 0.75
+    const overRussia = jailed > RUSSIAN_POPULATION;
+    const mapType = overRussia ? worldMap : russiaMap;
+    const targetPopulation = overRussia ? WORLD_POPULATION : RUSSIAN_POPULATION;
+    const progress = Math.min(jailed / targetPopulation, 1).toFixed(2);
 
     return (
       <Computer
@@ -78,7 +80,7 @@ export default class ComputerComponent extends React.Component {
       >
         <ProgressBack width={width} />
         <Progress progress={progress} />
-        <Map width={width}></Map>
+        <Map width={width} mapType={mapType}></Map>
       </Computer>
     );
   }
