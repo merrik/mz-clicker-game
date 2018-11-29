@@ -7,13 +7,19 @@ const GAGameStart = () => {
 
     startTime = Date.now();
     setInterval(() => {
-      const currentTime = parseInt((Date.now() - startTime) / 1000);
+      const now = Date.now();
+      const allTime = localStorage.getItem('alltime');
+      const newAllTime = 
+      window.ga('send', 'event', GAME_NAME, 'game_duration_alltime', currentTime.toString());
+      const currentTime = parseInt((now - startTime) / 1000);
       window.ga('send', 'event', GAME_NAME, 'game_duration', currentTime.toString());
     }, 5000)
   } else {
     console.error('No GA in WINDOW')
   }
 };
+
+
 
 //C.ADD_MATERIAL
 const GAClicks = (count) => {
