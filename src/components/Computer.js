@@ -42,6 +42,7 @@ const Computer = styled.div`
   width: ${props => props.width ? props.width : '484px'};
   max-width: 326px;
   height: 235px;
+  user-select: none;
   @media screen and (max-width: 1000px)  {
     left: 50%;
     transform: translate3d(-50%, 0, 0);
@@ -56,6 +57,7 @@ const Map = styled.div`
   height: 235px;
   background-image: url(${props => props.mapType});
   background-repeat: no-repeat;
+  user-select: none;
   @media screen and (max-width: 1000px)  {
     width: 100%;
     height: 0;
@@ -71,6 +73,7 @@ const ProgressBack = styled.div`
   width: 300px;
   height: 163px;
   background-color: white;
+  user-select: none;
   @media screen and (max-width: 1000px)  {
     width: 100%
   }
@@ -83,6 +86,7 @@ const Progress = styled.div`
   width: ${props => `${props.progress * 300}px`};
   height: 163px;
   background-color: #0a9a8d;
+  user-select: none;
   @media screen and (max-width: 1000px)  {
     width: ${props => `${props.progress * 100}%`};
   }
