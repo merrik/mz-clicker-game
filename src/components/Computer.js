@@ -21,7 +21,7 @@ const Computer = styled.div`
 const Map = styled.div`
   position: relative;
   cursor: pointer;
-  width: ${props => props.width ? props.width : '484px'};
+  /* width: ${props => props.width ? props.width : '484px'}; */
   height: 235px;
   background-image: url(${russiaMap});
   background-repeat: no-repeat;
@@ -40,16 +40,23 @@ const ProgressBack = styled.div`
   width: 300px;
   height: 163px;
   background-color: white;
+  @media screen and (max-width: 1000px)  {
+    width: 100%
+  }
 `;
 
 const Progress = styled.div`
   box-sizing: border-box;
   position: absolute;
   z-index: -1;
-  width: ${props => `${props.progress}px`};
+  width: ${props => `${props.progress * 300}px`};
   height: 163px;
   background-color: red;
+  @media screen and (max-width: 1000px)  {
+    width: ${props => `${props.progress * 100}%`};
+  }
 `;
+
 
 export default class ComputerComponent extends React.Component {
   render() {
@@ -59,19 +66,19 @@ export default class ComputerComponent extends React.Component {
       addMaterial
     } = this.props;
 
-    const progress = parseInt(Math.min(jailed / 146000000, 1) * 300);
+    const progress = Math.min(jailed / 146000000, 1).toFixed(2);
+    console.log()
     // 300px / 58 частей 
+    // const progress = 0.75
 
     return (
       <Computer
         onClick={addMaterial}
         width={width}
       >
-        <Map width={width}>
-          <Progress
-            progress={progress}
-          />
-        </Map>
+        <ProgressBack width={width} />
+        <Progress progress={progress} />
+        <Map width={width}></Map>
       </Computer>
     );
   }
