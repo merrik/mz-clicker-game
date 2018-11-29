@@ -76,6 +76,8 @@ const Column = styled.div`
 const Title = styled.h2`
   margin: 0;
   margin-bottom: 28px;
+  padding-left: 20px;
+  padding-right: 20px;
   font: bold 44px 'Graphik LC';
   color: black;
   text-align: center;

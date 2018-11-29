@@ -89,7 +89,7 @@ const initialState = {
   materials: 0,
 
   jailed: 0,
-  balance: 100000000,
+  balance: 0,
 
   courts: [1],
   upgrades: [],

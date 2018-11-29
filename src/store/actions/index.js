@@ -86,8 +86,8 @@ export const resetGame = () => {
 export const setShowedShareBanner = (index) => {
   analytic.GAReachedStage(index);
   return {
-  type: C.SET_SHOWED_SHARE_BANNER,
-  index
+    type: C.SET_SHOWED_SHARE_BANNER,
+    index
   }
 }
 

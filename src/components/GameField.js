@@ -36,6 +36,7 @@ import MinStatistics from './MinStatistics';
 import * as S from '../store/selectors';
 import * as U from "../utils";
 import * as PropTypes from "prop-types";
+import * as analytic from '../analytics';
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -301,10 +302,14 @@ Upgrades.propTypes = {upgradesBuyUpgradeIsAvailable: PropTypes.any};
 class GameField extends Component {
   state = {
     isOpenModal: false,
-    stage: {}
+    stage: {},
+    stageIndex: 0
   };
 
   handleClose = () => {
+    if (this.state.stageIndex === 1) {
+      analytic.GAGameStart();
+    }
     this.setState({
       isOpenModal: false
     });
@@ -322,6 +327,7 @@ class GameField extends Component {
 
     if (shareStage > 0 && shareStage < stageShareList.length) {
       this.setState({
+        stageIndex: shareStage,
         stage: stageShareList[shareStage],
         isOpenModal: true
       });
