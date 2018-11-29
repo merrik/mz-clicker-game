@@ -65,7 +65,6 @@ class MinStatistics extends Component {
           <Computer
             jailed={jailed}
             addMaterial={addMaterial}
-            width={'325px'}
           />
           <ProgressContainer>
             <MiniStatisticProgressBar

@@ -7,7 +7,7 @@ export const GameArea = styled.div`
   width: 1000px;
   margin: 0 auto;
   margin-bottom: 25px;
-  margin-top: 115px;
+  margin-top: 40px;
   @media screen and (max-width: 1000px)  {
     width: 100vw;
     padding: 0 10px;
@@ -53,7 +53,7 @@ export const AddButton = styled.button`
   float: right;
   min-width: ${props => props.minWidth ? props.minWidth : '85px'};
   font: bold 12px "Fira Mono";
-  color: #ff8b86;
+  color: #0a9a8d;
   line-height: 1.5;
   cursor: pointer;
   text-transform: uppercase;
@@ -62,7 +62,7 @@ export const AddButton = styled.button`
    color: white;
   }
   :disabled {
-    color: rgba(255, 139, 134, 0.5);
+    color: rgba(10, 154, 141, 0.5);
   }
 `;
 
@@ -73,7 +73,7 @@ export const TitleItemContainer = styled.div`
 
 export const TitleItem = styled.h4`
   font: bold 12px "Fira Mono";
-  color: #ff8b86;
+  color: #0a9a8d;
   line-height: 1.5;
   letter-spacing: 2px;
   color: #ffffff;
@@ -177,13 +177,28 @@ export const MainStatisticsContainer = styled.div`
 `;
 
 export const MiniStatistic = styled.div`
+  transform-style: preserve-3d;
+  perspective: 100px;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  position: fixed;
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;  
+  transform: translateZ(100px);
   display: flex;
   font: bold 14px "Fira Mono";
   flex-direction: column;
-  width: 300px;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: center;
+  @media screen and (max-width: 1000px)  {
+    width: 300px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
 `;
 
 export const MiniStatisticProgressBar = styled.div`
@@ -217,8 +232,8 @@ export const CircleLine = styled.div`
   flex-direction: row;
   align-content: flex-start;
   align-self: center;
-  :first-child{
-    margin-right: 25px;
+  :first-child {
+    margin-right: 27px;
   }
   @media screen and (max-width: 1000px)  {
     justify-content: space-between;
@@ -227,24 +242,40 @@ export const CircleLine = styled.div`
     box-sizing: border-box;
     padding: 0 5px;
     :first-child{
+      margin-right: 0;
       margin-bottom: 10px;
-    }
+    }   
   }
 `
 
-export const Circle = styled.span`
+export const Circle = styled.img`
   width: 50px;
   height: 50px;
+  cursor: pointer;
   @media screen and (max-width: 1000px)  {
     width: 50px;
     height: 50px;
     margin-right: 0;
   }
   margin-right: 27px;
-  background-color: ${props => props.test ? 'red' : 'auto'};
   border-radius: 100%;
-  border: 1px solid #434343;
   :last-child {
+    margin-right: 0;
+  }
+`;
+
+export const CircleEmpty = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 1px solid #434343;
+  @media screen and (max-width: 1000px)  {
+    width: 50px;
+    height: 50px;
+    margin-right: 0;
+  }
+  margin-right: 27px;
+  border-radius: 100%;
+  :last-child{
     margin-right: 0;
   }
 `;
@@ -273,7 +304,7 @@ export const ClickButton = styled.span`
   margin: 0 auto;
   margin-top: 30px;
   border-radius: 24.5px;
-  background-color: #ff8b86;
+  background-color: #0a9a8d;
   text-transform: uppercase;
   cursor: pointer;
   user-select: none;

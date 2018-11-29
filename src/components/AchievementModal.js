@@ -27,7 +27,7 @@ const Overlay = styled.div`
   justify-content: center;
   position: fixed;
   overflow-y: hidden;
-  background: ${props => props.backgroundImg ? `linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url(${props.backgroundImg}) bottom;` : 'rgba(0, 0, 0, 0.9)'};
+  background: rgba(0, 0, 0, 0.9);
   width: 100%;
   height: 100%;
   top: 0;
@@ -38,6 +38,10 @@ const Overlay = styled.div`
 `;
 
 const Modal = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
   box-sizing: border-box;
   overflow-y: scroll;
@@ -46,7 +50,8 @@ const Modal = styled.div`
   max-width: 95%;
   max-height: 90%;
   padding: 0 20px;
-  min-width: 320px;
+  width: 450px;
+  min-height: 460px;
   background: ${props => props.background ? props.background : 'auto'};
   animation: ${props => props.fadeIn ? `${show} 0.5s linear` : null};
   @media screen and (max-width: 1000px)  {
@@ -72,7 +77,7 @@ const Title = styled.h2`
   margin: 0;
   margin-bottom: 28px;
   font: bold 44px 'Graphik LC';
-  color: #ffffff;
+  color: black;
   text-align: center;
 `;
 
@@ -105,6 +110,13 @@ const ShareContainer = styled.div`
   margin-top: 30px;
 `;
 
+const ImgCircle = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  margin-bottom: 20px;
+`;
+
 export default class ModalContainer extends Component {
   scrollRef;
 
@@ -127,6 +139,12 @@ export default class ModalContainer extends Component {
     document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 
+  hideModalOverlay = (e) => {
+    if (e.target === e.currentTarget) {
+      this.props.handleClose();
+    }
+  };
+
 
   render() {
     const {
@@ -137,15 +155,17 @@ export default class ModalContainer extends Component {
       text,
       params,
       acceptText,
-      backgroundImg
+      img
     } = this.props;
     return (
-      <Overlay fadeIn={fadeIn}
-               backgroundImg={backgroundImg}
-               innerRef={(node) => {this.scrollRef = node}}
-      >
+      <Overlay onClick={this.hideModalOverlay} fadeIn={fadeIn} innerRef={(node) => {this.scrollRef = node}}>
         <Modal fadeIn={fadeIn} background={background}>
           <Column>
+            {img ? (
+              <ImgCircle
+                src={img}
+              />
+            ) : null}
             <Title>{title}</Title>
             {text ? (
               <Description>{text}</Description>
