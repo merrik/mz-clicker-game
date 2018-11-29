@@ -34,10 +34,17 @@ export default class InformerContainer extends Component {
 
   componentDidUpdate(next) {
     const {
-      updateCost
+      upgradable
     } = next;
 
+
     if(!this.state.isShowUpgrade) return;
+
+    if(!upgradable) {
+      this.setState({
+        isShowUpgrade: false
+      })
+    }
   }
 
   render() {
@@ -58,7 +65,9 @@ export default class InformerContainer extends Component {
     return (
       <Informer>
         <TitleItemContainer>
-          <TitleItem>{name}{owned > 1 ? `(${owned})`:''}</TitleItem>
+          <TitleItem>
+            {name}{owned > 1 ? `(${owned})`:''}
+          </TitleItem>
           <AddButton
             onMouseEnter={this.handleShowUpgrade(true)}
             onMouseLeave={this.handleShowUpgrade(false)}
@@ -69,8 +78,7 @@ export default class InformerContainer extends Component {
         <LabelItemContainer>
           <LabelItemTitle>Доносов:</LabelItemTitle>
           <LabelIncome
-            disabled={!upgradable}
-            isShowUpgrade={isShowUpgrade}
+            isShowUpgrade={isShowUpgrade && upgradable}
           >
             +{U.makeFormatM(oneProduction)}
           </LabelIncome>
