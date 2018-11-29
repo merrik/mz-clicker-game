@@ -34,10 +34,17 @@ export default class InformerContainer extends Component {
 
   componentDidUpdate(next) {
     const {
-      updateCost
+      upgradable
     } = next;
 
+
     if(!this.state.isShowUpgrade) return;
+
+    if(!upgradable) {
+      this.setState({
+        isShowUpgrade: false
+      })
+    }
   }
 
   render() {
@@ -69,8 +76,7 @@ export default class InformerContainer extends Component {
         <LabelItemContainer>
           <LabelItemTitle>Доносов:</LabelItemTitle>
           <LabelIncome
-            disabled={!upgradable}
-            isShowUpgrade={isShowUpgrade}
+            isShowUpgrade={isShowUpgrade && upgradable}
           >
             +{U.makeFormatM(oneProduction)}
           </LabelIncome>

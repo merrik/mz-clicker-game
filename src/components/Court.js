@@ -42,10 +42,17 @@ export default class CourtComponent extends Component {
     } = next;
 
     const {
-      upgradeCost
+      upgradable
     } = court;
 
     if(!this.state.isShowUpgrade) return;
+
+    if(!upgradable) {
+      this.setState({
+        isShowUpgrade: false
+      })
+    }
+
   }
 
   render() {
@@ -88,7 +95,7 @@ export default class CourtComponent extends Component {
           <LabelItemTitle>Расход материалов м/c&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
-              isShowUpgrade={isShowUpgrade}
+              isShowUpgrade={isShowUpgrade && upgradable}
             >
               +{U.makeFormatM(oneMaterials)}
             </LabelIncome>
@@ -99,7 +106,7 @@ export default class CourtComponent extends Component {
           <LabelItemTitle>Скорость посадки п/c&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
-              isShowUpgrade={isShowUpgrade}
+              isShowUpgrade={isShowUpgrade && upgradable}
             >
               +{U.makeFormatM(oneProductionJailed)}
             </LabelIncome>
@@ -110,7 +117,7 @@ export default class CourtComponent extends Component {
           <LabelItemTitle>Инкам бюджета&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
-              isShowUpgrade={isShowUpgrade}
+              isShowUpgrade={isShowUpgrade && upgradable}
             >
               +{U.makeFormatM(oneProductionBalance)}
             </LabelIncome>

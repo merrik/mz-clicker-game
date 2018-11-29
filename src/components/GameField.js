@@ -217,7 +217,7 @@ class Informers extends Component {
             }
           }
         />)
-    })
+    });
     return <Column maxWidth={"330px"}>
       <TitleColumn>Доносчики</TitleColumn>
       {informersExists}
