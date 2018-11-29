@@ -194,6 +194,11 @@ export const MiniStatistic = styled.div`
   display: flex;
   font: bold 14px "Fira Mono";
   flex-direction: column;
+  @media screen and (max-width: 1000px)  {
+    width: 300px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
 `;
 
 export const MiniStatisticProgressBar = styled.div`

@@ -27,7 +27,7 @@ const Overlay = styled.div`
   justify-content: center;
   position: fixed;
   overflow-y: hidden;
-  background: ${props => props.backgroundImg ? `url(${props.backgroundImg})` : 'rgba(0, 0, 0, 0.9)'};
+  background: ${props => props.backgroundImg ? `linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url(${props.backgroundImg}) bottom;` : 'rgba(0, 0, 0, 0.9)'};
   width: 100%;
   height: 100%;
   top: 0;
