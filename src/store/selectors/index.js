@@ -38,6 +38,9 @@ export const progressPoint = {
   informersAvailable: 10
 };
 
+export const RUSSIAN_POPULATION = 146880000;
+export const WORLD_POPULATION = 7530000000;
+
 
 // Я посадил целый город (100 тысяч посаженных)
 // Я посадил Барнаул (БАРНАУЛ АЛТАЙСКИЙ КРАЙ) (700 тысяч)
@@ -114,7 +117,7 @@ export const stageShareList = [
     description: ''
   },
   {
-    point: 146000000,
+    point: RUSSIAN_POPULATION,
     title: 'Россия',
     params: [['achievement', 'russia']],
     img: russia,
@@ -128,7 +131,7 @@ export const stageShareList = [
     description: ''
   },
   {
-    point: 7000000000,
+    point: WORLD_POPULATION,
     title: 'Мир',
     params: [['achievement', 'world']],
     img: world,
