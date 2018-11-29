@@ -39,21 +39,22 @@ const Overlay = styled.div`
 
 const Modal = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   box-sizing: border-box;
-  overflow-y: scroll;
+  overflow: hidden;
   z-index: 9999;
   opacity: 1;
-  max-width: 95%;
-  max-height: 90%;
-  padding: 0 20px;
   width: 450px;
-  min-height: 460px;
+  min-height: 450px;
   background: ${props => props.background ? props.background : 'auto'};
   animation: ${props => props.fadeIn ? `${show} 0.5s linear` : null};
+  > .ps__rail-y {
+    display: none;
+  }
   @media screen and (max-width: 1000px)  {
     width: 100%;
   }
@@ -160,8 +161,8 @@ export default class ModalContainer extends Component {
       img
     } = this.props;
     return (
-      <Overlay onClick={this.hideModalOverlay} fadeIn={fadeIn} innerRef={(node) => {this.scrollRef = node}}>
-        <Modal fadeIn={fadeIn} background={background}>
+      <Overlay onClick={this.hideModalOverlay} fadeIn={fadeIn}>
+        <Modal innerRef={(node) => {this.scrollRef = node}} fadeIn={fadeIn} background={background}>
           <Column>
             {img ? (
               <ImgCircle

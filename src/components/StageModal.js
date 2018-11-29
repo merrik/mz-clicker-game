@@ -26,7 +26,7 @@ const Overlay = styled.div`
   align-content: center;
   justify-content: center;
   position: fixed;
-  overflow-y: hidden;
+  overflow: hidden;
   background: ${props => props.backgroundImg ? `linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.7) 100%), url(${props.backgroundImg}) bottom;` : 'rgba(0, 0, 0, 0.9)'};
   width: 100%;
   height: 100%;
@@ -39,8 +39,9 @@ const Overlay = styled.div`
 
 const Modal = styled.div`
   padding: 1rem;
+  position: relative;
   box-sizing: border-box;
-  overflow-y: hidden;
+  overflow: hidden;
   z-index: 9999;
   opacity: 1;
   max-width: 95%;
@@ -49,6 +50,9 @@ const Modal = styled.div`
   min-width: 320px;
   background: ${props => props.background ? props.background : 'auto'};
   animation: ${props => props.fadeIn ? `${show} 0.5s linear` : null};
+  > .ps__rail-y {
+    display: none;
+  }
   @media screen and (max-width: 1000px)  {
     width: 100%;
   }
@@ -142,9 +146,8 @@ export default class ModalContainer extends Component {
     return (
       <Overlay fadeIn={fadeIn}
                backgroundImg={backgroundImg}
-               innerRef={(node) => {this.scrollRef = node}}
       >
-        <Modal fadeIn={fadeIn} background={background}>
+        <Modal fadeIn={fadeIn} innerRef={(node) => {this.scrollRef = node}} background={background}>
           <Column>
             <Title>{title}</Title>
             {text ? (
