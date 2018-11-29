@@ -4,6 +4,8 @@ import {
   stageShareList
 } from '../store/selectors';
 import {connect} from 'react-redux';
+
+import bubbleImage from '../assets/1.png';
 import russiaMap from '../assets/russiaMap.png';
 import worldMap from '../assets/worldMap.png';
 
@@ -64,13 +66,12 @@ const Progress = styled.div`
 `;
 
 const move = (props) => { 
-  console.log(props) 
   return keyframes`
   0% {
-    transform: ${`translate3d(${props.posX}px, 0, 0)`};
+    transform: ${`translate3d(${props.posX}px, ${props.posY}px, 0)`};
     opacity: 1;
   }
-  
+
   100% {
     transform: translate3d(100px, -300px, 0);
     opacity: 0;
@@ -82,49 +83,77 @@ const Bubble = styled.div`
   position: absolute;
   animation: ${props => `${move(props)} 2s linear`} ;
   z-index: 2;
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  border-radius: 100px;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  background-image: url(${bubbleImage});
+  background-size: contain;
+  /* background-color: red; */
+  /* border-radius: 100px; */
 `;
 
-const setBubbles = (bubles) => bubles.map(bubble => (<Bubble key={bubble.key} posX={bubble.posX} kill={() => console.log('kill', bubble.key)}/>))
+const createBubble = () => {
+  return {
+    posX: parseInt(Math.random() * 300),
+    posY: parseInt(-100 - (Math.random() * 100)),
+    key: parseInt(Math.random() * 1000000),
+    status: 'new'
+  }
+}
 
+const initialBubbles = (length = 10) => {
+  let bubbles = [];
+  for (let i=0; i<length; i++) {
+    bubbles.push({status: 'end'})
+  }
+  return bubbles;
+}
+
+const setBubbles = (bubbles) => bubbles
+  .filter(bubble => bubble.status === 'new')
+  .map(bubble => 
+  (<Bubble 
+    key={bubble.key} 
+    posX={bubble.posX} 
+    posY={bubble.posY}
+    onAnimationEnd={() => bubble.status = 'end'}
+  />)
+)
+
+const calculateProcess = (jailed) => {
+  const targetPopulation = (jailed > RUSSIAN_POPULATION) ? WORLD_POPULATION : RUSSIAN_POPULATION;
+  return Math.min(jailed / targetPopulation, 1).toFixed(2);
+}
+const selectMap = (jailed) => (jailed > RUSSIAN_POPULATION) ? worldMap : russiaMap;
 
 export default
 @connect(state => {
   return {
-    jailed: state.game.jailed
+    progress: calculateProcess(state.game.jailed),
+    mapType: selectMap(state.game.jailed)
   }
 })
 class ComputerComponent extends React.Component {
   state = {
-    bubbles: []
+    bubbles: initialBubbles(20)
   };
   render() {
     const {
-      jailed,
+      progress,
+      mapType,
       width,
       addMaterial
     } = this.props;
 
-    const overRussia = jailed > RUSSIAN_POPULATION;
-    const mapType = overRussia ? worldMap : russiaMap;
-    const targetPopulation = overRussia ? WORLD_POPULATION : RUSSIAN_POPULATION;
-    const progress = Math.min(jailed / targetPopulation, 1).toFixed(2);
-    console.log(this.state.bubbles)
     return (
       <Computer
         onClick={() => {
-          if (this.state.bubbles.length < BUBBLES_LIMIT) {
-            this.setState({
-              bubbles: [...this.state.bubbles, {posX: parseInt(Math.random() * 300), key: parseInt(Math.random()*10000)}]
-            })
-          } else {
-            this.setState({
-              bubbles: [...(this.state.bubbles.shift()), {posX: parseInt(Math.random() * 300), key: parseInt(Math.random()*10000)}]
-            })
-          }
+          const newBubble = createBubble()
+          this.setState({ bubbles: this.state.bubbles.filter(bubble => bubble.status === 'new') }, () => {
+            if (this.state.bubbles.length < BUBBLES_LIMIT) {
+              this.setState({ bubbles: [...this.state.bubbles, newBubble] })
+            }
+          })
           addMaterial()
         }}
         width={width}
