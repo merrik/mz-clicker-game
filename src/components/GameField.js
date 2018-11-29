@@ -261,7 +261,6 @@ class Upgrades extends Component {
           }
         }
         else {
-          console.log('upgrades not equal', p)
           return true;
         }
       }

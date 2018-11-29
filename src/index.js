@@ -24,10 +24,14 @@ render(
     </Provider>,
     rootNode
 );
-
+let longTimeout = null;
 const doCalc = () => {
-  store.dispatch(calculate({timestamp: Date.now()}))
+  const calcDate = Date.now();
+  if (longTimeout)
+    clearTimeout(longTimeout)
+  store.dispatch(calculate({timestamp: calcDate}))
   setTimeout(() => requestAnimationFrame(doCalc), 200)
+  longTimeout = setTimeout(() => doCalc, 2000)
 }
 requestAnimationFrame(doCalc)
 setInterval(() => {saveState(LOCAL_STORAGE_KEY, store.getState().game);}, 5000);

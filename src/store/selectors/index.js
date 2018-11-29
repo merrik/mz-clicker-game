@@ -1419,10 +1419,10 @@ const upgradesListNotIndex = [
   ],
 ];
 
-export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
+export const upgradesList = upgradesListNotIndex.map((value, index) => {
   value[1].index = index;
   return value
-}));
+});
 
 // optimal rate between 1.07 and 1.15
 
@@ -1573,7 +1573,7 @@ export const upgrades = createSelector(
   (upgradesState) =>
     upgradesState
       .map((upgrade) => {
-        return upgradesList.get(upgrade)
+        return upgradesList[upgrade]
       })
 );
 
