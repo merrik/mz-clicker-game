@@ -40,7 +40,7 @@ const Overlay = styled.div`
 const Modal = styled.div`
   padding: 1rem;
   box-sizing: border-box;
-  overflow-y: scroll;
+  overflow-y: hidden;
   z-index: 9999;
   opacity: 1;
   max-width: 95%;

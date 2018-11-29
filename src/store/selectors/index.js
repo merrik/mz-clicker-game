@@ -1365,7 +1365,7 @@ const upgradesListNotIndex = [
       cost: 5000,
       jailedPoint: 10000,
       buffs: [
-        ['clickModifier', 4]
+        ['clickModifier', 5]
       ]
     }
   ],
@@ -1377,7 +1377,7 @@ const upgradesListNotIndex = [
       cost: 100000,
       jailedPoint: 250000,
       buffs: [
-        ['clickModifier', 45]
+        ['clickModifier', 50]
       ]
     }
   ],
@@ -1389,7 +1389,7 @@ const upgradesListNotIndex = [
       cost: 400000,
       jailedPoint: 1000000,
       buffs: [
-        ['clickModifier', 450]
+        ['clickModifier', 500]
       ]
     }
   ],
@@ -1401,7 +1401,7 @@ const upgradesListNotIndex = [
       cost: 50000000,
       jailedPoint: 100000000,
       buffs: [
-        ['clickModifier', 4500]
+        ['clickModifier', 5000]
       ]
     }
   ],
@@ -1413,7 +1413,7 @@ const upgradesListNotIndex = [
       cost: 1200000000,
       jailedPoint: 2000000000,
       buffs: [
-        ['clickModifier', 45000]
+        ['clickModifier', 50000]
       ]
     }
   ],
