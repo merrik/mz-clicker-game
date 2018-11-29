@@ -30,5 +30,5 @@ export const SET_SHOWED_SHARE_BANNER = 'SET_SHOWED_SHARE_BANNER';
 
 export const SET_UPGRADES_AVAILABLE = 'SET_UPGRADES_AVAILABLE';
 
-export const LOCAL_STORAGE_KEY = 'game-state';
+export const LOCAL_STORAGE_KEY = 'game-state-clicker';
 export const PHASE_TWO_STAGE = 10;
