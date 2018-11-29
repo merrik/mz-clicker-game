@@ -67,7 +67,6 @@ const calculateIncomeUpgrades = (state) => {
 };
 
 const calculateShareStage = state => {
-  let shareStageLvl = 0;
   const {
     jailed,
     allMaterials
@@ -75,16 +74,14 @@ const calculateShareStage = state => {
   for(let i = 1; i < stageShareList.length; i++) {
     if(stageShareList[i].materialsPoint) {
       if(allMaterials >= stageShareList[i].materialsPoint && i > state.showedShareStage) {
-        shareStageLvl = i;
-        return shareStageLvl;
+        return i;
       }
     }
     if(jailed >= stageShareList[i].point && i > state.showedShareStage) {
-      shareStageLvl = i;
-      return shareStageLvl;
+      return i;
     }
   }
-  return shareStageLvl;
+  return 0;
 };
 
 const initialState = {
@@ -92,7 +89,7 @@ const initialState = {
   materials: 0,
 
   jailed: 0,
-  balance: 0,
+  balance: 100000000,
 
   courts: [1],
   upgrades: [],
@@ -118,14 +115,14 @@ const initialState = {
 
 export default (state = persistedState || initialState, action) => {
   switch (action.type) {
-    case C.CALCULATE:
+    case C.CALCULATE: {
       const shareStage = calculateShareStage(state);
       if (state.allMaterials < progressPoint.courtsAvailable) return {
         ...state,
         calcDate: action.timestamp,
         shareStage
       };
-      const timeCoeff = Math.min(10,  (action.timestamp - state.calcDate)/1000);
+      const timeCoeff = Math.min(10, (action.timestamp - state.calcDate) / 1000);
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
       const nextMaterialsCount = state.materials + (infromersIncome);
 
@@ -141,7 +138,7 @@ export default (state = persistedState || initialState, action) => {
 
       const incomeUpgrade = calculateIncomeUpgrades(state);
 
-      return {
+      const res = {
         ...state,
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
@@ -151,6 +148,14 @@ export default (state = persistedState || initialState, action) => {
         shareStage,
         calcDate: action.timestamp
       };
+
+      if (incomeUpgrade.length > 0)
+      {
+        res.upgradesAvailable = true
+      }
+
+      return res;
+  }
     case C.ADD_MATERIAL:
       let balance = state.balance;
 

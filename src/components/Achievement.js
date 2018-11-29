@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import {
   AchievementContainer,
   Circle,
@@ -12,6 +13,11 @@ import {
 import AchievementModal from "./AchievementModal";
 
 
+@connect((state) => {
+  return {
+    showedShareStage: state.game.showedShareStage
+  }
+})
 class Achievement extends Component {
   state = {
     isOpenModal: false,

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {
   stageShareList
 } from '../store/selectors';
+import {connect} from 'react-redux';
 import russiaMap from '../assets/russiaMap.png';
 import worldMap from '../assets/worldMap.png';
 
@@ -60,7 +61,13 @@ const Progress = styled.div`
 `;
 
 
-export default class ComputerComponent extends React.Component {
+export default
+@connect(state => {
+  return {
+    jailed: state.game.jailed
+  }
+})
+ class ComputerComponent extends React.Component {
   render() {
     const {
       jailed,

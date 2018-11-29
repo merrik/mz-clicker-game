@@ -38,8 +38,7 @@ export default class CourtComponent extends Component {
 
   componentDidUpdate(next) {
     const {
-      court,
-      balance
+      court
     } = next;
 
     const {
@@ -47,19 +46,12 @@ export default class CourtComponent extends Component {
     } = court;
 
     if(!this.state.isShowUpgrade) return;
-
-    if(upgradeCost > balance) {
-      this.setState({
-        isShowUpgrade: false
-      })
-    }
   }
 
   render() {
     const {
       court,
-      onClick,
-      balance
+      onClick
     } = this.props;
 
     const {
@@ -75,7 +67,8 @@ export default class CourtComponent extends Component {
       oneProductionJailed,
       oneProductionBalance,
       oneMaterials,
-      owned
+      owned,
+      upgradable,
     } = court;
 
     return (
@@ -86,7 +79,7 @@ export default class CourtComponent extends Component {
             onMouseOver={this.handleShowUpgrade(true)}
             onMouseOut={this.handleShowUpgrade(false)}
             minWidth={'120px'}
-            disabled={upgradeCost > balance}
+            disabled={!upgradable}
             onClick={onClick}>
             Добавить судью
           </AddButton>

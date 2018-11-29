@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from "styled-components";
 import Share from './Share';
+import {connect} from 'react-redux';
 
 const Container = styled.span`
   display: flex;
@@ -20,14 +21,29 @@ const ShareContainer = styled.span`
   left: 40px;
 `;
 
-export default ({params}) => {
-  return (
-    <Container>
+
+export default
+@connect((state) => {
+  return {
+    params: [['jailed', parseInt(state.game.jailed, 10)]]
+  }
+})
+class ShareGameArea extends Component {
+  refreshDate = Date.now();
+  shouldComponentUpdate() {
+    return Date.now() - this.refreshDate > 5000;
+  }
+  componentDidUpdate(){
+    this.refreshDate = Date.now();
+  }
+  render() {
+    const {params} = this.props;
+    return <Container>
       <ShareContainer>
         <Share
           params={params}
         />
       </ShareContainer>
-    </Container>
-  )
+    </Container>;
+  }
 }

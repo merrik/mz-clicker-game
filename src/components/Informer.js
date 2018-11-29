@@ -34,17 +34,10 @@ export default class InformerContainer extends Component {
 
   componentDidUpdate(next) {
     const {
-      updateCost,
-      balance
+      updateCost
     } = next;
 
     if(!this.state.isShowUpgrade) return;
-
-    if(updateCost > balance) {
-      this.setState({
-        isShowUpgrade: false
-      })
-    }
   }
 
   render() {
@@ -53,9 +46,9 @@ export default class InformerContainer extends Component {
       updateInformer,
       updateCost,
       name,
-      balance,
       oneProduction,
-      owned
+      owned,
+      upgradable,
     } = this.props;
 
     const {
@@ -70,13 +63,13 @@ export default class InformerContainer extends Component {
             onMouseEnter={this.handleShowUpgrade(true)}
             onMouseLeave={this.handleShowUpgrade(false)}
             onClick={updateInformer}
-            disabled={updateCost > balance}
+            disabled={!upgradable}
           >Добавить</AddButton>
         </TitleItemContainer>
         <LabelItemContainer>
           <LabelItemTitle>Доносов:</LabelItemTitle>
           <LabelIncome
-            disabled={updateCost > balance}
+            disabled={!upgradable}
             isShowUpgrade={isShowUpgrade}
           >
             +{U.makeFormatM(oneProduction)}
