@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect';
+import createCachedSelector from 're-reselect';
 import * as U from "../../utils";
 import * as R from 'ramda'
 import city from '../../assets/city.svg';
@@ -1370,22 +1371,13 @@ export const MAX_COURTS = courtList.length;
 export const MAX_INFORMERS = informerList.length;
 
 export const intBalance = state => Math.floor(state.game.balance)
-export const balance = createSelector(
-  intBalance,
-  (b) => b
-);
+export const balance = state => Math.floor(state.game.balance)
 
 export const intMaterials = state => Math.floor(state.game.materials)
-export const materials = createSelector(
-  intMaterials,
-  (b) => b
-);
+export const materials = state => Math.floor(state.game.materials)
 
 export const intAllMaterials = state => Math.floor(state.game.allMaterials)
-export const allMaterials = createSelector(
-  intAllMaterials,
-  (b) => b
-);
+export const allMaterials = state => Math.floor(state.game.allMaterials)
 
 
 const informersState = state => state.game.informers;
@@ -1488,6 +1480,33 @@ export const courts = createSelector(
     }
 );
 
+export const courtsWithUpgradable = createCachedSelector(
+  courts,
+  balance,
+  (courtsArg, balance) => {
+    return {
+      ...courtsArg,
+      courtsArr: courtsArg.courtsArr.map(
+        x => ({
+          upgradable: x.upgradeCost > balance,
+          ...x
+        })
+      )
+    };
+  },
+)(
+  (state) => {
+    const courtsArg = courts(state);
+    const balanceArg = balance(state);
+    return JSON.stringify(courtsArg.courtsArr.map(
+      x => ({
+        upgradable: x.upgradeCost > balanceArg,
+        ...x
+      })
+    ))
+  }
+)
+
 export const court = (_, props) => courtList[props.index];
 
 export const upgrades = createSelector(
@@ -1545,6 +1564,29 @@ export const informers = createSelector(
     return informerInfo;
   }
 );
+
+export const informersWithUpgradable = createCachedSelector(
+  informers,
+  balance,
+  (informers, balance) => {
+    return {
+      ...informers,
+      informersArr: informers.informersArr.map(x => ({
+        ...x,
+        upgradable: balance > x.upgradeCost,
+      }))
+    }
+  }
+)(
+  (state) => {
+    const informersArg = informers(state)
+    const balanceArg = balance(state)
+    return JSON.stringify(informersArg.informersArr.map(x => ({
+      ...x,
+      upgradable: balanceArg > x.upgradeCost,
+    })))
+  }
+)
 
 export const courtCalculate = createSelector(
   (state) => state.courts,

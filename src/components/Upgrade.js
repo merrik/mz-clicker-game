@@ -29,7 +29,7 @@ const Upgrade = styled.div`
   }
 `;
 
-export default ({name, description, cost, balance, onClick}) => {
+export default ({name, description, cost, isAvailable, onClick}) => {
   return (
     <Upgrade>
       <LabelItemContainer>
@@ -38,7 +38,7 @@ export default ({name, description, cost, balance, onClick}) => {
       <AddButton
         onClick={onClick}
         align={'start'}
-        disabled={cost > balance}
+        disabled={!isAvailable}
       >Купить ${U.makeFormatM(U.fixed(cost))}</AddButton>
     </Upgrade>
   )

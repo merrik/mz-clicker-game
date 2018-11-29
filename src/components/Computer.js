@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import {
   stageShareList
 } from '../store/selectors';
+import {connect} from 'react-redux';
 import russiaMap from '../assets/russiaMap.png';
 import worldMap from '../assets/worldMap.png';
 
@@ -69,7 +70,7 @@ const move = (props) => {
     transform: ${`translate3d(${props.posX}px, 0, 0)`};
     opacity: 1;
   }
-
+  
   100% {
     transform: translate3d(100px, -300px, 0);
     opacity: 0;
@@ -88,11 +89,18 @@ const Bubble = styled.div`
 `;
 
 const setBubbles = (bubles) => bubles.map(bubble => (<Bubble key={bubble.key} posX={bubble.posX} kill={() => console.log('kill', bubble.key)}/>))
-export default class ComputerComponent extends React.Component {
+
+
+export default
+@connect(state => {
+  return {
+    jailed: state.game.jailed
+  }
+})
+class ComputerComponent extends React.Component {
   state = {
     bubbles: []
   };
-  
   render() {
     const {
       jailed,
