@@ -53,7 +53,7 @@ const Progress = styled.div`
   z-index: -1;
   width: ${props => `${props.progress * 300}px`};
   height: 163px;
-  background-color: red;
+  background-color: #0a9a8d;
   @media screen and (max-width: 1000px)  {
     width: ${props => `${props.progress * 100}%`};
   }
