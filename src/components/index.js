@@ -217,6 +217,9 @@ export const CircleLine = styled.div`
   flex-direction: row;
   align-content: flex-start;
   align-self: center;
+  :first-child{
+    margin-right: 25px;
+  }
   @media screen and (max-width: 1000px)  {
     justify-content: space-between;
     align-content: stretch;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import {
   AchievementContainer,
   Circle,
@@ -10,6 +11,11 @@ import {
 } from "../store/selectors";
 
 
+@connect((state) => {
+  return {
+    showedShareStage: state.game.showedShareStage
+  }
+})
 class Achievement extends Component {
   render() {
     const {
@@ -31,8 +37,6 @@ class Achievement extends Component {
         )
       }
     }, []);
-
-    console.log(openAchievement)
 
     return (
       <AchievementContainer>

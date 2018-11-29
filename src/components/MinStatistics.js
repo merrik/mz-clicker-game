@@ -98,11 +98,9 @@ class MinStatistics extends Component {
             {showJailed && showInformers && courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials}/>}
           </ColumnMainStatistics>
         </MainStatisticsContainer>
-        <Achievement
-          showedShareStage={showedShareStage}
-        />
+        <Achievement/>
         <ClickButton onClick={addMaterial}>
-          Сфабриковать дело
+          Собрать материал
         </ClickButton>
       </MainStatistics>
     )

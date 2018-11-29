@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {
   stageShareList
 } from '../store/selectors';
+import {connect} from 'react-redux';
 import russiaMap from '../assets/russiaMap.png';
 
 const Computer = styled.div`
@@ -39,7 +40,13 @@ const Progress = styled.div`
   z-index: -1;
 `;
 
-export default class ComputerComponent extends React.Component {
+export default
+@connect(state => {
+  return {
+    jailed: state.game.jailed
+  }
+})
+ class ComputerComponent extends React.Component {
   render() {
     const {
       jailed,
