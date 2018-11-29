@@ -76,7 +76,7 @@ class MinStatistics extends Component {
             onClick={addMaterial}
             className="click-button"
           >
-            Сфабриковать дело
+            Собрать материал
           </ClickButton>
         </MiniStatistic>
       )
