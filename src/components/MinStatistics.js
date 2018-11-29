@@ -76,7 +76,7 @@ class MinStatistics extends Component {
             onClick={addMaterial}
             className="click-button"
           >
-            Сфабриковать дело
+            Собрать материал
           </ClickButton>
         </MiniStatistic>
       )
@@ -99,7 +99,7 @@ class MinStatistics extends Component {
           </ColumnMainStatistics>
         </MainStatisticsContainer>
         <Achievement/>
-        <ClickButton onClick={addMaterial} className="click-button">
+        <ClickButton className="click-button">
           Собрать материал
         </ClickButton>
       </MainStatistics>

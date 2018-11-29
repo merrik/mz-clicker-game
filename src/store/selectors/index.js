@@ -13,14 +13,14 @@ import world from '../../assets/world.svg';
 import zahod from '../../assets/zahod.jpg';
 
 export const courtList = [
-  {name: 'мировой суд', materials: 3, productionJailed: 0.5, productionBalance: 0.5, cost: 15, rate: 1.14},
-  {name: 'районный', materials: 20, productionJailed: 3, productionBalance: 2, cost: 150, rate: 1.14},
-  {name: 'городской', materials: 50, productionJailed: 9, productionBalance: 5, cost: 700, rate: 1.14},
-  {name: 'областной', materials: 100, productionJailed: 27, productionBalance: 15, cost: 5000, rate: 1.14},
-  {name: 'верховный', materials: 300, productionJailed: 100, productionBalance: 40  , cost: 20000, rate: 1.14},
-  {name: 'конституционный', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
-  {name: 'ЕСПЧ', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
-  {name: 'Международный суд ООН', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
+  {name: 'городской', materials: 3, productionJailed: 0.5, productionBalance: 1, cost: 12, rate: 1.14},
+  {name: 'областной', materials: 10, productionJailed: 5, productionBalance: 5, cost: 150, rate: 1.14},
+  {name: 'верховный', materials: 50, productionJailed: 20, productionBalance: 40, cost: 5000, rate: 1.14},
+  {name: 'конституционный', materials: 120, productionJailed: 30, productionBalance: 30, cost: 18000, rate: 1.14},
+  {name: 'военный', materials: 120, productionJailed: 100, productionBalance: 25, cost: 120000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
 ];
 
 export const informerList = [
@@ -139,7 +139,7 @@ export const stageShareList = [
   }
 ];
 
-const upgradesListNotIndex = [
+export const upgradesListNotIndex = [
   [
     0,
     {
@@ -1419,7 +1419,7 @@ const upgradesListNotIndex = [
   ],
 ];
 
-export const upgradesList = new Map(upgradesListNotIndex.map((value, index) => {
+export const upgradesList = R.fromPairs(upgradesListNotIndex.map((value, index) => {
   value[1].index = index;
   return value
 }));
@@ -1573,7 +1573,7 @@ export const upgrades = createSelector(
   (upgradesState) =>
     upgradesState
       .map((upgrade) => {
-        return upgradesList.get(upgrade)
+        return upgradesList[upgrade]
       })
 );
 

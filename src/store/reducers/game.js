@@ -2,8 +2,7 @@ import * as R from 'ramda';
 import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
-import {informerList, courtList, upgradesList, stageShareList, courtCalculate} from "../selectors";
-import {progressPoint} from "../selectors";
+import {informerList, courtList, upgradesList, stageShareList, courtCalculate, upgradesListNotIndex, progressPoint} from "../selectors";
 
 
 
@@ -41,8 +40,8 @@ const calculateIncomeFromCourts = (calculate, allMaterials) => {
 
 const calculateIncomeUpgrades = (state) => {
   let availableUpgrades = [];
-  for (let i = 0; i <= upgradesList.size; i++) {
-    const upgrade = upgradesList.get(i);
+  for (let i = 0; i < upgradesListNotIndex.length; i++) {
+    const upgrade = upgradesList[i];
     if (state.buyingItems[i]) continue;
     if (!upgrade) continue;
     if(upgrade.jailedPoint) {
@@ -246,8 +245,8 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance - action.cost
       };
     case C.BUY_UPGRADE:
-      if (action.cost > state.balance || !upgradesList.get(action.index)) return state;
-      const upgrade = upgradesList.get(action.index);
+      if (action.cost > state.balance || !upgradesList[action.index]) return state;
+      const upgrade = upgradesList[action.index];
       let buffs = [];
       let skills = [];
       let index = '';
