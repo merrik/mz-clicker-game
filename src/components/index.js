@@ -177,13 +177,23 @@ export const MainStatisticsContainer = styled.div`
 `;
 
 export const MiniStatistic = styled.div`
+  transform-style: preserve-3d;
+  perspective: 100px;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  position: fixed;
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;  
+  transform: translateZ(100px);
   display: flex;
   font: bold 14px "Fira Mono";
   flex-direction: column;
-  width: 300px;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const MiniStatisticProgressBar = styled.div`
