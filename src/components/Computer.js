@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import {
   stageShareList
 } from '../store/selectors';
@@ -7,6 +7,9 @@ import russiaMap from '../assets/russiaMap.png';
 import worldMap from '../assets/worldMap.png';
 
 import { RUSSIAN_POPULATION, WORLD_POPULATION } from '../store/selectors';
+import { BUY_UPGRADE } from "../store/constants";
+
+const BUBBLES_LIMIT = 20;
 
 const Computer = styled.div`
   position: relative;
@@ -59,8 +62,37 @@ const Progress = styled.div`
   }
 `;
 
+const move = (props) => { 
+  console.log(props) 
+  return keyframes`
+  0% {
+    transform: ${`translate3d(${props.posX}px, 0, 0)`};
+    opacity: 1;
+  }
 
+  100% {
+    transform: translate3d(100px, -300px, 0);
+    opacity: 0;
+  }
+`};
+
+const Bubble = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  animation: ${props => `${move(props)} 2s linear`} ;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 100px;
+`;
+
+const setBubbles = (bubles) => bubles.map(bubble => (<Bubble key={bubble.key} posX={bubble.posX} kill={() => console.log('kill', bubble.key)}/>))
 export default class ComputerComponent extends React.Component {
+  state = {
+    bubbles: []
+  };
+  
   render() {
     const {
       jailed,
@@ -72,15 +104,27 @@ export default class ComputerComponent extends React.Component {
     const mapType = overRussia ? worldMap : russiaMap;
     const targetPopulation = overRussia ? WORLD_POPULATION : RUSSIAN_POPULATION;
     const progress = Math.min(jailed / targetPopulation, 1).toFixed(2);
-
+    console.log(this.state.bubbles)
     return (
       <Computer
-        onClick={addMaterial}
+        onClick={() => {
+          if (this.state.bubbles.length < BUBBLES_LIMIT) {
+            this.setState({
+              bubbles: [...this.state.bubbles, {posX: parseInt(Math.random() * 300), key: parseInt(Math.random()*10000)}]
+            })
+          } else {
+            this.setState({
+              bubbles: [...(this.state.bubbles.shift()), {posX: parseInt(Math.random() * 300), key: parseInt(Math.random()*10000)}]
+            })
+          }
+          addMaterial()
+        }}
         width={width}
       >
         <ProgressBack width={width} />
         <Progress progress={progress} />
         <Map width={width} mapType={mapType}></Map>
+        { (this.state.bubbles.length > 0) && setBubbles(this.state.bubbles) }
       </Computer>
     );
   }
