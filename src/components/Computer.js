@@ -14,6 +14,29 @@ import { BUY_UPGRADE } from "../store/constants";
 
 const BUBBLES_LIMIT = 20;
 
+const closest = function(selector, ele) {
+	if(!selector || !ele) return null;
+
+	//polyfill .matches()
+	if(Element && !Element.prototype.matches) {
+		Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;
+	}
+
+	if(ele.matches(selector)) return ele; //return self if it matches
+
+	var parent = ele.parentNode;
+	var i = 0;
+
+	while(!parent.matches(selector)) {
+		parent = parent.parentNode;
+		if(parent.tagName == undefined) return null; //reached the end of the DOM tree
+		if(i >= 100) return null; //emergency break
+		i += 1;
+	}
+
+	return parent;
+}
+
 const Computer = styled.div`
   position: relative;
   width: ${props => props.width ? props.width : '484px'};
@@ -149,6 +172,22 @@ class ComputerComponent extends React.Component {
     })
   }
 
+  componentDidMount(){
+    document.body.addEventListener('click', this.click);
+  }
+  
+  componentWillUnmount(){
+    document.body.removeEventListener('click', this.click);
+  }
+
+  click = (ev) => {
+    const clickButton = closest('.click-button', ev.target);
+    if (clickButton) {
+      this.createBubble()
+      this.props.addMaterial()
+    }
+  }
+
   render() {
     const {
       progress,
@@ -159,10 +198,7 @@ class ComputerComponent extends React.Component {
 
     return (
       <Computer
-        onClick={() => {
-          this.createBubble()
-          addMaterial()
-        }}
+        className="click-button"
         width={width}
       >
         <ProgressBack width={width} />
