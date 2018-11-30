@@ -1408,6 +1408,7 @@ export const upgrades = createSelector(
       .map((upgrade) => {
         return upgradesList[upgrade]
       })
+      .filter(x => !!x)
       .sort((a, b) => (a.cost || 0) - (b.cost || 0))
 );
 

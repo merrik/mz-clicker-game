@@ -147,7 +147,7 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
         materials: materialsResult,
-        allMaterials: state.allMaterials + infromersIncome,
+        allMaterials: (state.allMaterials + infromersIncome) | 0,
         upgrades: incomeUpgrade,
         shareStage,
         calcDate: action.timestamp
