@@ -57,6 +57,8 @@ const GABuy = (item) => {
 //C.SET_SHOWED_SHARE_BANNER
 const GAReachedStage = (stageIndex) => {
     if (window.ga) {
+        const timeFromStart = parseInt((startTime - Date.now()) / 1000);
+        window.ga('send', 'event', GAME_NAME, `game_stage_${stageIndex}_reached_at`, `${timeFromStart}`);
         window.ga('send', 'event', GAME_NAME, 'game_stage_reached', `${stageIndex}`);
     } else {
         console.error('No GA in WINDOW')
