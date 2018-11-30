@@ -56,9 +56,12 @@ export default ({header, count, color, tooltip}) => {
   return (
     <Counter>
       <Title>
-        <ToolTip description={tooltip || ''}>
-        {header}
-        </ToolTip>
+        {tooltip ?
+          <ToolTip description={tooltip || ''}>
+            {header}
+          </ToolTip>
+          : header
+        }
       </Title>
       <br/>
       { color ?
