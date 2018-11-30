@@ -1145,10 +1145,9 @@ export const upgradesListNotIndex = [
       name: 'Покорение земли',
       description:  '',
       cost: 140000000000,
-      jailedPoint: 7000000000,
+      jailedPoint: 70000000000,
       buffs: [
         ['informerModifier', 5],
-        ['courtsModifierBalance', 5],
         ['courtsModifierBalance', 5],
       ]
     }
@@ -1213,6 +1212,42 @@ export const upgradesListNotIndex = [
       ]
     }
   ],
+  [
+    70,
+    {
+      name: 'IPO',
+      description: 'Материалы уголовных дел становятся самыми дорогими ценными бумагами на мировых биржах. Вы выходите на IPO. <b>Увеличивается скорость судов в 2 раза.</b>',
+      materialCost: 1000000,
+      allMaterialsPoint: 1000000,
+      multipliers: [
+        ['courtsAllModifier', 2],
+      ]
+    }
+  ],
+  [
+    71,
+    {
+      name: 'Новая валюта',
+      description: 'Ведущие мировые страны переводят свои золотовалютные резервы в распечатанные картинки.  <b>Увеличивается скорость судов в 2 раза.</b>',
+      materialCost: 100000000,
+      allMaterialsPoint: 100000000,
+      multipliers: [
+        ['courtsAllModifier', 2],
+      ]
+    }
+  ],
+  [
+    72,
+    {
+      name: 'Мировое господство',
+      description: 'Вы создаете новые финансовые рынки, разрушив прежние.  <b>Увеличивается скорость судов в 2 раза.</b>',
+      materialCost: 1000000000,
+      allMaterialsPoint: 1000000000,
+      multipliers: [
+        ['courtsAllModifier', 2],
+      ]
+    }
+  ]
 ];
 
 export const upgradesList = R.fromPairs(upgradesListNotIndex.map((value, index) => {
@@ -1253,6 +1288,7 @@ export const courts = createSelector(
   courtsJailedModifier,
   courtsLocalModifier,
   courtsModifierMaterials,
+  state => state.game.courtsAllModifier || 1,
   buyingItems,
     (
       courtsState,
@@ -1260,6 +1296,7 @@ export const courts = createSelector(
       courtsJailedModifier,
       courtsLocalModifier,
       courtsModifierMaterials,
+      courtsAllModifier,
     ) => {
       const courtsInfo = {};
       courtsInfo.outcomeMaterials = 0;
@@ -1286,9 +1323,9 @@ export const courts = createSelector(
             multipliersMaterials = localModifier.materials * multipliersMaterials
           }
 
-          const multiJailed = multipliersJailed <= 0 ? 1 : multipliersJailed;
-          const multiBalance = multipliersBalance <= 0 ? 1 : multipliersBalance;
-          const multiMaterials = multipliersMaterials <= 0 ? 1 : multipliersMaterials;
+          const multiJailed = (multipliersJailed <= 0 ? 1 : multipliersJailed)*courtsAllModifier;
+          const multiBalance = (multipliersBalance <= 0 ? 1 : multipliersBalance)*courtsAllModifier;
+          const multiMaterials = (multipliersMaterials <= 0 ? 1 : multipliersMaterials)*courtsAllModifier;
 
           const productionJailed = U.production({
               production: court.productionJailed,
@@ -1371,7 +1408,7 @@ export const upgrades = createSelector(
       .map((upgrade) => {
         return upgradesList[upgrade]
       })
-      .sort((a, b) => a.cost - b.cost)
+      .sort((a, b) => (a.cost || 0) - (b.cost || 0))
 );
 
 export const informers = createSelector(
@@ -1450,7 +1487,8 @@ export const courtCalculate = createSelector(
   (state) => state.courtsModifierBalance,
   (state) => state.courtsModifierMaterials,
   (state) => state.courtsLocalModifier,
-  (courts, jailedModifier, balanceModifier, materialsModifier, localModifiers) => {
+  (state) => state.courtsAllModifier || 1,
+  (courts, jailedModifier, balanceModifier, materialsModifier, localModifiers, courtsAllModifier) => {
     const calculate = {
       incomeBalance: 0,
       incomeJailed: 0,
@@ -1479,19 +1517,19 @@ export const courtCalculate = createSelector(
         production: courtList[i].productionBalance,
         owned: courts[i],
         multipliers: balanceModifier
-      });
+      }) * courtsAllModifier;
 
       calculate.incomeJailed += U.production({
         production: courtList[i].productionJailed,
         owned: courts[i],
         multipliers: multipliersJailed <= 0 ? 1 : multipliersJailed
-      });
+      }) * courtsAllModifier;
 
       calculate.outcomeMaterials += U.production({
         production: courtList[i].materials,
         owned: courts[i],
         multipliers: multipliersMaterials <= 0 ? 1 : multipliersMaterials
-      });
+      }) * courtsAllModifier;
     }
     return calculate
   }

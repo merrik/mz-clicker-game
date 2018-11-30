@@ -7,7 +7,7 @@ export const calculate = ({timestamp}) => ({
   timestamp: timestamp
 });
 
-export const addMaterial = () => 
+export const addMaterial = () =>
   (dispatch, getState) => {
     const { clickStat } = getState().game;
     if ((clickStat % 100) === 0) {
@@ -27,12 +27,13 @@ export const removeMaterials = ({timestamp, qty}) => ({
   qty: -1 * qty
 });
 
-export const buyUpgrade = ({cost, index}) => {
+export const buyUpgrade = ({cost, index, materialCost}) => {
   analytic.GABuy(`upgrade_index_${index}`);
   return {
     type: C.BUY_UPGRADE,
     cost,
-    index
+    index,
+    materialCost
   }
 };
 

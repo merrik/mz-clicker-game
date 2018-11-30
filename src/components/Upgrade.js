@@ -34,7 +34,7 @@ const LabelItemDescription = styled.p`
   line-height: 1.5;
 `;
 
-export default ({name, description, cost, isAvailable, onClick}) => {
+export default ({name, description, cost, isAvailable, materialCost, onClick}) => {
   return (
     <Upgrade>
       <LabelItemContainer>
@@ -47,7 +47,7 @@ export default ({name, description, cost, isAvailable, onClick}) => {
         onClick={onClick}
         align={'start'}
         disabled={!isAvailable}
-      >Купить ${U.makeFormatM(U.fixed(cost))}</AddButton>
+      >Купить {cost ? ` $${U.makeFormatM(U.fixed(cost))}`  : ` за ${U.makeFormatM(U.fixed(materialCost))} материалов`}</AddButton>
     </Upgrade>
   )
 }

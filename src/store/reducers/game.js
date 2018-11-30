@@ -50,6 +50,9 @@ const calculateIncomeUpgrades = (state) => {
       }
     }
 
+    if (upgrade.allMaterialsPoint && upgrade.allMaterialsPoint < state.allMaterials) {
+      availableUpgrades.push(i);
+    }
     if(upgrade.courtIndex) {
       if (state.courts[upgrade.courtIndex] >= upgrade.point) {
         availableUpgrades.push(i);
@@ -100,6 +103,7 @@ const initialState = {
   lastUpdate: 0,
   clickModifier: 1,
   clickStat: 0,
+  courtsAllModifier: 1,
   courtsModifierBalance: 1,
   courtsJailedModifier: 1,
   courtsModifierMaterials: 1,
@@ -139,6 +143,7 @@ export default (state = persistedState || initialState, action) => {
 
       const res = {
         ...state,
+        courtsAllModifier: state.courtsAllModifier || 1,
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
         materials: materialsResult,
@@ -245,10 +250,11 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance - action.cost
       };
     case C.BUY_UPGRADE:
-      if (action.cost > state.balance || !upgradesList[action.index]) return state;
+      if ( (action.cost && action.cost > state.balance) || (action.materialCost && action.materialCost > state.materials) || !upgradesList[action.index]) return state;
       const upgrade = upgradesList[action.index];
       let buffs = [];
       let skills = [];
+      let multipliers = {};
       let index = '';
 
       if(upgrade.informerIndex) {
@@ -267,6 +273,11 @@ export default (state = persistedState || initialState, action) => {
         skills = upgrade.skills;
       }
 
+      if (upgrade.multipliers) {
+        multipliers = R.mapObjIndexed((val, key) => state[key] * val, R.fromPairs(upgrade.multipliers))
+        console.log('multipliers', multipliers)
+      }
+
       let newModifiers = {};
 
       newModifiers = buffs.reduce((prev, curr) => {
@@ -282,7 +293,7 @@ export default (state = persistedState || initialState, action) => {
                 balance,
                 jailed,
                 materials,
-                createMaterial
+                createMaterial,
               };
             }
 
@@ -313,7 +324,9 @@ export default (state = persistedState || initialState, action) => {
         ...state,
         ...newModifiers,
         ...skills,
-        balance: state.balance - action.cost,
+        ...multipliers,
+        balance: state.balance - (action.cost || 0),
+        materials: state.materials - (action.materialCost || 0),
         upgrades,
         buyingItems,
       };

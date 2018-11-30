@@ -244,9 +244,10 @@ Informers.propTypes = {
 @connect((state) => {
   const upgrades = S.upgrades(state);
   const balance = S.balance(state);
+  const materials = S.materials(state);
   return {
     upgrades,
-    upgradable: upgrades.map(x => balance > x.cost)
+    upgradable: upgrades.map(x => x.cost ? balance > x.cost : materials > x.materialCost)
   }
 })
 class Upgrades extends Component {
@@ -278,7 +279,8 @@ class Upgrades extends Component {
         name,
         description,
         cost,
-        index
+        index,
+        materialCost
       } = upgrade;
 
         return (
@@ -287,8 +289,9 @@ class Upgrades extends Component {
         isAvailable={upgradable[num]}
         description={description}
         cost={cost}
+        materialCost={materialCost}
         key={name}
-        onClick={() => dispatch(buyUpgrade({cost, index}))}
+        onClick={() => dispatch(buyUpgrade({cost, materialCost, index}))}
         />
         )
       })}

@@ -36,7 +36,6 @@ class MobileStats extends Component{
   onScrollHandler = (e) => {
     if (this.refEl) {
       const newShow = (this.refEl.getBoundingClientRect().top < 140)
-      console.log('new show', newShow, this.refEl, this.refEl.getBoundingClientRect().top)
       if (newShow != this.state.show)
       {
         this.setShow(newShow)
