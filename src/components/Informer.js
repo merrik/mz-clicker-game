@@ -76,7 +76,7 @@ export default class InformerContainer extends Component {
           >Добавить</AddButton>
         </TitleItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Доносов:</LabelItemTitle>
+          <LabelItemTitle>Доносов</LabelItemTitle>
           <LabelIncome
             isShowUpgrade={isShowUpgrade && upgradable}
           >
@@ -85,7 +85,7 @@ export default class InformerContainer extends Component {
           <LabelStatisticContainer>{U.makeFormatM(parseInt(income))} в секунду</LabelStatisticContainer>
         </LabelItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+          <LabelItemTitle>Стоимость апгрейда&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <strong>{U.makeFormatM(updateCost)}</strong>
           </LabelStatisticContainer>

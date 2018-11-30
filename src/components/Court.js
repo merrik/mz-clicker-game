@@ -92,7 +92,7 @@ export default class CourtComponent extends Component {
           </AddButton>
         </TitleItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Расход материалов м/c&nbsp;</LabelItemTitle>
+          <LabelItemTitle>Расход материалов&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
               isShowUpgrade={isShowUpgrade && upgradable}
@@ -103,7 +103,7 @@ export default class CourtComponent extends Component {
           </LabelStatisticContainer>
         </LabelItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Скорость посадки п/c&nbsp;</LabelItemTitle>
+          <LabelItemTitle>Посадок в секунду&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
               isShowUpgrade={isShowUpgrade && upgradable}
@@ -114,7 +114,7 @@ export default class CourtComponent extends Component {
           </LabelStatisticContainer>
         </LabelItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Инкам бюджета&nbsp;</LabelItemTitle>
+          <LabelItemTitle>Доходы в бюджет&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <LabelIncome
               isShowUpgrade={isShowUpgrade && upgradable}
@@ -125,7 +125,7 @@ export default class CourtComponent extends Component {
           </LabelStatisticContainer>
         </LabelItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Стоимость апргрейда&nbsp;</LabelItemTitle>
+          <LabelItemTitle>Стоимость апгрейда&nbsp;</LabelItemTitle>
           <LabelStatisticContainer>
             <strong>{U.makeFormatM(upgradeCost)}</strong>
           </LabelStatisticContainer>

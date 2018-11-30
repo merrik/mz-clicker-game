@@ -103,7 +103,7 @@ export const stageShareList = [
     description: 'Полтора миллиона посаженных за репосты лично мною — население целого экстремистского мегаполиса'
   },
   {
-    point: 17000000,
+    point: 20000000,
     title: 'Я посадил федеральный округ',
     params: [['achievement', 'fed']],
     img: fed,
@@ -138,6 +138,7 @@ export const stageShareList = [
     description: 'Я — последний человек на земле. Все остальные сидят за репосты'
   }
 ];
+window.stageShareList = stageShareList
 
 export const upgradesListNotIndex = [
   [

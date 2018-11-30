@@ -86,10 +86,10 @@ class MinStatistics extends Component {
       <MainStatistics>
         <MainStatisticsContainer>
           <ColumnMainStatistics>
-            {allMaterials >= 0 && <Counter header='Все материалы' count={allMaterials}/>}
+            {allMaterials >= 0 && <Counter header='Всего собрано материалов' count={allMaterials}/>}
             {jailed >= 0 && <Counter header='Посажено' count={jailed}/>}
             {showJailed && incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)}/>}
-            {showJailed && showInformers && U.fixed(deltaMaterials) && <Counter header='Эффективность' color={true} count={deltaMaterials}/>}
+            {showJailed && showInformers && U.fixed(deltaMaterials) && <Counter header='Прирост материалов' color={true} count={deltaMaterials}/>}
           </ColumnMainStatistics>
           <ColumnMainStatistics>
             {materials >= 0 && <Counter header='Материалы дела' count={materials}/>}

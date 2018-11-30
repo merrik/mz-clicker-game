@@ -44,7 +44,7 @@ const Counter = styled.div`
   text-align: center;
 `;
 
-export default ({header, count, color}) => {
+export default ({header, count, color, tooltip}) => {
   let isUp = false;
 
   if(count >= 0) {
@@ -56,7 +56,7 @@ export default ({header, count, color}) => {
   return (
     <Counter>
       <Title>
-        <ToolTip>
+        <ToolTip description={tooltip || ''}>
         {header}
         </ToolTip>
       </Title>
