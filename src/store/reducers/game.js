@@ -8,8 +8,11 @@ import {informerList, courtList, upgradesList, stageShareList, courtCalculate, u
 BigNumber.config({ EXPONENTIAL_AT: [-7, 40]});
 
 let persistedState = U.loadState(C.LOCAL_STORAGE_KEY);
-if (!BigNumber.isBigNumber(persistedState.allMaterials)) {
+if (persistedState) {
   persistedState.allMaterials = new BigNumber(persistedState.allMaterials);
+  persistedState.balance = new BigNumber(persistedState.balance);
+  persistedState.jailed = new BigNumber(persistedState.jailed);
+  persistedState.materials = new BigNumber(persistedState.materials);
 }
 
 const calculateIncomeFromInformers = ({state}) => {
@@ -49,7 +52,7 @@ const calculateIncomeUpgrades = (state) => {
     if (state.buyingItems[i]) continue;
     if (!upgrade) continue;
     if(upgrade.jailedPoint) {
-      if(state.jailed >= upgrade.jailedPoint) {
+      if(state.jailed.isGreaterThanOrEqualTo(upgrade.jailedPoint)) {
         availableUpgrades.push(i);
       }
     }
@@ -83,7 +86,7 @@ const calculateShareStage = state => {
         return i;
       }
     }
-    if(jailed >= stageShareList[i].point && i > state.showedShareStage) {
+    if(jailed.isGreaterThanOrEqualTo(stageShareList[i].point) && i > state.showedShareStage) {
       return i;
     }
   }
@@ -92,10 +95,10 @@ const calculateShareStage = state => {
 
 const initialState = {
   allMaterials: new BigNumber(0),
-  materials: 0,
+  materials: new BigNumber(0),
 
-  jailed: 0,
-  balance: 0,
+  jailed: new BigNumber(0),
+  balance: new BigNumber(0),
 
   courts: [1],
   upgrades: [],
@@ -131,16 +134,16 @@ export default (state = persistedState || initialState, action) => {
       };
       const timeCoeff = Math.min(10, (action.timestamp - state.calcDate) / 1000);
       const infromersIncome = calculateIncomeFromInformers({state}) * timeCoeff;
-      const nextMaterialsCount = state.materials + (infromersIncome);
+      const nextMaterialsCount = state.materials.plus(infromersIncome);
 
 
       const courtOutcome = R.map(x => x * timeCoeff, courtCalculate(state));
 
-      const courtsResult = calculateIncomeFromCourts(courtOutcome, state.materials + infromersIncome);
-      let materialsResult = nextMaterialsCount - courtsResult.outcomeMaterials;
+      const courtsResult = calculateIncomeFromCourts(courtOutcome, state.materials.plus(infromersIncome));
+      let materialsResult = nextMaterialsCount.minus(courtsResult.outcomeMaterials);
 
-      if (materialsResult < 0) {
-        materialsResult = 0;
+      if (materialsResult.isLessThan(0)) {
+        materialsResult = new BigNumber(0);
       }
 
       const incomeUpgrade = calculateIncomeUpgrades(state);
@@ -148,8 +151,8 @@ export default (state = persistedState || initialState, action) => {
       const res = {
         ...state,
         courtsAllModifier: state.courtsAllModifier || 1,
-        balance: state.balance + courtsResult.incomeBalance,
-        jailed: state.jailed + courtsResult.incomeJailed,
+        balance: state.balance.plus(courtsResult.incomeBalance),
+        jailed: state.jailed.plus(courtsResult.incomeJailed),
         materials: materialsResult,
         allMaterials: state.allMaterials.plus(infromersIncome),
         upgrades: incomeUpgrade,
@@ -170,12 +173,12 @@ export default (state = persistedState || initialState, action) => {
       const clickBonus = action.qty * state.clickModifier
 
       if (state.moneyClick) {
-        balance += clickBonus
+        balance.plus(clickBonus)
       }
 
       return {
         ...state,
-        materials: state.materials + clickBonus,
+        materials: state.materials.plus(clickBonus),
         allMaterials: state.allMaterials.plus(clickBonus),
         balance,
         clickStat: state.clickStat + 1,
@@ -183,7 +186,7 @@ export default (state = persistedState || initialState, action) => {
     case C.APPEND_MATERIALS:
       return {
         ...state,
-        materials: state.materials + action.qty
+        materials: state.materials.plus(action.qty)
       };
     case C.SET_SHOWED_SHARE_BANNER:
       return {
@@ -200,7 +203,7 @@ export default (state = persistedState || initialState, action) => {
       };
     case C.ADD_COURT:
       const courtsSize = state.courts.length;
-      if (action.cost > state.balance) return state;
+      if (state.balance.isLessThan(action.cost)) return state;
       if (courtsSize >= S.courtList.length) return state;
       const courts = [...state.courts];
       courts[courtsSize] = 1;
@@ -208,10 +211,10 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         courts,
-        balance: state.balance - action.cost,
+        balance: state.balance.minus(action.cost),
       };
     case C.UPDATE_COURT:
-      if (action.cost > state.balance) return state;
+      if (state.balance.isLessThan(action.cost)) return state;
 
       const upgradedCourts = [...state.courts];
       const upgradedCourt = upgradedCourts[action.courtIndex];
@@ -220,11 +223,11 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         courts: upgradedCourts,
-        balance: state.balance - action.cost
+        balance: state.balance.minus(action.cost)
       };
     case C.ADD_INFORMER:
       const informersSize = state.informers.length;
-      if (action.cost > state.balance) return state;
+      if (state.balance.isLessThan(action.cost)) return state;
       if (informersSize > S.informerList.length) return state;
       const informers = [...state.informers];
       informers[informersSize] = 1;
@@ -232,10 +235,10 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         informers,
-        balance: state.balance - action.cost
+        balance: state.balance.minus(action.cost)
       };
     case C.UPDATE_INFORMER:
-      if (action.cost > state.balance) return state;
+      if (state.balance.isLessThan(action.cost)) return state;
 
       const upgradedInformers = [...state.informers];
       const upgradedInformer = upgradedInformers[action.index];
@@ -244,17 +247,17 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         informers: upgradedInformers,
-        balance: state.balance - action.cost
+        balance: state.balance.minus(action.cost)
       };
     case C.ADD_SECRETARY:
-      if (action.cost > state.balance || state.secretaries.indexOf(action.index) > -1) return state;
+      if (state.balance.isLessThan(action.cost) || state.secretaries.indexOf(action.index) > -1) return state;
       return {
         ...state,
         secretaries: [...state.secretaries, action.index],
-        balance: state.balance - action.cost
+        balance: state.balance.minus(action.cost)
       };
     case C.BUY_UPGRADE:
-      if ( (action.cost && action.cost > state.balance) || (action.materialCost && action.materialCost > state.materials) || !upgradesList[action.index]) return state;
+      if ( (action.cost && state.balance.isLessThan(action.cost)) || (action.materialCost && state.materials.isLessThan(action.materialCost)) || !upgradesList[action.index]) return state;
       const upgrade = upgradesList[action.index];
       let buffs = [];
       let skills = [];
@@ -329,8 +332,8 @@ export default (state = persistedState || initialState, action) => {
         ...newModifiers,
         ...skills,
         ...multipliers,
-        balance: state.balance - (action.cost || 0),
-        materials: state.materials - (action.materialCost || 0),
+        balance: state.balance.minus(action.cost || 0),
+        materials: state.materials.minus((action.materialCost || 0)),
         upgrades,
         buyingItems,
       };
