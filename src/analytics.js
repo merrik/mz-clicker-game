@@ -2,6 +2,7 @@ const GAME_NAME = 'clicker_game';
 
 let startTime = 0;
 let allTime = 0;
+
 const GAGameStart = () => {
   if (window.ga) {
     const isStarted = localStorage.getItem('isStarted');
@@ -9,26 +10,31 @@ const GAGameStart = () => {
         window.ga('send', 'event', GAME_NAME, 'start_game_uniq');
         localStorage.setItem('isStarted', `true`);
     }
-
     window.ga('send', 'event', GAME_NAME, 'start_game');
-
-    startTime = Date.now();
-    allTime = parseInt(localStorage.getItem('alltime')) || 0;
-
-    setInterval(() => {
-      const now = Date.now();
-
-      allTime = allTime + 5;
-      localStorage.setItem('alltime', `${allTime}`);
-      window.ga('send', 'event', GAME_NAME, 'game_duration_alltime_sec', `${allTime}`);
-
-      const currentTime = parseInt((now - startTime) / 1000);
-      window.ga('send', 'event', GAME_NAME, 'game_duration_sec', `${currentTime}`);
-    }, 5000)
   } else {
     console.error('No GA in WINDOW')
   }
 };
+
+const GASessionStart = () => {
+    allTime = parseInt(localStorage.getItem('alltime')) || 0;
+    startTime = Date.now();
+    if (window.ga) {
+        window.ga('send', 'event', GAME_NAME, 'start_game_session');
+
+        setInterval(() => {
+            const now = Date.now();
+            const currentTime = parseInt((now - startTime) / 1000);
+            window.ga('send', 'event', GAME_NAME, 'game_duration_sec', `${currentTime}`);
+            
+            allTime = allTime + 5;
+            localStorage.setItem('alltime', `${allTime}`);
+            window.ga('send', 'event', GAME_NAME, 'game_duration_alltime_sec', `${allTime}`);
+          }, 5000)
+    } else {
+        console.error('No GA in WINDOW')
+    }
+}
 
 //C.ADD_MATERIAL
 const GAClicks = (count) => {
@@ -76,6 +82,7 @@ const GAGameRestart = (stageIndex) => {
 
 export {
   GAGameStart,
+  GASessionStart,
   GAClicks,
   GABuy,
   GAReachedStage,
