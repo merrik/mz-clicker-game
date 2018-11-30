@@ -1,3 +1,4 @@
+import "babel-polyfill"
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,6 +8,7 @@ import { calculate } from './store/actions'
 import {LOCAL_STORAGE_KEY} from './store/constants/index'
 import './index.css';
 import {saveState} from './utils'
+
 
 let rootNode = document.getElementById("clicker_root");
 
