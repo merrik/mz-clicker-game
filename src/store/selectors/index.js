@@ -125,7 +125,7 @@ export const stageShareList = [
     title: 'Я посадил пол-России',
     params: [['achievement', 'half_russia']],
     img: halfRussia,
-    description: 'Пол-страны сидят, пол-страны сторожат: я посадил за репосты половину населения России'
+    description: 'Полстраны сидит, полстраны сторожит: я посадил за репосты половину населения России'
   },
   {
     point: RUSSIAN_POPULATION,
