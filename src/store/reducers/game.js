@@ -2,11 +2,15 @@ import * as R from 'ramda';
 import * as C from '../constants';
 import * as S from '../selectors';
 import * as U from '../../utils';
+import {BigNumber} from 'bignumber.js';
 import {informerList, courtList, upgradesList, stageShareList, courtCalculate, upgradesListNotIndex, progressPoint} from "../selectors";
 
 
 
 let persistedState = U.loadState(C.LOCAL_STORAGE_KEY);
+if (!BigNumber.isBigNumber(persistedState.allMaterials)) {
+  persistedState.allMaterials = new BigNumber(persistedState.allMaterials);
+}
 
 const calculateIncomeFromInformers = ({state}) => {
   const {informers} = state;
@@ -50,7 +54,7 @@ const calculateIncomeUpgrades = (state) => {
       }
     }
 
-    if (upgrade.allMaterialsPoint && upgrade.allMaterialsPoint < state.allMaterials) {
+    if (upgrade.allMaterialsPoint && state.allMaterials.isGreaterThan(upgrade.allMaterialsPoint)) {
       availableUpgrades.push(i);
     }
     if(upgrade.courtIndex) {
@@ -75,7 +79,7 @@ const calculateShareStage = state => {
   } = state;
   for(let i = 1; i < stageShareList.length; i++) {
     if(stageShareList[i].materialsPoint) {
-      if(allMaterials >= stageShareList[i].materialsPoint && i > state.showedShareStage) {
+      if(allMaterials.isGreaterThanOrEqualTo(stageShareList[i].materialsPoint) && i > state.showedShareStage) {
         return i;
       }
     }
@@ -87,7 +91,7 @@ const calculateShareStage = state => {
 };
 
 const initialState = {
-  allMaterials: 0,
+  allMaterials: new BigNumber(0),
   materials: 0,
 
   jailed: 0,
@@ -120,7 +124,7 @@ export default (state = persistedState || initialState, action) => {
   switch (action.type) {
     case C.CALCULATE: {
       const shareStage = calculateShareStage(state);
-      if (state.allMaterials < progressPoint.courtsAvailable) return {
+      if (state.allMaterials.isLessThan(progressPoint.courtsAvailable)) return {
         ...state,
         calcDate: action.timestamp,
         shareStage
@@ -147,7 +151,7 @@ export default (state = persistedState || initialState, action) => {
         balance: state.balance + courtsResult.incomeBalance,
         jailed: state.jailed + courtsResult.incomeJailed,
         materials: materialsResult,
-        allMaterials: (state.allMaterials + infromersIncome) | 0,
+        allMaterials: state.allMaterials.plus(infromersIncome),
         upgrades: incomeUpgrade,
         shareStage,
         calcDate: action.timestamp
@@ -172,7 +176,7 @@ export default (state = persistedState || initialState, action) => {
       return {
         ...state,
         materials: state.materials + clickBonus,
-        allMaterials: state.allMaterials + clickBonus,
+        allMaterials: state.allMaterials.plus(clickBonus),
         balance,
         clickStat: state.clickStat + 1,
       };
