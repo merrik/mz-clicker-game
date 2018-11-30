@@ -42,9 +42,7 @@ export default ({name, description, cost, isAvailable, onClick}) => {
           {name}
         </LabelItemTitle>
       </LabelItemContainer>
-      <LabelItemDescription>
-        {description}
-      </LabelItemDescription>
+      <LabelItemDescription dangerouslySetInnerHTML={{__html: description}} />
       <AddButton
         onClick={onClick}
         align={'start'}

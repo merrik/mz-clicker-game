@@ -83,6 +83,7 @@ const Title = styled.h2`
 const Description = styled.p`
   margin: 0;
   margin-bottom: 48px;
+  white-space: pre-line;
   font: 14px 'Fira Mono';
   color: #ffffff;
   text-align: center;
@@ -151,7 +152,7 @@ export default class ModalContainer extends Component {
           <Column>
             <Title>{title}</Title>
             {text ? (
-              <Description>{text}</Description>
+              <Description dangerouslySetInnerHTML={{__html: text}}></Description>
             ) : null}
             <Accept onClick={this.closeModal}>
               {acceptText ? acceptText : 'Поехали'}
