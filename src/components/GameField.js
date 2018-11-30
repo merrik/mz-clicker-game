@@ -296,7 +296,6 @@ class Upgrades extends Component {
   }
 }
 
-Upgrades.propTypes = {upgradesBuyUpgradeIsAvailable: PropTypes.any};
 
 class GameField extends Component {
   state = {

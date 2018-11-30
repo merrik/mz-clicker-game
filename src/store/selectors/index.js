@@ -18,9 +18,9 @@ export const courtList = [
   {name: 'верховный', materials: 30, productionJailed: 13, productionBalance: 40, cost: 750, rate: 1.14},
   {name: 'конституционный', materials: 120, productionJailed: 80, productionBalance: 150, cost: 9000, rate: 1.14},
   {name: 'военный', materials: 250, productionJailed: 300, productionBalance: 500, cost: 80000, rate: 1.14},
-  {name: 'ЕСПЧ', materials: 700, productionJailed: 600, productionBalance: 1000, cost: 320000, rate: 1.14},
-  {name: 'Международный суд ООН', materials: 2000, productionJailed: 1666, productionBalance: 3000, cost: 1200000, rate: 1.14},
-  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 14000, cost: 5000000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 700, productionJailed: 1000, productionBalance: 1000, cost: 1000000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 3000, productionJailed: 2500, productionBalance: 7000, cost: 20000000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 25000, productionJailed: 80000, productionBalance: 80000, cost: 100000000, rate: 1.14},
 ];
 
 // export const courtList = [
