@@ -86,16 +86,16 @@ class MinStatistics extends Component {
       <MainStatistics>
         <MainStatisticsContainer>
           <ColumnMainStatistics>
-            {allMaterials >= 0 && <Counter header='Всего собрано материалов' count={allMaterials} tooltip={'tooltip'}/>}
-            {jailed >= 0 && <Counter header='Посажено' count={jailed}/>}
-            {showJailed && incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)}/>}
-            {showJailed && showInformers && U.fixed(deltaMaterials) && <Counter header='Прирост материалов' color={true} count={deltaMaterials}/>}
+            {allMaterials >= 0 && <Counter header='Всего собрано материалов' count={allMaterials} tooltip={'Общее количество материалов, собранных за все время'}/>}
+            {jailed >= 0 && <Counter header='Посажено' count={jailed} tooltip={'Всего посажено человек за все время'}/>}
+            {showJailed && incomeJailed >= 0 && <Counter header='Посаженных в секунду' count={incomeJailed.toFixed(1)} tooltip={'Количество людей, отправляющихся в тюрьмы ежесекундно'}/>}
+            {showJailed && showInformers && U.fixed(deltaMaterials) && <Counter header='Прирост материалов' color={true} count={deltaMaterials} tooltip={'Зеленая цифра показывает, сколько материалов в секунду у вас скапливается. Красная — сколько убывает. Балансируйте между количеством доносчиков и судов.'}/>}
           </ColumnMainStatistics>
           <ColumnMainStatistics>
-            {materials >= 0 && <Counter header='Материалы дела' count={materials}/>}
-            {showJailed && balance >= 0 && <Counter header='Бюджет' count={balance}/>}
-            {showJailed && incomeBalance >= 0 && <Counter header='Прирост бюджета' count={incomeBalance}/>}
-            {showJailed && showInformers && courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials}/>}
+            {materials >= 0 && <Counter header='Материалы дела' count={materials} tooltip={'Количество материалов дела, пока не переданных в суд'}/>}
+            {showJailed && balance >= 0 && <Counter header='Бюджет' count={balance} tooltip={'Количество денег, выделенных за посадки людей'}/>}
+            {showJailed && incomeBalance >= 0 && <Counter header='Прирост бюджета' tooltip={'Скорость пополнения бюджета в секунду'} count={incomeBalance}/>}
+            {showJailed && showInformers && courts.outcomeMaterials >= 0 && <Counter header='Потребление материалов' count={courts.outcomeMaterials} tooltip={'Количество материалов, забираемых в суд за секунду'}/>}
           </ColumnMainStatistics>
         </MainStatisticsContainer>
         <Achievement/>
