@@ -1422,8 +1422,8 @@ export const upgradesListNotIndex = [
     {
       name: 'Турбореактивный ускоритель для пальцев',
       description:  'Предел человеческой производительности. <b>Один клик создает на 50 000 материалов больше.</b>',
-      cost: 1200000000,
-      jailedPoint: 2000000000,
+      cost: 700000000,
+      jailedPoint: 1000000000,
       buffs: [
         ['clickModifier', 50000]
       ]
