@@ -91,7 +91,7 @@ export const LabelItemTitle = styled.span`
 `;
 
 export const LabelStatisticContainer = styled.span`
-  min-width: 140px;
+  min-width: 100px;
   font: 12px "Fira Mono";
   text-align: right;
   color: #ffffff;

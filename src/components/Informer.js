@@ -38,9 +38,9 @@ export default class InformerContainer extends Component {
     } = next;
 
 
-    if(!this.state.isShowUpgrade) return;
+    if (!this.state.isShowUpgrade) return;
 
-    if(!upgradable) {
+    if (!upgradable) {
       this.setState({
         isShowUpgrade: false
       })
@@ -66,7 +66,7 @@ export default class InformerContainer extends Component {
       <Informer>
         <TitleItemContainer>
           <TitleItem>
-            {name}{owned > 1 ? `(${owned})`:''}
+            {name}{owned > 1 ? `(${owned})` : ''}
           </TitleItem>
           <AddButton
             onMouseEnter={this.handleShowUpgrade(true)}
@@ -76,13 +76,15 @@ export default class InformerContainer extends Component {
           >Добавить</AddButton>
         </TitleItemContainer>
         <LabelItemContainer>
-          <LabelItemTitle>Доносов</LabelItemTitle>
-          <LabelIncome
-            isShowUpgrade={isShowUpgrade && upgradable}
-          >
-            +{U.makeFormatM(oneProduction)}
-          </LabelIncome>
-          <LabelStatisticContainer>{U.makeFormatM(parseInt(income))} в секунду</LabelStatisticContainer>
+          <LabelItemTitle>Доносов в секунду</LabelItemTitle>
+          <LabelStatisticContainer>
+            <LabelIncome
+              isShowUpgrade={isShowUpgrade && upgradable}
+            >
+              +{U.makeFormatM(oneProduction)}
+            </LabelIncome>
+            {U.makeFormatM(parseInt(income))}
+          </LabelStatisticContainer>
         </LabelItemContainer>
         <LabelItemContainer>
           <LabelItemTitle>Стоимость апгрейда&nbsp;</LabelItemTitle>

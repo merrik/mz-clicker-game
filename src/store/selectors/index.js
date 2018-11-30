@@ -239,7 +239,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -303,7 +303,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -367,7 +367,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -431,7 +431,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -440,7 +440,7 @@ export const upgradesListNotIndex = [
     18,
     {
       name: 'Пятый суд эффективнее 1',
-      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Пятый суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 120000,
       point: 2,
       courtIndex: '4',
@@ -456,7 +456,7 @@ export const upgradesListNotIndex = [
     19,
     {
       name: 'Пятый суд эффективнее 2',
-      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Пятый суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 190000,
       point: 5,
       courtIndex: '4',
@@ -472,7 +472,7 @@ export const upgradesListNotIndex = [
     20,
     {
       name: 'Пятый суд эффективнее 3',
-      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Пятый суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 2600000,
       point: 25,
       courtIndex: '4',
@@ -488,14 +488,14 @@ export const upgradesListNotIndex = [
     21,
     {
       name: 'Пятый суд эффективнее 4',
-      description:  'Пятый суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Пятый суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 70000000,
       point: 50,
       courtIndex: '4',
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -504,7 +504,7 @@ export const upgradesListNotIndex = [
     22,
     {
       name: 'Шестой суд эффективнее 1',
-      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Шестой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 500000,
       point: 2,
       courtIndex: '5',
@@ -520,7 +520,7 @@ export const upgradesListNotIndex = [
     23,
     {
       name: 'Шестой суд эффективнее 2',
-      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Шестой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 770000,
       point: 5,
       courtIndex: '5',
@@ -536,7 +536,7 @@ export const upgradesListNotIndex = [
     24,
     {
       name: 'Шестой суд эффективнее 3',
-      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Шестой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 10500000,
       point: 25,
       courtIndex: '5',
@@ -552,14 +552,14 @@ export const upgradesListNotIndex = [
     25,
     {
       name: 'Шестой суд эффективнее 4',
-      description:  'Шестой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Шестой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 280000000,
       point: 50,
       courtIndex: '5',
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -568,7 +568,7 @@ export const upgradesListNotIndex = [
     26,
     {
       name: 'Седьмой суд эффективнее 1',
-      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Седьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 2600000,
       point: 2,
       courtIndex: '6',
@@ -584,7 +584,7 @@ export const upgradesListNotIndex = [
     27,
     {
       name: 'Седьмой суд эффективнее 2',
-      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Седьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 3850000,
       point: 5,
       courtIndex: '6',
@@ -600,7 +600,7 @@ export const upgradesListNotIndex = [
     28,
     {
       name: 'Седьмой суд эффективнее 3',
-      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Седьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 53000000,
       point: 25,
       courtIndex: '6',
@@ -616,14 +616,14 @@ export const upgradesListNotIndex = [
     29,
     {
       name: 'Седьмой суд эффективнее 4',
-      description:  'Седьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Седьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 1400000000,
       point: 50,
       courtIndex: '6',
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -632,7 +632,7 @@ export const upgradesListNotIndex = [
     30,
     {
       name: 'Восьмой суд эффективнее 1',
-      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Восьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 13000000,
       point: 2,
       courtIndex: '7',
@@ -648,7 +648,7 @@ export const upgradesListNotIndex = [
     31,
     {
       name: 'Восьмой суд эффективнее 2',
-      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Восьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 19200000,
       point: 5,
       courtIndex: '7',
@@ -664,7 +664,7 @@ export const upgradesListNotIndex = [
     32,
     {
       name: 'Восьмой суд эффективнее 3',
-      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Восьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 265000000,
       point: 25,
       courtIndex: '7',
@@ -680,14 +680,14 @@ export const upgradesListNotIndex = [
     33,
     {
       name: 'Восьмой суд эффективнее 4',
-      description:  'Восьмой суд приносит в 2 раза больше денег и в 1.5 раз эффективнее сажает',
+      description:  'Восьмой суд приносит <b>в 2 раза больше денег и в 1.5 раз эффективнее сажает</b>',
       cost: 7000000000,
       point: 50,
       courtIndex: '7',
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 4
         }],
       ]
     }
@@ -948,7 +948,7 @@ export const upgradesListNotIndex = [
     51,
     {
       name: 'Распознавание лиц',
-      description:  '[ОСТАВАЙТЕСЬ НЕПОДВИЖНЫМ В ТЕЧЕНИЕ 5 СЕКУНД]. Повышает производительность АВТОДОНОСА 3000 в 2 раза',
+      description:  '[ОСТАВАЙТЕСЬ НЕПОДВИЖНЫМ В ТЕЧЕНИЕ 5 СЕКУНД]. <b>Повышает производительность АВТОДОНОСА 3000 в 2 раза</b>',
       cost: 10500000,
       point: 50,
       informerIndex: '3',
@@ -963,7 +963,7 @@ export const upgradesListNotIndex = [
     52,
     {
       name: 'Перевыполненный план',
-      description:  'Сотрудники ФСМ всеми правдами и неправдами перевыполняют план на этот год. Повышает производительность Федеральной службы мемов в 2 раза',
+      description:  'Сотрудники ФСМ всеми правдами и неправдами перевыполняют план на этот год. <b>Повышает производительность Федеральной службы мемов в 2 раза</b>',
       cost: 52000,
       point: 2,
       informerIndex: '4',
@@ -978,7 +978,7 @@ export const upgradesListNotIndex = [
     53,
     {
       name: 'Куратор в каждый дом',
-      description:  'Физическое присутствие сотрудников в каждой квартире. Повышает производительность Федеральной службы мемов в 2 раза',
+      description:  'Физическое присутствие сотрудников в каждой квартире. <b>Повышает производительность Федеральной службы мемов в 2 раза</b>',
       cost: 77000,
       point: 5,
       informerIndex: '4',
@@ -993,7 +993,7 @@ export const upgradesListNotIndex = [
     54,
     {
       name: 'СОРМ-4',
-      description:  'Каждый случай смеха будет расследован — вдруг из-за мема? Повышает производительность Федеральной службы мемов в 2 раза',
+      description:  'Каждый случай смеха будет расследован — вдруг из-за мема? <b>Повышает производительность Федеральной службы мемов в 2 раза</b>',
       cost: 1050000,
       point: 25,
       informerIndex: '4',
@@ -1008,7 +1008,7 @@ export const upgradesListNotIndex = [
     55,
     {
       name: 'Курсы подготовки спецназа',
-      description:  'Выбивание дверей на скорость, плетение из наручников, поиски флешки в темной комнате. Повышает производительность Федеральной службы мемов в 2 раза',
+      description:  'Выбивание дверей на скорость, плетение из наручников, поиски флешки в темной комнате. <b>Повышает производительность Федеральной службы мемов в 2 раза</b>',
       cost: 28009000,
       point: 50,
       informerIndex: '4',
@@ -1023,7 +1023,7 @@ export const upgradesListNotIndex = [
     56,
     {
       name: 'Российский генерал',
-      description:  'Новый глава Интерпола перебрасывает все ресурсы на поиски интернет-экстремистов. Повышает производительность Интерпола в 2 раза',
+      description:  'Новый глава Интерпола перебрасывает все ресурсы на поиски интернет-экстремистов. <b>Повышает производительность Интерпола в 2 раза</b>',
       cost: 195000,
       point: 2,
       informerIndex: '5',
@@ -1038,7 +1038,7 @@ export const upgradesListNotIndex = [
     57,
     {
       name: 'Превентивный арест',
-      description:  'Предотвращение важнее наказания — полиция по всему миру получает право задерживать граждан для проверки соцсетей. Повышает производительность Интерпола в 2 раза',
+      description:  'Предотвращение важнее наказания — полиция по всему миру получает право задерживать граждан для проверки соцсетей. <b>Повышает производительность Интерпола в 2 раза</b>',
       cost: 290000,
       point: 5,
       informerIndex: '5',
@@ -1053,7 +1053,7 @@ export const upgradesListNotIndex = [
     58,
     {
       name: 'Доступ к видеокамерам',
-      description:  'Большому Брату и не снилась такая сеть. Повышает производительность Интерпола в 2 раза',
+      description:  'Большому Брату и не снилась такая сеть. <b>Повышает производительность Интерпола в 2 раза</b>',
       cost: 3900000,
       point: 25,
       informerIndex: '5',
@@ -1068,7 +1068,7 @@ export const upgradesListNotIndex = [
     59,
     {
       name: 'Ключи шифрования от Telegram',
-      description:  'Наконец-то! Повышает производительность Интерпола в 2 раза',
+      description:  'Наконец-то! <b>Повышает производительность Интерпола в 2 раза</b>',
       cost: 105000000,
       point: 50,
       informerIndex: '5',
@@ -1083,7 +1083,7 @@ export const upgradesListNotIndex = [
     60,
     {
       name: 'Полный контроль соцсетей',
-      description:  'В каждой интернет-компании открывается филиал комиссии, что позволяет раскрывать больше преступлений. Повышает производительность Комиссии по борьбе с репостами в 2 раза',
+      description:  'В каждой интернет-компании открывается филиал комиссии, что позволяет раскрывать больше преступлений. <b>Повышает производительность Комиссии по борьбе с репостами в 2 раза</b>',
       cost: 1040000,
       point: 2,
       informerIndex: '6',
@@ -1098,7 +1098,7 @@ export const upgradesListNotIndex = [
     61,
     {
       name: 'Анализ трафика',
-      description:  'Джон, у нас лягушонок Пепе, возможно криминал, по коням. Повышает производительность Комиссии по борьбе с репостами в 2 раза',
+      description:  'Джон, у нас лягушонок Пепе, возможно криминал, по коням. <b>Повышает производительность Комиссии по борьбе с репостами в 2 раза</b>',
       cost: 1540000,
       point: 5,
       informerIndex: '6',
@@ -1113,7 +1113,7 @@ export const upgradesListNotIndex = [
     62,
     {
       name: 'Посадки за просмотр',
-      description:  'Видел картинку? Виновен. Повышает производительность Комиссии по борьбе с репостами в 2 раза',
+      description:  'Видел картинку? Виновен. <b>Повышает производительность Комиссии по борьбе с репостами в 2 раза</b>',
       cost: 20000000,
       point: 25,
       informerIndex: '6',
@@ -1128,7 +1128,7 @@ export const upgradesListNotIndex = [
     63,
     {
       name: 'Чтение мыслей',
-      description:  'Уголовная статья за хранение смешных картинок в памяти. Повышает производительность Комиссии по борьбе с репостами в 2 раза',
+      description:  'Уголовная статья за хранение смешных картинок в памяти. <b>Повышает производительность Комиссии по борьбе с репостами в 2 раза</b>',
       cost: 560000000,
       point: 50,
       informerIndex: '6',
@@ -1207,7 +1207,7 @@ export const upgradesListNotIndex = [
       cost: 6000,
       jailedPoint: 10000,
       buffs: [
-        ['courtsModifierBalance', 0.15],
+        ['courtsModifierBalance', 0.25],
       ]
     }
   ],
@@ -1219,7 +1219,7 @@ export const upgradesListNotIndex = [
       cost: 40000,
       jailedPoint: 100000,
       buffs: [
-        ['informerModifier', 0.05],
+        ['informerModifier', 0.25],
       ]
     }
   ],
@@ -1231,7 +1231,7 @@ export const upgradesListNotIndex = [
       cost: 80000,
       jailedPoint: 250000,
       buffs: [
-        ['courtsJailedModifier', 0.15],
+        ['courtsJailedModifier', 0.25],
       ]
     }
   ],
@@ -1243,7 +1243,7 @@ export const upgradesListNotIndex = [
       cost: 140000,
       jailedPoint: 500000,
       buffs: [
-        ['courtsModifierBalance', 0.15],
+        ['courtsModifierBalance', 0.25],
       ]
     }
   ],
@@ -1255,7 +1255,7 @@ export const upgradesListNotIndex = [
       cost: 180000,
       jailedPoint: 1000000,
       buffs: [
-        ['courtsJailedModifier', 0.05],
+        ['courtsJailedModifier', 0.25],
       ]
     }
   ],
@@ -1267,7 +1267,7 @@ export const upgradesListNotIndex = [
       cost: 300000,
       jailedPoint: 2500000,
       buffs: [
-        ['informerModifier', 0.05],
+        ['informerModifier', 0.25],
       ]
     }
   ],
@@ -1279,7 +1279,7 @@ export const upgradesListNotIndex = [
       cost: 1000000,
       jailedPoint: 5000000,
       buffs: [
-        ['courtsModifierBalance', 0.15],
+        ['courtsModifierBalance', 0.25],
       ]
     }
   ],
@@ -1291,7 +1291,7 @@ export const upgradesListNotIndex = [
       cost: 2500000,
       jailedPoint: 10000000,
       buffs: [
-        ['courtsJailedModifier', 0.15],
+        ['courtsJailedModifier', 0.25],
       ]
     }
   ],
@@ -1303,7 +1303,7 @@ export const upgradesListNotIndex = [
       cost: 5000000,
       jailedPoint: 25000000,
       buffs: [
-        ['informerModifier', 0.05],
+        ['informerModifier', 0.25],
       ]
     }
   ],
@@ -1315,7 +1315,7 @@ export const upgradesListNotIndex = [
       cost: 100000000,
       jailedPoint: 500000000,
       buffs: [
-        ['informerModifier', 0.05],
+        ['informerModifier', 0.25],
       ]
     }
   ],
@@ -1327,7 +1327,7 @@ export const upgradesListNotIndex = [
       cost: 250000000,
       jailedPoint: 1000000000,
       buffs: [
-        ['courtsModifierBalance', 0.15],
+        ['courtsModifierBalance', 0.25],
       ]
     }
   ],
@@ -1339,7 +1339,7 @@ export const upgradesListNotIndex = [
       cost: 650000000,
       jailedPoint: 2500000000,
       buffs: [
-        ['courtsJailedModifier', 0.15],
+        ['courtsJailedModifier', 0.25],
       ]
     }
   ],
@@ -1351,7 +1351,7 @@ export const upgradesListNotIndex = [
       cost: 1000000000,
       jailedPoint: 5000000000,
       buffs: [
-        ['informerModifier', 0.15],
+        ['informerModifier', 0.25],
       ]
     }
   ],
@@ -1373,7 +1373,7 @@ export const upgradesListNotIndex = [
     82,
     {
       name: 'Упрощенный документооборот',
-      description:  'Из-за меньшего количества бумажной волокиты вы можете работать эффективнее. Один клик создает 5 материалов',
+      description:  'Из-за меньшего количества бумажной волокиты вы можете работать эффективнее. <b>Один клик создает на 5 материалов больше</b>',
       cost: 5000,
       jailedPoint: 10000,
       buffs: [
@@ -1385,7 +1385,7 @@ export const upgradesListNotIndex = [
     83,
     {
       name: 'Новые кадры',
-      description:  'Ваше подразделение расширяется — теперь вы и ваши коллеги могут скриншотить больше картинок. Один клик создает 50 материалов.',
+      description:  'Ваше подразделение расширяется — теперь вы и ваши коллеги могут скриншотить больше картинок. <b>Один клик создает на 50 материалов больше.</b>',
       cost: 100000,
       jailedPoint: 250000,
       buffs: [
@@ -1397,7 +1397,7 @@ export const upgradesListNotIndex = [
     84,
     {
       name: 'Антиэкстремистская повинность',
-      description:  'Новый закон, который вынуждает всех граждан тратить час времени на помощь вашему подразделению. Один клик — 500 материалов.',
+      description:  'Новый закон, который вынуждает всех граждан тратить час времени на помощь вашему подразделению. <b>Один клик создает на 500 материалов больше.</b>',
       cost: 400000,
       jailedPoint: 1000000,
       buffs: [
@@ -1409,7 +1409,7 @@ export const upgradesListNotIndex = [
     85,
     {
       name: 'Нейроимпланты',
-      description:  'Экспериментальные технологии на страже общественной безопасности. Один клик — 5000 материалов',
+      description:  'Экспериментальные технологии на страже общественной безопасности. <b>Один клик создает на 5000 материалов больше.</b>',
       cost: 50000000,
       jailedPoint: 100000000,
       buffs: [
@@ -1421,7 +1421,7 @@ export const upgradesListNotIndex = [
     86,
     {
       name: 'Турбореактивный ускоритель для пальцев',
-      description:  'Предел человеческой производительности. Один клик создает 50000 материалов',
+      description:  'Предел человеческой производительности. <b>Один клик создает на 50 000 материалов больше.</b>',
       cost: 1200000000,
       jailedPoint: 2000000000,
       buffs: [
