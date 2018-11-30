@@ -256,7 +256,6 @@ class Upgrades extends Component {
         if (p === 'upgradable') {
           for (let i = 0; i < nextProps[p].length; i++) {
             if (this.props[p][i] !== nextProps[p][i]) {
-              console.log('upgradable')
               return true;
             }
           }
