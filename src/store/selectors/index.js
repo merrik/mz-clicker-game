@@ -511,7 +511,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -527,7 +527,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -543,7 +543,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -575,7 +575,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -591,7 +591,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -607,7 +607,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -639,7 +639,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -655,7 +655,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -671,7 +671,7 @@ export const upgradesListNotIndex = [
       buffs: [
         ['courtsLocalModifier', {
           balance: 2,
-          jailed: 1.5
+          jailed: 2
         }],
       ]
     }
@@ -1410,7 +1410,7 @@ export const upgradesListNotIndex = [
     {
       name: 'Нейроимпланты',
       description:  'Экспериментальные технологии на страже общественной безопасности. <b>Один клик создает на 5000 материалов больше.</b>',
-      cost: 50000000,
+      cost: 10000000,
       jailedPoint: 100000000,
       buffs: [
         ['clickModifier', 5000]
