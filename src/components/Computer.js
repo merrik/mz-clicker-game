@@ -105,16 +105,13 @@ const move = (props) => {
   }
 `};
 
-const Bubble = styled.div.attrs({
-  style: (props) => ({
-    boxSizing: 'border-box',
-    position: 'absolute',
-    zIndex: 2,
-    textAlign: 'center',
-    opacity: 0,
-  })
-})`
-  animation: ${props => `${move(props)} 2s linear`} ;
+const Bubble = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 2;
+  text-align: 'center';
+  opacity: 0;
+  animation: ${props => `${move(props)} 2s linear`};
 `;
 
 const generateBubble = () => {
