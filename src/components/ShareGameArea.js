@@ -21,6 +21,22 @@ const ShareContainer = styled.span`
   left: 40px;
 `;
 
+const ViewCounter = styled.div`
+    display: block;;
+    position: absolute;
+    right: 0;
+    top: -9px;
+    padding-left: 30px;
+    padding-right: 40px;
+    color: rgba(255, 255, 255, 0.3);
+    font: ${`12px "Graphik LC"`};
+    line-height: 1.67;
+    background-color: #151515;
+    @media screen and (max-width: 1000px)  {
+      display: none
+    }
+`;
+
 
 export default
 @connect((state) => {
@@ -44,6 +60,9 @@ class ShareGameArea extends Component {
           params={params}
         />
       </ShareContainer>
+      <ViewCounter>
+        {window.counter || '0 просмотров'}
+      </ViewCounter>
     </Container>;
   }
 }
