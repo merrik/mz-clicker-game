@@ -43,6 +43,8 @@ const Computer = styled.div`
   max-width: 326px;
   height: 235px;
   user-select: none;
+  flex-shrink: 0;
+  flex-grow: 0;
   @media screen and (max-width: 1000px)  {
     left: 50%;
     transform: translate3d(-50%, 0, 0);
@@ -58,6 +60,7 @@ const Map = styled.div`
   background-image: url(${props => props.mapType});
   background-repeat: no-repeat;
   user-select: none;
+  z-index: 10;
   @media screen and (max-width: 1000px)  {
     width: 100%;
     height: 0;
@@ -69,7 +72,9 @@ const Map = styled.div`
 const ProgressBack = styled.div`
   box-sizing: border-box;
   position: absolute;
-  z-index: -2;
+  left: 0;
+  top: 0;
+  z-index: 8;
   width: 300px;
   height: 163px;
   background-color: white;
@@ -82,7 +87,9 @@ const ProgressBack = styled.div`
 const Progress = styled.div`
   box-sizing: border-box;
   position: absolute;
-  z-index: -1;
+  left: 0;
+  top: 0;
+  z-index: 9;
   width: ${props => `${props.progress * 300}px`};
   height: 163px;
   background-color: #0a9a8d;
@@ -92,7 +99,7 @@ const Progress = styled.div`
   }
 `;
 
-const move = (props) => { 
+const move = (props) => {
   return keyframes`
   0% {
     transform: ${`translate3d(${props.posX}px, ${props.posY}px, 0)`};
@@ -108,7 +115,7 @@ const move = (props) => {
 const Bubble = styled.div`
   box-sizing: border-box;
   position: absolute;
-  z-index: 2;
+  z-index: 11;
   text-align: 'center';
   opacity: 0;
   animation: ${props => `${move(props)} 2s linear`};
@@ -133,10 +140,10 @@ const initialBubbles = (length = 10) => {
 
 const setBubbles = (bubbles, modifier) => bubbles
   .filter(bubble => bubble.status === 'new')
-  .map(bubble => 
-  (<Bubble 
-    key={bubble.key} 
-    posX={bubble.posX} 
+  .map(bubble =>
+  (<Bubble
+    key={bubble.key}
+    posX={bubble.posX}
     posY={bubble.posY}
     onAnimationEnd={() => bubble.status = 'end'}
   >+{modifier}</Bubble>)
@@ -173,7 +180,7 @@ class ComputerComponent extends React.Component {
   componentDidMount(){
     document.body.addEventListener('click', this.click);
   }
-  
+
   componentWillUnmount(){
     document.body.removeEventListener('click', this.click);
   }

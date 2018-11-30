@@ -83,10 +83,10 @@ const Title = styled.h2`
 const Description = styled.p`
   margin: 0;
   margin-bottom: 48px;
-  white-space: pre-line;
   font: 14px 'Fira Mono';
   color: #ffffff;
   text-align: center;
+  width: 100%;
 `;
 
 const Accept = styled.div`
