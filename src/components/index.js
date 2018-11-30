@@ -71,23 +71,32 @@ export const MobileStat = styled.div`
   @media screen and (max-width: 1000px)  {
     display: flex;
     position: fixed;
-    top: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border-bottom: 1px solid #ccc;
+    top: 66px;
     left: 0;
     z-index: 999999;
     flex-direction: row;
     width: 100vw;
+    justify-content: space-around;
+    box-sizing: border-box;
   }
+`;
+
+
+export const ColorCount = styled.span`
+  display: flex;
+  align-self: flex-end;
+  font: bold 12px "Fira Mono";
+  color: ${props => props.isUp ? 'green' : 'red'}
+  text-transform: uppercase;
 `;
 
 export const MobileCounter = styled.div`
   @media screen and (max-width: 1000px) {
-    display: flex;
-    position: sticky;
-    top: 0;
-    z-index: 999999;
-    flex-direction: row;
-    width: 100%;
-    left: 0;
+    font-family: "Fira Mono";
+    font-size: 14px;
   }
 `;
 
