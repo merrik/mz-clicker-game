@@ -304,6 +304,10 @@ class GameField extends Component {
     stageIndex: 0
   };
 
+  componentDidMount() {
+    analytic.GASessionStart()
+  }
+
   handleClose = () => {
     if (this.state.stageIndex === 1) {
       analytic.GAGameStart();
