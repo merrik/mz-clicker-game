@@ -93,11 +93,11 @@ export const stageShareList = [
       'Купите доносчика, чтобы <b>увеличить скорость сбора материалов</b>. За отдельную плату доносчики будут работать эффективнее — их тоже можно улучшать.\n\n'
   },
   {
-    point: 100000,
+    point: 50000,
     title: 'Я посадил целый город',
     params: [['achievement', 'city']],
     img: city,
-    description: 'Я посадил за репосты 100 тысяч человек — население небольшого города'
+    description: 'Я посадил за репосты 50 тысяч человек — население небольшого города'
   },
   {
     point: 700000,
@@ -1587,6 +1587,7 @@ export const upgrades = createSelector(
       .map((upgrade) => {
         return upgradesList[upgrade]
       })
+      .sort((a, b) => a.cost - b.cost)
 );
 
 export const informers = createSelector(
