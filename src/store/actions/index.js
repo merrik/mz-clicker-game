@@ -45,7 +45,7 @@ export const addCourt = ({cost}) => {
 };
 
 export const updateCourt = ({index, cost}) => {
-  analytic.GABuy('update_court');
+  analytic.GABuy(`update_court_${index}`);
   return({
     type: C.UPDATE_COURT,
     courtIndex: index,
@@ -62,7 +62,7 @@ export const addInformer = ({cost}) => {
 };
 
 export const updateInformer = ({index, cost}) => {
-  analytic.GABuy('update_informer');
+  analytic.GABuy(`update_informer_${index}`);
   return {
     type: C.UPDATE_INFORMER,
     index,
