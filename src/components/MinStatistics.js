@@ -15,7 +15,8 @@ import {
   MiniStatisticProgressBar,
   ProgressContainer,
   MobileStat,
-  MobileCounter
+  MobileCounter,
+  ColorCount
 } from "./index";
 import Achievement from "./Achievement";
 import Computer from "./Computer";
@@ -34,7 +35,7 @@ class MobileStats extends Component{
   }
   onScrollHandler = (e) => {
     if (this.refEl) {
-      const newShow = (this.refEl.getBoundingClientRect().top < -40)
+      const newShow = (this.refEl.getBoundingClientRect().top < 140)
       console.log('new show', newShow, this.refEl, this.refEl.getBoundingClientRect().top)
       if (newShow != this.state.show)
       {
@@ -57,10 +58,10 @@ class MobileStats extends Component{
           ${U.makeFormatM(balance)}
         </MobileCounter>
         <MobileCounter>
-          {U.makeFormatM(jailed)}
+          посажено {U.makeFormatM(jailed)}
         </MobileCounter>
         <MobileCounter>
-          {U.makeFormatM(deltaMaterials)}
+          прирост <span >{U.makeFormatM(deltaMaterials)}</span>
         </MobileCounter>
       </MobileStat>
       </div>
@@ -152,7 +153,7 @@ class MinStatistics extends Component {
         <ClickButton className="click-button">
           Собрать материал
         </ClickButton>
-        {/*<MobileStats jailed={jailed} deltaMaterials={deltaMaterials} balance={balance}/>*/}
+        <MobileStats jailed={jailed} deltaMaterials={deltaMaterials} balance={balance}/>
       </MainStatistics>
     )
   }

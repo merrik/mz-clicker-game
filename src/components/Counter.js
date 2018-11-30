@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 import {
-  TitleColumn
+  TitleColumn,
+  ColorCount
 } from "./index";
 import ToolTip from "./ToolTip";
 import * as U from "../utils";
@@ -24,13 +25,6 @@ const Count = styled.span`
   color: white;
 `;
 
-const ColorCount = styled.span`
-  display: flex;
-  align-self: flex-end;
-  font: bold 12px "Fira Mono";
-  color: ${props => props.isUp ? 'green' : 'red'}
-  text-transform: uppercase;
-`;
 
 const Counter = styled.div`
   display: flex;
