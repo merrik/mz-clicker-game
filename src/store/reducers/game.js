@@ -5,7 +5,7 @@ import * as U from '../../utils';
 import {BigNumber} from 'bignumber.js';
 import {informerList, courtList, upgradesList, stageShareList, courtCalculate, upgradesListNotIndex, progressPoint} from "../selectors";
 
-
+BigNumber.config({ EXPONENTIAL_AT: [-7, 40]});
 
 let persistedState = U.loadState(C.LOCAL_STORAGE_KEY);
 if (!BigNumber.isBigNumber(persistedState.allMaterials)) {
