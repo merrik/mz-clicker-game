@@ -20,7 +20,7 @@ export const courtList = [
   {name: 'военный', materials: 250, productionJailed: 300, productionBalance: 500, cost: 80000, rate: 1.14},
   {name: 'ЕСПЧ', materials: 700, productionJailed: 1000, productionBalance: 1000, cost: 1000000, rate: 1.14},
   {name: 'Международный суд ООН', materials: 3000, productionJailed: 2500, productionBalance: 7000, cost: 20000000, rate: 1.14},
-  {name: 'Международный уголовный суд', materials: 25000, productionJailed: 80000, productionBalance: 80000, cost: 500000000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 25000, productionJailed: 80000, productionBalance: 80000, cost: 1000000000, rate: 1.14},
 ];
 
 // export const courtList = [
