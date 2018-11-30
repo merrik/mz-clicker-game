@@ -14,17 +14,28 @@ import zahod from '../../assets/zahod.jpg';
 
 export const courtList = [
   {name: 'городской', materials: 3, productionJailed: 0.5, productionBalance: 1, cost: 12, rate: 1.14},
-  {name: 'областной', materials: 10, productionJailed: 5, productionBalance: 5, cost: 150, rate: 1.14},
-  {name: 'верховный', materials: 50, productionJailed: 20, productionBalance: 40, cost: 5000, rate: 1.14},
-  {name: 'конституционный', materials: 120, productionJailed: 30, productionBalance: 30, cost: 18000, rate: 1.14},
-  {name: 'военный', materials: 120, productionJailed: 100, productionBalance: 25, cost: 120000, rate: 1.14},
-  {name: 'ЕСПЧ', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
-  {name: 'Международный суд ООН', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
-  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
+  {name: 'областной', materials: 10, productionJailed: 3, productionBalance: 10, cost: 90, rate: 1.14},
+  {name: 'верховный', materials: 30, productionJailed: 13, productionBalance: 40, cost: 750, rate: 1.14},
+  {name: 'конституционный', materials: 120, productionJailed: 80, productionBalance: 150, cost: 9000, rate: 1.14},
+  {name: 'военный', materials: 250, productionJailed: 300, productionBalance: 500, cost: 80000, rate: 1.14},
+  {name: 'ЕСПЧ', materials: 700, productionJailed: 600, productionBalance: 1000, cost: 320000, rate: 1.14},
+  {name: 'Международный суд ООН', materials: 2000, productionJailed: 1666, productionBalance: 3000, cost: 1200000, rate: 1.14},
+  {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 14000, cost: 5000000, rate: 1.14},
 ];
 
+// export const courtList = [
+//   {name: 'городской', materials: 3, productionJailed: 0.5, productionBalance: 1, cost: 12, rate: 1.14},
+//   {name: 'областной', materials: 10, productionJailed: 5, productionBalance: 5, cost: 90, rate: 1.14},
+//   {name: 'верховный', materials: 50, productionJailed: 20, productionBalance: 40, cost: 5000, rate: 1.14},
+//   {name: 'конституционный', materials: 120, productionJailed: 30, productionBalance: 30, cost: 18000, rate: 1.14},
+//   {name: 'военный', materials: 120, productionJailed: 100, productionBalance: 25, cost: 120000, rate: 1.14},
+//   {name: 'ЕСПЧ', materials: 700, productionJailed: 350, productionBalance: 150, cost: 60000, rate: 1.14},
+//   {name: 'Международный суд ООН', materials: 2000, productionJailed: 700, productionBalance: 400, cost: 400000, rate: 1.14},
+//   {name: 'Международный уголовный суд', materials: 4000, productionJailed: 8000, productionBalance: 4000, cost: 2000000, rate: 1.14},
+// ];
+
 export const informerList = [
-  {name: 'Студент юрфака', production: 1, cost: 10, rate: 1.14},
+  {name: 'Студент юрфака', production: 1, cost: 3, rate: 1.14},
   {name: 'Набожная старушка', production: 3, cost: 50, rate: 1.14},
   {name: 'Казачья кибердружина', production: 10, cost: 450, rate: 1.14},
   {name: 'АВТОДОНОС 3000', production: 32, cost: 2500, rate: 1.14},
