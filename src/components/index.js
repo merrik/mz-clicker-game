@@ -66,6 +66,31 @@ export const AddButton = styled.button`
   }
 `;
 
+export const MobileStat = styled.div`
+  display: none;
+  @media screen and (max-width: 1000px)  {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    flex-direction: row;
+    width: 100vw;
+  }
+`;
+
+export const MobileCounter = styled.div`
+  @media screen and (max-width: 1000px) {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 999999;
+    flex-direction: row;
+    width: 100%;
+    left: 0;
+  }
+`;
+
 export const TitleItemContainer = styled.div`
   display: flex;
   justify-content: space-between;

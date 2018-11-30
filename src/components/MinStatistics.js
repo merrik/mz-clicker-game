@@ -13,11 +13,61 @@ import {
   MainStatisticsContainer,
   MiniStatistic,
   MiniStatisticProgressBar,
-  ProgressContainer
+  ProgressContainer,
+  MobileStat,
+  MobileCounter
 } from "./index";
 import Achievement from "./Achievement";
 import Computer from "./Computer";
 import {progressPoint} from "../store/selectors";
+
+class MobileStats extends Component{
+  state = {
+    show: false
+  }
+  refEl = null
+  componentDidMount(){
+    window.addEventListener('scroll', this.onScrollHandler, true)
+  }
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.onScrollHandler, true)
+  }
+  onScrollHandler = (e) => {
+    if (this.refEl) {
+      const newShow = (this.refEl.getBoundingClientRect().top < -40)
+      console.log('new show', newShow, this.refEl, this.refEl.getBoundingClientRect().top)
+      if (newShow != this.state.show)
+      {
+        this.setShow(newShow)
+      }
+    }
+  }
+  setShow(showed) {
+    this.setState(() => ({show: showed}))
+  }
+  render() {
+    const {balance, jailed, deltaMaterials} = this.props
+    const {show} = this.state
+    const styleObj = show ? {} : {'display': 'none'}
+    return (
+      <div>
+        <div ref={(el) => this.refEl = el}></div>
+        <MobileStat  style={styleObj}>
+        <MobileCounter>
+          ${U.makeFormatM(balance)}
+        </MobileCounter>
+        <MobileCounter>
+          {U.makeFormatM(jailed)}
+        </MobileCounter>
+        <MobileCounter>
+          {U.makeFormatM(deltaMaterials)}
+        </MobileCounter>
+      </MobileStat>
+      </div>
+    );
+  }
+
+}
 
 const mapStateToProps = (state) => {
   const {game} = state;
@@ -102,6 +152,7 @@ class MinStatistics extends Component {
         <ClickButton className="click-button">
           Собрать материал
         </ClickButton>
+        {/*<MobileStats jailed={jailed} deltaMaterials={deltaMaterials} balance={balance}/>*/}
       </MainStatistics>
     )
   }

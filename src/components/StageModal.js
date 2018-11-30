@@ -78,6 +78,7 @@ const Title = styled.h2`
   font: bold 44px 'Graphik LC';
   color: #ffffff;
   text-align: center;
+  width: 100%;
 `;
 
 const Description = styled.p`
@@ -87,6 +88,7 @@ const Description = styled.p`
   color: #ffffff;
   text-align: center;
   width: 100%;
+ 
 `;
 
 const Accept = styled.div`
